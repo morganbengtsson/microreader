@@ -28,50 +28,22 @@
 			padding: 0;
 			font-weight: bold;
 			display: inline;						
-		}
-		.description 
-		{
-			color: grey;
-			display: inline;
-        }      
-        dt
-        { 
-			cursor: hand; cursor: pointer; 
-		}
+		}		    
+       
 				
 	</style>
 </head>
 <body>
 	<dl class = "accordion">
-		%for item in items:
+		%for channel in channels:
 		<dt class = "item">				
-			<h2 class="title">{{item['title']}}</title> -
-			<span class="description">
-				{{item['description']}}
-			</span>			
-		</dt>
-		<dd>
-			{{item['description']}}
-		</dd>
+		<a href = "/{{channel['url']}}">
+			<h2 class="title">{{channel['title']}}</h2> 
+		</a>					
+		</dt>		
 		%end	
 	</dl>
 </body>
 
 </html>
-<script>
-	$('.accordion dd').hide();
-	$('.accordion dt').click(function(){
-    cur_stus = $(this).attr('stus');
-    if(cur_stus != "active")
-    {
-        //reset everthing - content and attribute
-        $('.accordion dd').slideUp();
-        $('.accordion dt').attr('stus', '');
- 
-        //then open the clicked data
-        $(this).next().slideDown();
-        $(this).attr('stus', 'active');
-    }
-    return false;
-	});
-</script>
+
