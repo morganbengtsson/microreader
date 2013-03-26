@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opml version="1.0">
+    <head>
+        <title>Subscriptions</title>
+    </head>
+    <body>
+        <outline text="Ars Technica" title="Ars Technica" type="rss"
+            xmlUrl="http://feeds.arstechnica.com/arstechnica/index/" htmlUrl="http://arstechnica.com"/>      
+        <outline text="I Get Your Fail" title="I Get Your Fail"
+            type="rss"
+            xmlUrl="http://igetyourfail.blogspot.com/feeds/posts/default" htmlUrl="http://igetyourfail.blogspot.com/"/>        
+        <outline text="Slashdot" title="Slashdot" type="rss"
+            xmlUrl="http://rss.slashdot.org/Slashdot/slashdot" htmlUrl="http://slashdot.org/"/>
+        <outline text="Sweclockers" title="Sweclockers" type="rss"
+            xmlUrl="http://www.sweclockers.com/feeds/news.xml" htmlUrl="http://www.sweclockers.com"/>        
+    </body>
+</opml>
