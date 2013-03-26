@@ -38,11 +38,31 @@
         { 
 			cursor: hand; cursor: pointer; 
 		}
+		.left
+		{
+			width: 120px;			
+			float: left;
+		}
+		.right
+		{
+			max-width: 600px;
+			width: 100%;				
+			float: left;
+		}
 				
 	</style>
 </head>
 <body>
-	<dl class = "accordion">
+	<dl class = "left">
+		%for channel in channels:
+		<dt class = "channel">				
+		<a href = "/{{channel['url']}}">
+			<h2 class="title">{{channel['title']}}</h2> 
+		</a>					
+		</dt>		
+		%end	
+	</dl>
+	<dl class = "accordion right">
 		%for item in items:
 		<dt class = "item">				
 			<h2 class="title">{{item['title']}}</title> -
