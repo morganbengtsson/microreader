@@ -6,23 +6,51 @@
 		body
 		{
 			font-family: sans-serif;
-			font-size: 0.9em;
+			font-size: 0.8em;
+			line-height: 1.2em;
 			margin: 0;
 			padding: 0;
+			position: relative;
+		}
+		dl, dt, dd, ul, li
+        {
+			margin: 0;
+			padding: 0;
+		}    
+        dt
+        { 
+			cursor: hand; cursor: pointer; 
+		}        
+		#left
+		{
+			width: 140px;
+			height: 100%;
+			background-color: e1e1e1;
+			position: absolute;
+		}
+		#right
+		{
+			margin-left: 140px;
+			max-width: 600px;
+			position: relative;		
+		}
+		.channel, .item
+		{
+			margin-top: 0;
+            margin-bottom: 0;
+            padding-top: 0.4em;
+            padding-bottom: 0.5em;
+            padding-left: 0.5em;
 		}
 		.item
 		{
 			overflow: hidden;
             text-overflow: ellipsis;
-            white-space: nowrap;
-            margin-top: 0;
-            margin-bottom: 0;
-            padding-top: 0.4em;
-            padding-bottom: 0.5em;
-            padding-left: 0.5em;
+            white-space: nowrap;            
             border-bottom: 1px solid grey;            
 		}
-		.title {				
+		.title 
+		{				
 			font-size: 100%;
 			margin: 0;
 			padding: 0;
@@ -33,36 +61,24 @@
 		{
 			color: grey;
 			display: inline;
-        }      
-        dt
-        { 
-			cursor: hand; cursor: pointer; 
-		}
-		.left
-		{
-			width: 120px;			
-			float: left;
-		}
-		.right
-		{
-			max-width: 600px;
-			width: 100%;				
-			float: left;
-		}
+        }  
 				
 	</style>
 </head>
 <body>
-	<dl class = "left">
+	<nav id = "left">
+		<ul>
 		%for channel in channels:
-		<dt class = "channel">				
+		
+		<li class = "channel">				
 		<a href = "/{{channel['url']}}">
 			<h2 class="title">{{channel['title']}}</h2> 
 		</a>					
-		</dt>		
-		%end	
-	</dl>
-	<dl class = "accordion right">
+		</li>		
+		%end
+		</li>	
+	</nav>
+	<dl class = "accordion" id = "right">
 		%for item in items:
 		<dt class = "item">				
 			<h2 class="title">{{item['title']}}</title> -
