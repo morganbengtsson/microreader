@@ -12,6 +12,11 @@
 			padding: 0;
 			position: relative;
 		}
+		a
+		{
+			text-decoration: none;
+			color: #003C7D;
+		}
 		dl, dt, dd, ul, li
         {
 			margin: 0;
@@ -27,6 +32,7 @@
 			height: 100%;
 			background-color: e1e1e1;
 			position: absolute;
+			border-right: 1px solid grey;
 		}
 		#right
 		{
@@ -47,7 +53,11 @@
 			overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;            
-            border-bottom: 1px solid grey;            
+                       
+		}
+		.item_wrap
+		{
+			border-bottom: 1px solid grey; 
 		}
 		.title 
 		{				
@@ -57,38 +67,47 @@
 			font-weight: bold;
 			display: inline;						
 		}
-		.description 
-		{
+		.summary
+		{			
 			color: grey;
 			display: inline;
-        }  
+        } 
+        .description
+        {
+			padding: 0.8em;			
+		}
+        .active
+        {
+			color: #820000;
+		}
 				
 	</style>
 </head>
 <body>
 	<nav id = "left">
 		<ul>
-		%for channel in channels:
-		
-		<li class = "channel">				
-		<a href = "/{{channel['url']}}">
-			<h2 class="title">{{channel['title']}}</h2> 
-		</a>					
-		</li>		
+		%for channel in channels:		
+			<li class = "channel">				
+				<a href = "/{{channel['url']}}" class = "{{"active" if (channel['url'] == url) else ""}}">
+					<h2 class="title">{{channel['title']}}</h2> 
+				</a>			
+			</li>		
 		%end
 		</li>	
 	</nav>
 	<dl class = "accordion" id = "right">
 		%for item in items:
+		<div class = "item_wrap">
 		<dt class = "item">				
 			<h2 class="title">{{item['title']}}</title> -
-			<span class="description">
+			<span class="summary">
 				{{item['description']}}
 			</span>			
 		</dt>
-		<dd>
+		<dd class = "description">
 			{{item['description']}}
 		</dd>
+		</div>
 		%end	
 	</dl>
 </body>
@@ -100,12 +119,10 @@
     cur_stus = $(this).attr('stus');
     if(cur_stus != "active")
     {
-        //reset everthing - content and attribute
-        $('.accordion dd').slideUp();
+        $('.accordion dd').hide();
         $('.accordion dt').attr('stus', '');
- 
-        //then open the clicked data
-        $(this).next().slideDown();
+        
+        $(this).next().show();
         $(this).attr('stus', 'active');
     }
     return false;
