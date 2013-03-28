@@ -1,14 +1,15 @@
 import feedparser, bottle
+import lxml.html
 import xml.etree.ElementTree as ET
 from bottle import route, run, view, SimpleTemplate
 
 @route('/api/<url:re:.+>')
 def items(url):
 	feed = feedparser.parse(url)	
-	items = {'items' : []}
+	items = {'items' : [], 'url' : url}
 	for item in feed.entries:
 		items['items'].append({'title': item.title, 
-							   'description' : item.description,
+							   'description' : lxml.html.fromstring(item.description).text_content(),
 							   'link' : item.link})
 	return items
 
@@ -22,11 +23,13 @@ def channels():
 		channels['channels'].append({'title' : channel.get('title'), 'url' : channel.get('xmlUrl')})
 	
 	return channels
+	
 @route("/")
 @route("/<url:re:.+>")
 @view('index')
 def index(url = ''):
 	index = dict(items(url),**channels())
+	print index
 	return index
 	
 
