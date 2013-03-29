@@ -25,7 +25,6 @@ def items(url = ''):
 def channels():
 	tree = ET.parse('subscriptions.xml')
 	channels = {'channels' : []}
-	print (tree.getroot().findall('./body/outline'))
 		
 	for channel in tree.getroot().findall('./body/outline'):
 		channels['channels'].append({'title' : channel.get('title'), 'url' : channel.get('xmlUrl')})
