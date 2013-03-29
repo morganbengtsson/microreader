@@ -1,7 +1,7 @@
-import feedparser, bottle
+import feedparser
 import lxml.html
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, SimpleTemplate
+from bottle import route, run, view
 
 @route('/api/<url:re:.+>')
 def items(url = ''):
