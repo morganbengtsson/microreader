@@ -4,13 +4,21 @@ import xml.etree.ElementTree as ET
 from bottle import route, run, view, SimpleTemplate
 
 @route('/api/<url:re:.+>')
-def items(url):
-	feed = feedparser.parse(url)	
+def items(url = ''):
 	items = {'items' : [], 'url' : url}
-	for item in feed.entries:
-		items['items'].append({'title': item.title, 
-							   'description' : lxml.html.fromstring(item.description).text_content(),
-							   'link' : item.link})
+	
+	urls = []
+	if url: urls.append(url)
+	else:
+		for channel in channels()['channels']:
+			urls.append(channel['url'])
+	
+	for url in urls:
+		feed = feedparser.parse(url)
+		for item in feed.entries:
+			items['items'].append({'title': item.title, 
+							       'description' : item.description,
+							       'link' : item.link})
 	return items
 
 @route('/api')
@@ -27,10 +35,8 @@ def channels():
 @route("/")
 @route("/<url:re:.+>")
 @view('index')
-def index(url = ''):
+def index(url = ''):	
 	index = dict(items(url),**channels())
-	print index
-	return index
-	
+	return index	
 
 run(host='localhost', port=3000, reloader = True, debug = True)
