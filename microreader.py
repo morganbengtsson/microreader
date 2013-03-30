@@ -13,6 +13,8 @@ class Item(peewee.Model):
 	title = CharField()
 	description = CharField()
 	url = CharField()
+	read = BooleanField()
+	starred = BooleanField()
 	channel = peewee.ForeignKeyField(Channel)
 	
 @route('/api/<url:re:.+>')
