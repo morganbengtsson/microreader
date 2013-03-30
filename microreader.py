@@ -1,32 +1,42 @@
-import feedparser
-import lxml.html
+import lxml.html, feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
-from bottle import route, run, view
-import peewee
+from bottle import route, run, view, install
 from peewee import *
 
-class Channel(peewee.Model):
+class CustomJsonEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.datetime):
+            return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
+        return json.JSONEncoder.default(self, obj)
+
+install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
+
+db = peewee.SqliteDatabase('database.db')
+
+class BaseModel(Model):
+	class Meta:
+		database = db
+
+class Channel(BaseModel):
 	title = CharField()
-	url = CharField()
+	updated = DateTimeField(default = datetime.datetime.now())
+	url = CharField(unique = True)
 	
-class Item(peewee.Model):
+class Item(BaseModel):
 	title = CharField()
 	description = CharField()
-	url = CharField()
+	url = CharField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
-	
-def _db():
-	db = peewee.SqliteDatabase('database.db')
-	db.connect()
-	Channel.create_table(fail_silently = True)
-	Item.create_table(fail_silently = True)
-	return db
+
+db.connect()
+Channel.create_table(fail_silently = True)
+Item.create_table(fail_silently = True)
+db.close()
 
 @route('/api/<url:re:.+>')
 def items(url = ''):
-	db = _db()
 	items = {'items' : [], 'url' : url}
 	
 	urls = []
@@ -42,32 +52,22 @@ def items(url = ''):
 							       'description' : item.description,
 							       'link' : item.link})
 			#i = Item.create(title = item.title, description = item.description, url = item.link)
-	db.close()
 	return items
 
 @route('/api')
 def channels():
-	db = _db()
 	tree = ET.parse('subscriptions.xml')
-	channels = {'channels' : []}
-		
-	for channel in tree.getroot().findall('./body/outline'):
-		channels['channels'].append({'title' : channel.get('title'), 'url' : channel.get('xmlUrl')})
-		c = Channel.create(title = channel.get('title'), url = channel.get('xmlUrl'))
+	#for channel in tree.getroot().findall('./body/outline'):		
+		#Channel.create(title = channel.get('title'), url = channel.get('xmlUrl'))
+			
+	return {'channels' : [c for c in Channel.select().dicts()]}
 	
-	db.close()
-	return channels
-	
-@route("/")
-@route("/<url:re:.+>")
+@route("/home")
+@route("/home/<url:re:.+>")
 @view('index')
 def index(url = ''):	
 	index = dict(items(url),**channels())
 	return index	
 	
-
-@route('/bla')
-def bla():
-	return Channel;
 
 run(host='localhost', port=3000, reloader = True, debug = True)
