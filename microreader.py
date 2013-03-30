@@ -41,19 +41,21 @@ def items(url = ''):
 			items['items'].append({'title': item.title, 
 							       'description' : item.description,
 							       'link' : item.link})
-			i = Item.create(title = item.title, description = item.description, url = item.link)
-	
-	
+			#i = Item.create(title = item.title, description = item.description, url = item.link)
+	db.close()
 	return items
 
 @route('/api')
 def channels():
+	db = _db()
 	tree = ET.parse('subscriptions.xml')
 	channels = {'channels' : []}
 		
 	for channel in tree.getroot().findall('./body/outline'):
 		channels['channels'].append({'title' : channel.get('title'), 'url' : channel.get('xmlUrl')})
+		c = Channel.create(title = channel.get('title'), url = channel.get('xmlUrl'))
 	
+	db.close()
 	return channels
 	
 @route("/")
