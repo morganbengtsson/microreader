@@ -2,7 +2,19 @@ import feedparser
 import lxml.html
 import xml.etree.ElementTree as ET
 from bottle import route, run, view
+import peewee
+from peewee import *
 
+class Channel(peewee.Model):
+	title = CharField()
+	url = CharField()
+	
+class Item(peewee.Model):
+	title = CharField()
+	description = CharField()
+	url = CharField()
+	channel = peewee.ForeignKeyField(Channel)
+	
 @route('/api/<url:re:.+>')
 def items(url = ''):
 	items = {'items' : [], 'url' : url}
@@ -37,5 +49,10 @@ def channels():
 def index(url = ''):	
 	index = dict(items(url),**channels())
 	return index	
+	
+
+@route('/bla')
+def bla():
+	return Channel;
 
 run(host='localhost', port=3000, reloader = True, debug = True)
