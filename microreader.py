@@ -13,12 +13,20 @@ class Item(peewee.Model):
 	title = CharField()
 	description = CharField()
 	url = CharField()
-	read = BooleanField()
-	starred = BooleanField()
+	read = BooleanField(default = False)
+	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
 	
+def _db():
+	db = peewee.SqliteDatabase('database.db')
+	db.connect()
+	Channel.create_table(fail_silently = True)
+	Item.create_table(fail_silently = True)
+	return db
+
 @route('/api/<url:re:.+>')
 def items(url = ''):
+	db = _db()
 	items = {'items' : [], 'url' : url}
 	
 	urls = []
@@ -33,6 +41,9 @@ def items(url = ''):
 			items['items'].append({'title': item.title, 
 							       'description' : item.description,
 							       'link' : item.link})
+			i = Item.create(title = item.title, description = item.description, url = item.link)
+	
+	
 	return items
 
 @route('/api')
