@@ -1,6 +1,6 @@
 import lxml.html, feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install, hook
+from bottle import route, run, view, install, hook, request, response
 from peewee import *
 from time import mktime
 
@@ -55,6 +55,16 @@ def db_disconnect():
 def items():
 	return {'items' : [i for i in Item.select().dicts()]}
 
+@route('/api/items/:id', method = 'PATCH')
+def patch_item(id):
+	item = Item.get(Item.id == id)
+	valid_keys = ['read', 'starred']
+	for key in set(valid_keys).intersection(set(request.json.keys())):
+		setattr(item, key, key)
+		
+	item.save()	
+	return response.status
+
 @route('/api/channels/<url:re:.+>/items')
 def channel_items(url = ''):
 	try: 
@@ -69,9 +79,9 @@ def channel_items(url = ''):
 def channels():
 	return {'channels' : [c for c in Channel.select().dicts()]}
 	
-@post('/api/channels')
-def add_channel():
-	
+@route('/api/channels', method = 'POST')
+def post_channel():
+	pass
 
 @route("/channels")
 @route("/channels/<url:re:.+>")
