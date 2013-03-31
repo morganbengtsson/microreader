@@ -1,6 +1,6 @@
 import lxml.html, feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install
+from bottle import route, run, view, install, hook
 from peewee import *
 from time import mktime
 
@@ -43,30 +43,42 @@ class Item(BaseModel):
 	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
 
-# TODO: Do this in a before/after hook.
-db.connect()
-#db.drop_table(Channel, fail_silently=True)
-#db.drop_table(Item, fail_silently=True)
-#Channel.create_table(fail_silently = True)
-#Item.create_table(fail_silently = True)
-#Channel.create(title = 'Slashdot', url = 'http://rss.slashdot.org/Slashdot/slashdot')
-db.close()
+@hook('before_request')
+def db_connect():
+	db.connect()
 
-@route('/api/items/<url:re:.+>')
-def items(url = ''):
-	c = Channel.get(Channel.url == url)
-	c.update_feed()
-	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()], 'url' : url}
+@hook('after_request')
+def db_disconnect():
+	db.close()
+
+@route('/api/items')
+def items():
+	return {'items' : [i for i in Item.select().dicts()]}
+
+@route('/api/channels/<url:re:.+>/items')
+def channel_items(url = ''):
+	try: 
+		c = Channel.get(Channel.url == url)
+		c.update_feed()
+	except Item.DoesNotExist:
+		c = Null
+	
+	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()]}
 
 @route('/api/channels')
 def channels():
 	return {'channels' : [c for c in Channel.select().dicts()]}
 	
+@post('/api/channels')
+def add_channel():
+	
+
 @route("/channels")
 @route("/channels/<url:re:.+>")
 @view('index')
 def index(url = ''):	
-	index = dict(items(url),**channels())
+	index = dict(channel_items(url),**channels())
+	index['url'] = url
 	return index	
 	
 
