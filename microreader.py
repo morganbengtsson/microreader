@@ -2,6 +2,7 @@ import lxml.html, feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
 from bottle import route, run, view, install
 from peewee import *
+from time import mktime
 
 class CustomJsonEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -19,8 +20,20 @@ class BaseModel(Model):
 
 class Channel(BaseModel):
 	title = CharField()
-	updated = DateTimeField(default = datetime.datetime.now())
+	updated = DateTimeField(default = datetime.datetime(1900, 1, 1))
 	url = CharField(unique = True)
+	
+	def update_feed(self):
+			feed = feedparser.parse(self.url)
+			feed_updated = datetime.datetime.fromtimestamp(mktime(feed.updated_parsed))
+			if (feed_updated> self.updated):
+				for item in feed.entries:
+					try: Item.get(Item.url == item.link)
+					except Item.DoesNotExist:
+						Item.create(title = item.title, description = item.description, url = item.link, channel = self)
+				
+				self.updated = feed_updated
+				self.save()
 	
 class Item(BaseModel):
 	title = CharField()
@@ -30,29 +43,20 @@ class Item(BaseModel):
 	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
 
+# TODO: Do this in a before/after hook.
 db.connect()
-Channel.create_table(fail_silently = True)
-Item.create_table(fail_silently = True)
+#db.drop_table(Channel, fail_silently=True)
+#db.drop_table(Item, fail_silently=True)
+#Channel.create_table(fail_silently = True)
+#Item.create_table(fail_silently = True)
+#Channel.create(title = 'Slashdot', url = 'http://rss.slashdot.org/Slashdot/slashdot')
 db.close()
 
 @route('/api/items/<url:re:.+>')
 def items(url = ''):
-	items = {'items' : [], 'url' : url}
-	
-	urls = []
-	if url: urls.append(url)
-	else:
-		for channel in channels()['channels']:
-			urls.append(channel['url'])
-	
-	for url in urls:
-		feed = feedparser.parse(url)
-		for item in feed.entries:
-			items['items'].append({'title': item.title, 
-							       'description' : item.description,
-							       'link' : item.link})
-			#i = Item.create(title = item.title, description = item.description, url = item.link)
-	return items
+	c = Channel.get(Channel.url == url)
+	c.update_feed()
+	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()], 'url' : url}
 
 @route('/api/channels')
 def channels():
