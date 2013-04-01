@@ -1,6 +1,6 @@
 import lxml.html, feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install, hook, request, response
+from bottle import route, run, view, install, hook, request, response, abort
 from peewee import *
 from time import mktime
 
@@ -69,7 +69,7 @@ def patch_item(id):
 	item.save()	
 	return response.status
 
-@route('/channels/<url:re:.+>/items')
+@route('/channels/<url:re:https?://.+>/items')
 def channel_items(url = ''):
 	try: 
 		c = Channel.get(Channel.url == url)
@@ -88,7 +88,7 @@ def post_channel():
 	pass
 
 @route("/")
-@route("/<url:re:.+>")
+@route("/<url:re:https?://.+>")
 @view('index')
 def index(url = ''):	
 	index = dict((channel_items(url) if url else items()),**channels())
