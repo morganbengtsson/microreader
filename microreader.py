@@ -57,7 +57,11 @@ def items():
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
-	item = Item.get(Item.id == id)
+	try: 
+		item = Item.get(Item.id == id)
+	except Item.DoesNotExist:
+		abort(404)
+		
 	valid_keys = ['read', 'starred']
 	for key in set(valid_keys).intersection(set(request.json.keys())):
 		setattr(item, key, request.json[key])
@@ -87,7 +91,7 @@ def post_channel():
 @route("/<url:re:.+>")
 @view('index')
 def index(url = ''):	
-	index = dict(channel_items(url),**channels())
+	index = dict((channel_items(url) if url else items()),**channels())
 	index['url'] = url
 	return index	
 	
