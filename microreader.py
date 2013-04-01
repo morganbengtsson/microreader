@@ -10,7 +10,7 @@ class CustomJsonEncoder(json.JSONEncoder):
             return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
         return json.JSONEncoder.default(self, obj)
 
-install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
+#install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
 db = peewee.SqliteDatabase('database.db')
 
@@ -60,7 +60,7 @@ def patch_item(id):
 	item = Item.get(Item.id == id)
 	valid_keys = ['read', 'starred']
 	for key in set(valid_keys).intersection(set(request.json.keys())):
-		setattr(item, key, key)
+		setattr(item, key, request.json[key])
 		
 	item.save()	
 	return response.status

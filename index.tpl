@@ -11,8 +11,8 @@
 			margin: 0;
 			padding: 0;
 			position: relative;
-		}
-		a
+		}		
+		nav a
 		{
 			text-decoration: none;
 			color: #003C7D;
@@ -31,8 +31,7 @@
 			width: 140px;
 			height: 100%;
 			background-color: e1e1e1;
-			position: absolute;
-			border-right: 1px solid grey;
+			position: absolute;			
 		}
 		#right
 		{
@@ -55,9 +54,15 @@
             white-space: nowrap;            
                        
 		}
-		.item_wrap
+		.accordion a
 		{
-			border-bottom: 1px solid grey; 
+			text-decoration: none;
+			color: black;	
+		}
+		.item_wrap
+		{		
+				
+			border-bottom: 1px solid #e1e1e1; 
 		}
 		.title 
 		{				
@@ -80,6 +85,11 @@
         {
 			color: #820000;
 		}
+		.read
+		{
+			background-color: #F0F0F0;
+			color: grey;
+		}
 				
 	</style>
 </head>
@@ -88,21 +98,25 @@
 		<ul>
 		%for channel in channels:		
 			<li class = "channel">				
-				<a href = "/{{channel['url']}}" class = "{{"active" if (channel['url'] == url) else ""}}">
+				<a href = "/{{channel['url']}}">
 					<h2 class="title">{{channel['title']}}</h2> 
 				</a>			
 			</li>		
 		%end
-		</li>	
+		</ul>	
 	</nav>
 	<dl class = "accordion" id = "right">
 		%for item in items:
 		<div class = "item_wrap">
-		<dt class = "item">				
-			<h2 class="title">{{item['title']}}</title> -
+		<dt class = "item {{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">
+			<a class = "mark_star" href ="/api/items/{{item['id']}}">&#9733;</a>
+			<a class = "mark_read" href ="/api/items/{{item['id']}}">			    
+				<h2 class="title">{{item['title']}}</h2>
+				 -
 			<span class="summary">
 				{{item['description']}}
-			</span>			
+			</span>	
+			</a>		
 		</dt>
 		<dd class = "description">
 			{{item['description']}}
@@ -110,21 +124,40 @@
 		</div>
 		%end	
 	</dl>
-</body>
 
+</body>
 </html>
-<script>
-	$('.accordion dd').hide();
-	$('.accordion dt').click(function(){
-    cur_stus = $(this).attr('stus');
-    if(cur_stus != "active")
-    {
-        $('.accordion dd').hide();
-        $('.accordion dt').attr('stus', '');
-        
-        $(this).next().show();
-        $(this).attr('stus', 'active');
-    }
-    return false;
+<script>	
+	$(document).ready(function()
+	{
+		$('.accordion dd').hide();	
+		$('.item a').click(function(event)
+		{
+			var item = $(this).parent();
+			event.preventDefault();			
+			$.ajax({
+				url: $(this).attr('href'),				
+				data: '{"read" : true}',				
+				contentType: "application/json; charset=utf-8",
+				type: 'PATCH',
+				success: function()
+				{					
+					item.addClass('read');
+				}							
+			});
+		});
+		$('.accordion dt').click(function(event)
+		{			
+						
+			cur_stus = $(this).attr('stus');
+			if(cur_stus != "active")
+			{
+				$('.accordion dd').hide();
+				$('.accordion dt').attr('stus', '');			
+				$(this).next().show();
+				$(this).attr('stus', 'active');
+			}
+		return false;
+		});
 	});
 </script>
