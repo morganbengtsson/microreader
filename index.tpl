@@ -109,8 +109,8 @@
 		%for item in items:
 		<div class = "item_wrap">
 		<dt class = "item {{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">
-			<a class = "mark_star" href ="/api/items/{{item['id']}}">&#9733;</a>
-			<a class = "mark_read" href ="/api/items/{{item['id']}}">			    
+			<a class = "mark_star" href ="/items/{{item['id']}}">&#9733;</a>
+			<a class = "mark_read" href ="/items/{{item['id']}}">			    
 				<h2 class="title">{{item['title']}}</h2>
 				 -
 			<span class="summary">

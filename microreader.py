@@ -10,7 +10,7 @@ class CustomJsonEncoder(json.JSONEncoder):
             return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
         return json.JSONEncoder.default(self, obj)
 
-#install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
+install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
 db = peewee.SqliteDatabase('database.db')
 
@@ -51,11 +51,11 @@ def db_connect():
 def db_disconnect():
 	db.close()
 
-@route('/api/items')
+@route('/items')
 def items():
 	return {'items' : [i for i in Item.select().dicts()]}
 
-@route('/api/items/:id', method = 'PATCH')
+@route('/items/:id', method = 'PATCH')
 def patch_item(id):
 	item = Item.get(Item.id == id)
 	valid_keys = ['read', 'starred']
@@ -65,7 +65,7 @@ def patch_item(id):
 	item.save()	
 	return response.status
 
-@route('/api/channels/<url:re:.+>/items')
+@route('/channels/<url:re:.+>/items')
 def channel_items(url = ''):
 	try: 
 		c = Channel.get(Channel.url == url)
@@ -75,16 +75,16 @@ def channel_items(url = ''):
 	
 	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()]}
 
-@route('/api/channels')
+@route('/channels')
 def channels():
 	return {'channels' : [c for c in Channel.select().dicts()]}
 	
-@route('/api/channels', method = 'POST')
+@route('/channels', method = 'POST')
 def post_channel():
 	pass
 
-@route("/channels")
-@route("/channels/<url:re:.+>")
+@route("/")
+@route("/<url:re:.+>")
 @view('index')
 def index(url = ''):	
 	index = dict(channel_items(url),**channels())
