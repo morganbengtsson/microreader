@@ -70,8 +70,8 @@ def channel_items(url = ''):
 	try: 
 		c = Channel.get(Channel.url == url)
 		c.update_feed()
-	except Item.DoesNotExist:
-		c = Null
+	except Channel.DoesNotExist:
+		c = None
 	
 	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()]}
 
