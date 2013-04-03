@@ -31,7 +31,7 @@
 			width: 140px;
 			height: 100%;
 			background-color: e1e1e1;
-			position: absolute;			
+			position: absolute;						
 		}
 		#right
 		{
@@ -96,11 +96,24 @@
 			font-weight: normal;
 			
 		}
+		form
+		{
+			background-color: #fff;
+			border: 1px solid grey;
+			padding: 1em;
+			position: absolute;
+			z-index:10;
+		}
 				
 	</style>
 </head>
 <body>
 	<nav id = "left">
+		<button id ="add">Subscribe</button>
+		<form style ="display:none">
+			Url: <input type="text" name = "url"/>
+			<input type="submit" value = "Add">
+		</form>
 		<ul>
 		%for channel in channels:		
 			<li class = "channel">				
@@ -165,5 +178,15 @@
 			}
 		return false;
 		});
+		$('#add').click(function(){$('form').toggle()});
+		$(document).mouseup(function (e)
+{
+		var container = $("form");
+
+		if (container.has(e.target).length === 0)
+		{
+			container.hide();
+		}
+});
 	});
 </script>
