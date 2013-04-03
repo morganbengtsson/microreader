@@ -1,4 +1,4 @@
-import lxml.html, feedparser, peewee, json, datetime, bottle
+import feedparser, peewee, json, datetime, bottle
 import xml.etree.ElementTree as ET
 from bottle import route, run, view, install, hook, request, response, abort
 from peewee import *
@@ -19,33 +19,42 @@ class BaseModel(Model):
 		database = db
 
 class Channel(BaseModel):
-	title = CharField()
+	title = TextField()
 	updated = DateTimeField(default = datetime.datetime(1900, 1, 1))
-	url = CharField(unique = True)
+	url = TextField(unique = True)
 	
 	def update_feed(self):
 			feed = feedparser.parse(self.url)
 			feed_updated = datetime.datetime.fromtimestamp(mktime(feed.updated_parsed))
-			if (feed_updated> self.updated):
-				for item in feed.entries:
-					try: Item.get(Item.url == item.link)
-					except Item.DoesNotExist:
-						Item.create(title = item.title, description = item.description, url = item.link, channel = self)
+			#if (feed_updated> self.updated):
+			print (feed.entries[0])
+			for item in feed.entries:
+				if not Item.select().where(Item.url == item.link).exists():
+					Item.create(title = item.title, description = item.description, url = item.link, channel = self)
+				else:
+					Item.update(title = item.title, description = item.description, url = item.link, channel = self).where(Item.url == item.link).execute()
+					
 				
-				self.updated = feed_updated
-				self.save()
+			self.updated = feed_updated
+			self.save()
 	
 class Item(BaseModel):
-	title = CharField()
-	description = CharField()
-	url = CharField(unique = True)
+	title = TextField()
+	description = TextField()
+	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
+	
+Channel.create_table(fail_silently = True)
+if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
+	Channel.create(title = "Slashdot", url = "http://rss.slashdot.org/Slashdot/slashdot")
+Item.create_table(fail_silently = True)
 
 @hook('before_request')
 def db_connect():
 	db.connect()
+	
 
 @hook('after_request')
 def db_disconnect():
