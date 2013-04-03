@@ -114,7 +114,7 @@
 				<h2 class="title">{{item['title']}}</h2>
 				 -
 			<span class="summary">
-				{{item['description']}}
+				{{!item['description']}}
 			</span>	
 			</a>		
 		</dt>
