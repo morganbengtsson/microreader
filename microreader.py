@@ -1,4 +1,5 @@
 import feedparser, peewee, json, datetime, bottle
+import lxml.html
 import xml.etree.ElementTree as ET
 from bottle import route, run, view, install, hook, request, response, abort
 from peewee import *
@@ -30,9 +31,9 @@ class Channel(BaseModel):
 			print (feed.entries[0])
 			for item in feed.entries:
 				if not Item.select().where(Item.url == item.link).exists():
-					Item.create(title = item.title, description = item.description, url = item.link, channel = self)
+					Item.create(title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
 				else:
-					Item.update(title = item.title, description = item.description, url = item.link, channel = self).where(Item.url == item.link).execute()
+					Item.update(title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self).where(Item.url == item.link).execute()
 					
 				
 			self.updated = feed_updated
