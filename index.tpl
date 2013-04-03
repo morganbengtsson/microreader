@@ -87,8 +87,14 @@
 		}
 		.read
 		{
+			font-weight: normal;
 			background-color: #F0F0F0;
 			color: grey;
+		}
+		.read h2
+		{
+			font-weight: normal;
+			
 		}
 				
 	</style>
