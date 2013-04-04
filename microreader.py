@@ -1,7 +1,7 @@
 import feedparser, peewee, json, datetime, bottle
 import lxml.html
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install, hook, request, response, abort
+from bottle import route, run, view, install, hook, request, response, abort, static_file
 from peewee import *
 from time import mktime
 
@@ -106,4 +106,8 @@ def index(url = ''):
 	return index	
 	
 
-run(host='localhost', port=3000, reloader = True, debug = True)
+@route('/static/<filename>')
+def server_static(filename):
+    return static_file(filename, root='static/')
+
+run(host='localhost', port=3001, reloader = True, debug = True)

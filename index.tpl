@@ -104,6 +104,7 @@
 			position: absolute;
 			z-index:10;
 		}
+		img{height: 16px;}
 				
 	</style>
 </head>
@@ -127,15 +128,17 @@
 	<dl class = "accordion" id = "right">
 		%for item in items:
 		<div class = "item_wrap">
-		<dt class = "item {{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">
-			<a class = "mark_star" href ="/items/{{item['id']}}">&#9733;</a>
+		<dt class = "item {{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
+			<a class = "mark_star" href ="/items/{{item['id']}}"><img src = "/static/star.png"></a>
 			<a class = "mark_read" href ="/items/{{item['id']}}">			    
 				<h2 class="title">{{item['title']}}</h2>
 				 -
 			<span class="summary">
 				{{!item['description']}}
-			</span>	
-			</a>		
+			</span>
+			<img src = "/static/external.png">	
+			</a>
+					
 		</dt>
 		<dd class = "description">
 			{{item['description']}}
