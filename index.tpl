@@ -24,18 +24,19 @@
 		%for item in items:
 		<div class = "item">			
 		<dt class = "{{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
+			<div class = "side">12:00 <a class = "link" href = "{{item['url']}}"></a></div>
 			<div class = "header">
-			<a class = "mark_favorite" href ="/items/{{item['id']}}">bla</a>
-			<a class = "link" href = "{{item['url']}}">bla</a>			
-			<a class = "mark_read" href ="/items/{{item['id']}}">			    
-				<h2 class="title">{{item['title']}}</h2>
-				 -
-			<span class="summary">
-				{{!item['description']}}
-			</span>
-			</a>
+				<a class = "mark_favorite" href ="/items/{{item['id']}}">bla</a>
+							
+				<a class = "mark_read" href ="/items/{{item['id']}}">		    
+					<h2 class="title">{{item['title']}}</h2>
+					 -
+				<span class="summary">
+					{{!item['description']}}
+				</span>
+				</a>
 			</div>
-			<div class = "side">blabla</div>			
+						
 		</dt>
 		<dd class = "description">
 			{{item['description']}}
@@ -46,7 +47,8 @@
 
 </body>
 </html>
-<script>	
+<script>
+		
 	$(document).ready(function()
 	{
 		$('.accordion dd').hide();	

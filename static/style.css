@@ -4,8 +4,7 @@
 			font-size: 0.8em;
 			line-height: 1.2em;
 			margin: 0;
-			padding: 0;
-			overflow: hidden;					
+			padding: 0;								
 		}
 		nav
 		{
@@ -28,34 +27,38 @@
 		}    
         dt
        { 
-			overflow: hidden;			
-			cursor: hand; cursor: pointer; 
+			overflow: hidden;					
+			cursor: hand; cursor: pointer;
+			padding-top: 0.4em;
+			padding-bottom: 0.5em;
+			padding-left: 0.5em;
+			padding-right: 0.5em; 
 		}
 		#content
-		{			
-			width: auto;
+		{
 			overflow: hidden;	
+		}
+		.item
+		{
 		}
 		.channel, .item .header
 		{			
 			margin-top: 0;
 			margin-bottom: 0;
-			padding-top: 0.4em;
-			padding-bottom: 0.5em;
-			padding-left: 0.5em;
+			
 		}		
 		.item .header
-		{			
+		{		
+			float: none;
 			overflow: hidden;			
             text-overflow: ellipsis;
            white-space: nowrap;
-           width: auto;
-           margin-right: -100px;
+           width: auto;           
 		}
 		.item .side
-		{			
-			width: 40px;
-			float: right;			
+		{	
+			float: right;
+			font-weight: bold;					
 		}
 		.accordion a
 		{
@@ -107,5 +110,5 @@
 			position: absolute;
 			z-index:10;
 		}		
-		.link { width: 16px;content: url('/static/external.png');}		
+		.link { width: 16px; content: url('/static/external.png');}		
 		.mark_favorite { width: 16px; content: url('/static/star.png');}
