@@ -1,118 +1,13 @@
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-
-	<style type="text/css">
-		body
-		{
-			font-family: sans-serif;
-			font-size: 0.8em;
-			line-height: 1.2em;
-			margin: 0;
-			padding: 0;
-			position: relative;
-		}		
-		nav a
-		{
-			text-decoration: none;
-			color: #003C7D;
-		}
-		dl, dt, dd, ul, li
-        {
-			margin: 0;
-			padding: 0;
-		}    
-        dt
-        { 
-			cursor: hand; cursor: pointer; 
-		}        
-		#left
-		{
-			width: 140px;
-			height: 100%;
-			background-color: e1e1e1;
-			position: absolute;						
-		}
-		#right
-		{
-			margin-left: 140px;
-			max-width: 600px;
-			position: relative;		
-		}
-		.channel, .item
-		{
-			margin-top: 0;
-            margin-bottom: 0;
-            padding-top: 0.4em;
-            padding-bottom: 0.5em;
-            padding-left: 0.5em;
-		}
-		.item
-		{
-			overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;            
-                       
-		}
-		.accordion a
-		{
-			text-decoration: none;
-			color: black;	
-		}
-		.item_wrap
-		{		
-				
-			border-bottom: 1px solid #e1e1e1; 
-		}
-		.title 
-		{				
-			font-size: 100%;
-			margin: 0;
-			padding: 0;
-			font-weight: bold;
-			display: inline;						
-		}
-		.summary
-		{			
-			color: grey;
-			display: inline;
-        } 
-        .description
-        {
-			padding: 0.8em;			
-		}
-        .active
-        {
-			color: #820000;
-		}
-		.read
-		{
-			font-weight: normal;
-			background-color: #F0F0F0;
-			color: grey;
-		}
-		.read h2
-		{
-			font-weight: normal;
-			
-		}
-		form
-		{
-			background-color: #fff;
-			border: 1px solid grey;
-			padding: 1em;
-			position: absolute;
-			z-index:10;
-		}
-		img{height: 16px;}
-				
-	</style>
+	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
 <body>
-	<nav id = "left">
+	<nav>
 		<button id ="add">Subscribe</button>
 		<form style ="display:none">
-			Url: <input type="text" name = "url"/>
+			Url: <input type="text" name = "url" class="url"/>
 			<input type="submit" value = "Add">
 		</form>
 		<ul>
@@ -125,25 +20,27 @@
 		%end
 		</ul>	
 	</nav>
-	<dl class = "accordion" id = "right">
+	<dl class = "accordion" id = "content">
 		%for item in items:
-		<div class = "item_wrap">
-		<dt class = "item {{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
-			<a class = "mark_star" href ="/items/{{item['id']}}"><img src = "/static/star.png"></a>
+		<div class = "item">			
+		<dt class = "{{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
+			<div class = "header">
+			<a class = "mark_favorite" href ="/items/{{item['id']}}">bla</a>
+			<a class = "link" href = "{{item['url']}}">bla</a>			
 			<a class = "mark_read" href ="/items/{{item['id']}}">			    
 				<h2 class="title">{{item['title']}}</h2>
 				 -
 			<span class="summary">
 				{{!item['description']}}
 			</span>
-			<img src = "/static/external.png">	
 			</a>
-					
+			</div>
+			<div class = "side">blabla</div>			
 		</dt>
 		<dd class = "description">
 			{{item['description']}}
 		</dd>
-		</div>
+		</div>		
 		%end	
 	</dl>
 
@@ -153,7 +50,7 @@
 	$(document).ready(function()
 	{
 		$('.accordion dd').hide();	
-		$('.item a').click(function(event)
+		$('.item .mark_read').click(function(event)
 		{
 			var item = $(this).parent();
 			event.preventDefault();			
@@ -169,8 +66,7 @@
 			});
 		});
 		$('.accordion dt').click(function(event)
-		{			
-						
+		{									
 			cur_stus = $(this).attr('stus');
 			if(cur_stus != "active")
 			{
