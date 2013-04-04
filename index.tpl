@@ -54,7 +54,7 @@
 		$('.accordion dd').hide();	
 		$('.item .mark_read').click(function(event)
 		{
-			var item = $(this).parent();
+			var item = $(this).parent().parent();
 			event.preventDefault();			
 			$.ajax({
 				url: $(this).attr('href'),				
@@ -67,15 +67,15 @@
 				}							
 			});
 		});
-		$('.accordion dt').click(function(event)
+		$('.mark_read').click(function(event)
 		{									
-			cur_stus = $(this).attr('stus');
+			cur_stus = $(this).parent().parent().attr('stus');
 			if(cur_stus != "active")
 			{
 				$('.accordion dd').hide();
 				$('.accordion dt').attr('stus', '');			
-				$(this).next().show();
-				$(this).attr('stus', 'active');
+				$(this).parent().parent().next().show();
+				$(this).parent().parent().attr('stus', 'active');
 			}
 		return false;
 		});
