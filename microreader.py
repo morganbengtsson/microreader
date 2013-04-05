@@ -1,7 +1,7 @@
 import feedparser, peewee, json, datetime, bottle
 import lxml.html
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install, hook, request, response, abort, static_file
+from bottle import route, run, view, install, hook, request, response, abort as bottle_abort, static_file, HTTPError
 from peewee import *
 from time import mktime
 
