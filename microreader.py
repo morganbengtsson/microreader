@@ -38,6 +38,12 @@ class Channel(BaseModel):
 				
 			self.updated = feed_updated
 			self.save()
+	@classmethod
+	def create_from_url(cls, url):
+		feed = feedparser.parse(url)
+		if not feed.feed.title : raise self.FeedDoesNotExist
+		cls.create(url = url, title = feed.feed.title)
+	class FeedDoesNotExist(Exception) : pass
 	
 class Item(BaseModel):
 	title = TextField()
@@ -94,9 +100,13 @@ def channels():
 	return {'channels' : [c for c in Channel.select().dicts()]}
 	
 @route('/channels', method = 'POST')
-def post_channel():
-	pass
-
+def post_channel():			
+	try:
+		print (request.json)
+		Channel.create_from_url(request.json['url'])
+	except Channel.FeedDoesNotExist:
+		abort(404, "Feed does not exist")
+		
 @route("/")
 @route("/<url:re:https?://.+>")
 @view('index')
