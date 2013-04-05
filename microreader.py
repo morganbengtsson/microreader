@@ -40,7 +40,7 @@ class Channel(BaseModel):
 	@classmethod
 	def create_from_url(cls, url):
 		feed = feedparser.parse(url)
-		if not feed.feed.title : raise self.FeedDoesNotExist
+		if not 'title' in feed.feed : raise cls.FeedDoesNotExist
 		cls.create(url = url, title = feed.feed.title)
 	class FeedDoesNotExist(Exception) : pass
 	
@@ -104,8 +104,8 @@ def post_channel():
 		print (request.json)
 		Channel.create_from_url(request.json['url'])
 	except Channel.FeedDoesNotExist:
-		abort(404, "Feed does not exist")
-		
+		abort(404, "Error")
+			
 @route("/")
 @route("/<url:re:https?://.+>")
 @view('index')
