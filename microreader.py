@@ -28,7 +28,6 @@ class Channel(BaseModel):
 			feed = feedparser.parse(self.url)
 			feed_updated = datetime.datetime.fromtimestamp(mktime(feed.updated_parsed))
 			#if (feed_updated> self.updated):
-			print (feed.entries[0])
 			for item in feed.entries:
 				if not Item.select().where(Item.url == item.link).exists():
 					Item.create(title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
