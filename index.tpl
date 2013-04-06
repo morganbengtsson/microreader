@@ -4,7 +4,7 @@
 	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
 <body>
-	<nav>
+	<nav class="navigation">
 		<button id ="add">Subscribe</button>
 		<form style ="display:none">
 			Url: <input type="text" name = "url" class="url"/>
@@ -26,9 +26,9 @@
 		<dt class = "{{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
 			<div class = "side">12:00 <a class = "link" href = "{{item['url']}}"></a></div>
 			<div class = "header">
-				<a class = "mark_favorite" href ="/items/{{item['id']}}">bla</a>
-							
-				<a class = "mark_read" href ="/items/{{item['id']}}">		    
+				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}">bla</a>
+			   
+				<a class = "mark-read" href ="/items/{{item['id']}}">		    
 					<h2 class="title">{{item['title']}}</h2>
 					 -
 				<span class="summary">
@@ -52,7 +52,7 @@
 	$(document).ready(function()
 	{
 		$('.accordion dd').hide();	
-		$('.item .mark_read').click(function(event)
+		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
 			event.preventDefault();			
@@ -67,7 +67,26 @@
 				}							
 			});
 		});
-		$('.mark_read').click(function(event)
+		
+		$('.mark-star').click(function(event)
+		{
+			event.preventDefault();
+			var element = $(this);	
+			$.ajax({
+				url: '/items/' + element.data('id'),				
+				data: '{"starred" : ' + !element.data('checked') + '}',				
+				contentType: "application/json; charset=utf-8",
+				type: 'PATCH',
+				success: function()
+				{
+					element.toggleClass('starred');
+					element.toggleClass('un-starred');
+					element.data('checked', !element.data('checked'));	
+				}							
+			});			
+		});
+		
+		$('.mark-read').click(function(event)
 		{									
 			cur_stus = $(this).parent().parent().attr('stus');
 			if(cur_stus != "active")
@@ -77,7 +96,7 @@
 				$(this).parent().parent().next().show();
 				$(this).parent().parent().attr('stus', 'active');
 			}
-		return false;
+			return false;
 		});
 		$('#add').click(function(){$('form').toggle()});
 		$(document).mouseup(function (e)
