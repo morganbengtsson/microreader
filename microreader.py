@@ -59,8 +59,7 @@ Item.create_table(fail_silently = True)
 
 @hook('before_request')
 def db_connect():
-	db.connect()
-	
+	db.connect()	
 
 @hook('after_request')
 def db_disconnect():
@@ -104,7 +103,7 @@ def post_channel():
 		print (request.json)
 		Channel.create_from_url(request.json['url'])
 	except Channel.FeedDoesNotExist:
-		abort(404, "Error")
+		abort(404, "Feed does not exist")
 			
 @route("/")
 @route("/<url:re:https?://.+>")
@@ -114,7 +113,6 @@ def index(url = ''):
 	index['url'] = url
 	return index	
 	
-
 @route('/static/<filename>')
 def server_static(filename):
     return static_file(filename, root='static/')

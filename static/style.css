@@ -1,32 +1,21 @@
-		body
-		{
+		body {
 			font-family: sans-serif;
 			font-size: 0.8em;
 			line-height: 1.2em;
 			margin: 0;
 			padding: 0;								
 		}
-		nav
-		{
-			max-width: 200px;
-			height: 100%;
-			padding: 10px;	
-			float: left;
-			border-right: 1px solid #e1e1e1;						
-		}		
-		nav a
-		{
+			
+		nav a {
 			text-decoration: none;
 			color: #003C7D;
 		}		
-		dl, dt, dd, ul, li
-       {
+		dl, dt, dd, ul, li {
           list-style: none;
 			margin: 0;
 			padding: 0;
 		}    
-        dt
-       { 
+        dt { 
 			overflow: hidden;					
 			cursor: hand; cursor: pointer;
 			padding-top: 0.4em;
@@ -34,21 +23,22 @@
 			padding-left: 0.5em;
 			padding-right: 0.5em; 
 		}
-		#content
-		{
+		#content {
 			overflow: hidden;	
 		}
-		.item
-		{
-		}
-		.channel, .item .header
-		{			
+		.navigation {
+			max-width: 200px;
+			height: 100%;
+			padding: 10px;	
+			float: left;
+			border-right: 1px solid #e1e1e1;						
+		}			
+		.channel, .item .header {			
 			margin-top: 0;
 			margin-bottom: 0;
 			
 		}		
-		.item .header
-		{		
+		.item .header {		
 			float: none;
 			overflow: hidden;			
             text-overflow: ellipsis;
@@ -110,5 +100,11 @@
 			position: absolute;
 			z-index:10;
 		}		
-		.link { width: 16px; content: url('/static/external.png');}		
-		.mark_favorite { width: 16px; content: url('/static/star.png');}
+		.link { width: 16px; content: url('/static/external.png');}
+		
+		.starred{
+			width: 16px; content: url('/static/star.png');
+		}	
+		.un-starred { 
+			width: 16px; content: url('/static/star-empty.png');
+		}
