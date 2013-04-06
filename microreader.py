@@ -23,6 +23,7 @@ class Channel(BaseModel):
 	title = TextField()
 	updated = DateTimeField(default = datetime.datetime(1900, 1, 1))
 	url = TextField(unique = True)
+	icon = TextField(default = '/static/feed.png')
 	
 	def update_feed(self):
 			feed = feedparser.parse(self.url)
@@ -54,7 +55,7 @@ class Item(BaseModel):
 	
 Channel.create_table(fail_silently = True)
 if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
-	Channel.create(title = "Slashdot", url = "http://rss.slashdot.org/Slashdot/slashdot")
+	Channel.create_from_url("http://rss.slashdot.org/Slashdot/slashdot")
 Item.create_table(fail_silently = True)
 
 @hook('before_request')

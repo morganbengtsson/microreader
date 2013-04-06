@@ -24,23 +24,40 @@
 		}
 		
 		#subscribe	{
-			margin-bottom: 1em;	
+			font-size: 1em;
+			margin-bottom: 1em;				
+		}
+		#all
+		{
+			background-image: url('/static/box.png');
+			background-repeat: no-repeat;
+			padding-left: 20px;		}
+			
+		#starred
+		{
+			background-image: url('/static/star.png');
+			background-repeat: no-repeat;
+			padding-left: 20px;
 		}		
 		.navigation {	
 			padding: 1em;
 			max-width: 200px;					
 			float: left;								
-		}
+		}		
 		.nav-link
-		{			
+		{
+			background-image: url('/static/feed.png');
+			background-repeat: no-repeat;
+			padding-left: 20px;
 			margin-bottom: 0.5em;	
 			display: block;
 			text-decoration: none;
 			color: #003C7D;
 		}
-		.nav-link
-		{	
-			
+		.actions
+		{
+			border-bottom: 1px solid #e1e1e1;
+			margin-bottom: 1em;
 		}
 		.active
        {
@@ -72,7 +89,7 @@
 		.item
 		{		
 			border-bottom: 1px solid #e1e1e1;
-			 
+			border-left: 1px solid #e1e1e1;			 
 		}
 		.title 
 		{				
@@ -89,8 +106,8 @@
         } 
         .description
        {
-			padding: 0.8em;
-						
+			padding: 1em;
+			display: block;						
 		}
 		.read
 		{
@@ -111,11 +128,19 @@
 			position: absolute;
 			z-index:10;
 		}		
-		.link { width: 16px; content: url('/static/external.png');}
+		.link { 
+			padding-left: 20px;
+			background-image: url('/static/external.png');
+			background-repeat: no-repeat;
+		}
 		
 		.starred{
-			width: 16px; content: url('/static/star.png');
+			padding-left: 20px;
+			background-image: url('/static/star.png');
+			background-repeat: no-repeat;			
 		}	
-		.un-starred { 
-			width: 16px; content: url('/static/star-empty.png');
+		.un-starred {
+			padding-left: 20px;		 
+			background-image: url('/static/star-empty.png');
+			background-repeat: no-repeat;
 		}

@@ -10,11 +10,13 @@
 		Url: <input type="text" name = "url" class="url"/>
 		<input type="submit" value = "Add">
 		</form>
-		<ul>
-			<li><a href = "/all" class = "nav-link {{"active" if ("all" == url) else ""}}">All</a></li>
-			<li><a href = "/starred" class = "nav-link {{"active" if ("starred" == url) else ""}}">Starred</a></li>
+		<ul class = "actions">
+			<li><a href = "/all" id ="all" class = "nav-link {{"active" if ("all" == url) else ""}}">All</a></li>
+			<li><a href = "/starred" id = "starred" class = "nav-link {{"active" if ("starred" == url) else ""}}">Starred</a></li>
+		</ul>
+		<ul class = "channels">			
 		%for channel in channels:		
-			<li>				
+			<li>			
 				<a href = "/{{channel['url']}}" class = "nav-link {{"active" if (channel['url'] == url) else ""}}">
 					{{channel['title']}}
 				</a>			
@@ -28,7 +30,7 @@
 		<dt class = "{{"read" if item['read'] else ""}}">			
 			<div class = "side">12:00 <a class = "link" href = "{{item['url']}}"></a></div>
 			<div class = "header">
-				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}">bla</a>
+				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}"></a>
 			   
 				<a class = "mark-read" href ="/items/{{item['id']}}">		    
 					<h2 class="title">{{item['title']}}</h2>
