@@ -1,7 +1,8 @@
-import feedparser, peewee, json, datetime, bottle
+import feedparser, json, bottle
 import lxml.html
 import xml.etree.ElementTree as ET
-from bottle import route, run, view, install, hook, request, response, abort as bottle_abort, static_file, HTTPError
+from datetime import datetime
+from bottle import route, run, view, install, redirect, hook, request, response, abort, static_file
 from peewee import *
 from time import mktime
 
@@ -13,14 +14,7 @@ class CustomJsonEncoder(json.JSONEncoder):
 
 install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
-db = peewee.SqliteDatabase('database.db')
-
-class CustomDateTimeField(DateTimeField):
-	def __str__(self):
-		return "blabla"
-	def __unicode(self):
-		return "blaballl"
-
+db = SqliteDatabase('database.db')
 
 class BaseModel(Model):
 	class Meta:
@@ -28,21 +22,23 @@ class BaseModel(Model):
 
 class Channel(BaseModel):
 	title = TextField()
-	updated = DateTimeField(default = datetime.datetime(1900, 1, 1))
+	updated = DateTimeField(default = datetime(1900, 1, 1))
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
 	
 	def update_feed(self):
 			feed = feedparser.parse(self.url)
-			feed_updated = datetime.datetime.fromtimestamp(mktime(feed.updated_parsed))
-			#if (feed_updated> self.updated):
-			for item in feed.entries:
-				item_updated = datetime.datetime.fromtimestamp(mktime(item.updated_parsed))
-				if not Item.select().where(Item.url == item.link).exists():
-					Item.create(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
-				else:
-					Item.update(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self).where(Item.url == item.link).execute()
-					
+			feed_updated = datetime(3000, 1, 1)
+			if 'updated_parsed' in feed : 
+				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed or 0))
+			if (feed_updated > self.updated):
+				for item in feed.entries:
+					item_updated = datetime.fromtimestamp(mktime(item.updated_parsed))
+					if not Item.select().where(Item.url == item.link).exists():
+						Item.create(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
+					else:
+						Item.update(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self).where(Item.url == item.link).execute()
+						
 				
 			self.updated = feed_updated
 			self.save()
@@ -59,8 +55,8 @@ class Item(BaseModel):
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
-	channel = peewee.ForeignKeyField(Channel)
-	updated = CustomDateTimeField()
+	channel = ForeignKeyField(Channel)
+	updated = DateTimeField()
 	
 Channel.create_table(fail_silently = True)
 if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
@@ -77,7 +73,7 @@ def db_disconnect():
 
 @route('/items')
 def items():
-	return {'items' : [i for i in Item.select().dicts()]}
+	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).dicts()]}
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
@@ -99,9 +95,9 @@ def channel_items(url = ''):
 		c = Channel.get(Channel.url == url)
 		c.update_feed()
 	except Channel.DoesNotExist:
-		c = None
+		c = Channel.create_from_url(url)
 	
-	return {'items' : [i for i in Item.select().where(Item.channel == c).dicts()]}
+	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c).dicts()]}
 
 @route('/channels')
 def channels():
@@ -109,11 +105,11 @@ def channels():
 	
 @route('/channels', method = 'POST')
 def post_channel():			
-	try:
-		print (request.json)
-		Channel.create_from_url(request.json['url'])
-	except Channel.FeedDoesNotExist:
+	try:		
+		Channel.create_from_url(request.forms.get('url'))
+	except:
 		abort(404, "Feed does not exist")
+	redirect('/' + request.forms.get('url'))
 			
 @route("/")
 @route("/<url:re:https?://.+>")
@@ -123,13 +119,6 @@ def index(url = ''):
 	index['url'] = url
 	return index	
 	
-@route('/all')
-@view('index')
-def all():
-	all_items = dict({"items" : [i for i in Item.select().dicts()]},**channels())
-	all_items['url'] = 'all'
-	return all_items
-
 @route('/starred')
 @view('index')
 def starred():
