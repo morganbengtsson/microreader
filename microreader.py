@@ -15,6 +15,13 @@ install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncod
 
 db = peewee.SqliteDatabase('database.db')
 
+class CustomDateTimeField(DateTimeField):
+	def __str__(self):
+		return "blabla"
+	def __unicode(self):
+		return "blaballl"
+
+
 class BaseModel(Model):
 	class Meta:
 		database = db
@@ -30,10 +37,11 @@ class Channel(BaseModel):
 			feed_updated = datetime.datetime.fromtimestamp(mktime(feed.updated_parsed))
 			#if (feed_updated> self.updated):
 			for item in feed.entries:
+				item_updated = datetime.datetime.fromtimestamp(mktime(item.updated_parsed))
 				if not Item.select().where(Item.url == item.link).exists():
-					Item.create(title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
+					Item.create(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self)
 				else:
-					Item.update(title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self).where(Item.url == item.link).execute()
+					Item.update(updated = item_updated, title = item.title, description = lxml.html.fromstring(item.description).text_content(), url = item.link, channel = self).where(Item.url == item.link).execute()
 					
 				
 			self.updated = feed_updated
@@ -52,6 +60,7 @@ class Item(BaseModel):
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
 	channel = peewee.ForeignKeyField(Channel)
+	updated = CustomDateTimeField()
 	
 Channel.create_table(fail_silently = True)
 if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
