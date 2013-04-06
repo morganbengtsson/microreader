@@ -113,6 +113,20 @@ def index(url = ''):
 	index['url'] = url
 	return index	
 	
+@route('/all')
+@view('index')
+def all():
+	all_items = dict({"items" : [i for i in Item.select().dicts()]},**channels())
+	all_items['url'] = 'all'
+	return all_items
+
+@route('/starred')
+@view('index')
+def starred():
+	starred = dict({"items" : [i for i in Item.select().where(Item.starred == True).dicts()]},**channels())
+	starred['url'] = 'starred'
+	return starred
+	
 @route('/static/<filename>')
 def server_static(filename):
     return static_file(filename, root='static/')
