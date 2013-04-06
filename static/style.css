@@ -19,6 +19,11 @@
 			padding-left: 0.5em;
 			padding-right: 0.5em; 
 		}
+		a
+		{
+			text-decoration: none;
+			color: #003C7D;
+		}
 		#content {
 			overflow: hidden;	
 		}
@@ -38,21 +43,28 @@
 			background-image: url('/static/star.png');
 			background-repeat: no-repeat;
 			padding-left: 20px;
+		}
+		.delete
+		{
+			background-image: url('/static/cross-small.png');
+			background-repeat: no-repeat;
+			padding-left: 20px;
 		}		
 		.navigation {	
 			padding: 1em;
 			max-width: 200px;					
 			float: left;								
+		}
+		.navigation li
+		{
+			display: block;
+			margin-bottom: 0.5em;
 		}		
 		.nav-link
 		{
 			background-image: url('/static/feed.png');
 			background-repeat: no-repeat;
-			padding-left: 20px;
-			margin-bottom: 0.5em;	
-			display: block;
-			text-decoration: none;
-			color: #003C7D;
+			padding-left: 20px;			
 		}
 		.actions
 		{

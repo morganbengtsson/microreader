@@ -20,7 +20,8 @@
 			<li>			
 				<a href = "/{{channel['url']}}" class = "nav-link {{"active" if (channel['url'] == url) else ""}}">
 					{{channel['title']}}
-				</a>			
+				</a>
+				<a href = "/channels/{{channel['url']}}" class = "delete">&nbsp;</a>					
 			</li>		
 		%end
 		</ul>	
@@ -36,7 +37,7 @@
 			</div>
 			
 			<div class = "header">
-				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}"></a>
+				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}">&nbsp;</a>
 			   
 				<a class = "mark-read" href ="/items/{{item['id']}}">		    
 					<h2 class="title">{{item['title']}}</h2>
@@ -92,6 +93,21 @@
 					element.toggleClass('starred');
 					element.toggleClass('un-starred');
 					element.data('checked', !element.data('checked'));	
+				}							
+			});			
+		});
+		
+		$('.delete').click(function(event)
+		{
+			event.preventDefault();
+			var element = $(this);	
+			$.ajax({
+				url: element.attr('href'),
+				contentType: "application/json; charset=utf-8",
+				type: 'DELETE',
+				success: function()
+				{
+					element.parent().remove();	
 				}							
 			});			
 		});
