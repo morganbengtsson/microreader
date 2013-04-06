@@ -55,7 +55,7 @@ class Item(BaseModel):
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
-	channel = ForeignKeyField(Channel)
+	channel = ForeignKeyField(Channel, cascade = True)
 	updated = DateTimeField()
 	
 Channel.create_table(fail_silently = True)
@@ -88,6 +88,10 @@ def patch_item(id):
 		
 	item.save()	
 	return response.status
+
+@route('/channels/<url:re:https?://.+>', method = 'DELETE')
+def delete_channel(url):
+	Channel.delete().where(Channel.url == url).execute()	
 
 @route('/channels/<url:re:https?://.+>/items')
 def channel_items(url = ''):
@@ -130,4 +134,4 @@ def starred():
 def server_static(filename):
     return static_file(filename, root='static/')
 
-run(host='localhost', port=3000, reloader = True, debug = True)
+run(host='localhost', port=3002, reloader = True, debug = True)
