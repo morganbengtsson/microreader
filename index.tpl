@@ -4,17 +4,19 @@
 	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
 <body>
-	<nav class="navigation">
-		<button id ="add">Subscribe</button>
+	<nav class="navigation">		
+		<button href ="#" id ="subscribe">Subscribe</button>
 		<form style ="display:none">
-			Url: <input type="text" name = "url" class="url"/>
-			<input type="submit" value = "Add">
+		Url: <input type="text" name = "url" class="url"/>
+		<input type="submit" value = "Add">
 		</form>
 		<ul>
+			<li><a href = "/all" class = "nav-link {{"active" if ("all" == url) else ""}}">All</a></li>
+			<li><a href = "/starred" class = "nav-link {{"active" if ("starred" == url) else ""}}">Starred</a></li>
 		%for channel in channels:		
-			<li class = "channel">				
-				<a href = "/{{channel['url']}}">
-					<h2 class="title">{{channel['title']}}</h2> 
+			<li>				
+				<a href = "/{{channel['url']}}" class = "nav-link {{"active" if (channel['url'] == url) else ""}}">
+					{{channel['title']}}
 				</a>			
 			</li>		
 		%end
@@ -23,7 +25,7 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
-		<dt class = "{{"active" if (channel['url'] == url) else ""}} {{"read" if item['read'] else ""}}">			
+		<dt class = "{{"read" if item['read'] else ""}}">			
 			<div class = "side">12:00 <a class = "link" href = "{{item['url']}}"></a></div>
 			<div class = "header">
 				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}">bla</a>
@@ -98,7 +100,7 @@
 			}
 			return false;
 		});
-		$('#add').click(function(){$('form').toggle()});
+		$('#subscribe').click(function(){$('form').toggle()});
 		$(document).mouseup(function (e)
 {
 		var container = $("form");

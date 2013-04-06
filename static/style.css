@@ -4,12 +4,8 @@
 			line-height: 1.2em;
 			margin: 0;
 			padding: 0;								
-		}
-			
-		nav a {
-			text-decoration: none;
-			color: #003C7D;
-		}		
+		}			
+				
 		dl, dt, dd, ul, li {
           list-style: none;
 			margin: 0;
@@ -26,14 +22,32 @@
 		#content {
 			overflow: hidden;	
 		}
-		.navigation {
-			max-width: 200px;
-			height: 100%;
-			padding: 10px;	
-			float: left;
-			border-right: 1px solid #e1e1e1;						
+		
+		#subscribe	{
+			margin-bottom: 1em;	
+		}		
+		.navigation {	
+			padding: 1em;
+			max-width: 200px;					
+			float: left;								
+		}
+		.nav-link
+		{			
+			margin-bottom: 0.5em;	
+			display: block;
+			text-decoration: none;
+			color: #003C7D;
+		}
+		.nav-link
+		{	
+			
+		}
+		.active
+       {
+			font-weight: bold;
+			color: #000;
 		}			
-		.channel, .item .header {			
+		.item .header {			
 			margin-top: 0;
 			margin-bottom: 0;
 			
@@ -74,12 +88,9 @@
 			display: inline;
         } 
         .description
-        {
-			padding: 0.8em;			
-		}
-        .active
-        {
-			color: #820000;
+       {
+			padding: 0.8em;
+						
 		}
 		.read
 		{
