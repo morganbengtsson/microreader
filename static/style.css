@@ -63,6 +63,10 @@
        {
 			font-weight: bold;
 			color: #000;
+		}
+		.url
+		{
+			width: 100%;
 		}			
 		.item .header {			
 			margin-top: 0;
@@ -78,8 +82,8 @@
 		}
 		.item .side
 		{	
-			float: right;
-			font-weight: bold;					
+			float: right;			
+			direction:rtl;							
 		}
 		.accordion a
 		{
@@ -129,7 +133,9 @@
 			z-index:10;
 		}		
 		.link { 
+			position:relative;
 			padding-left: 20px;
+			margin-left: 0.5em;			
 			background-image: url('/static/external.png');
 			background-repeat: no-repeat;
 		}

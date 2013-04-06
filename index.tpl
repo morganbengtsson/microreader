@@ -7,12 +7,12 @@
 <body>
 	<nav class="navigation">		
 		<button href ="#" id ="subscribe">Subscribe</button>
-		<form style ="display:none">
+		<form style ="display:none" action="/channels" method="POST">
 		Url: <input type="text" name = "url" class="url"/>
 		<input type="submit" value = "Add">
 		</form>
 		<ul class = "actions">
-			<li><a href = "/all" id ="all" class = "nav-link {{"active" if ("all" == url) else ""}}">All</a></li>
+			<li><a href = "/" id ="all" class = "nav-link {{"active" if ("" == url) else ""}}">All</a></li>
 			<li><a href = "/starred" id = "starred" class = "nav-link {{"active" if ("starred" == url) else ""}}">Starred</a></li>
 		</ul>
 		<ul class = "channels">			
@@ -30,7 +30,10 @@
 		<div class = "item">			
 		<dt class = "{{"read" if item['read'] else ""}}">
 		    			
-			<div class = "side">{{item['updated'].strftime('%H:%M') if (item['updated'].date() == datetime.today().date()) else item['updated'].strftime('%Y-%m-%d')}} <a class = "link" href = "{{item['url']}}"></a></div>
+			<div class = "side"> 
+				<a class = "link" href = "{{item['url']}}" target="_new">&nbsp;</a>
+				{{item['updated'].strftime('%H:%M') if (item['updated'].date() == datetime.today().date()) else item['updated'].strftime('%Y-%m-%d')}}
+			</div>
 			
 			<div class = "header">
 				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}"></a>
