@@ -30,7 +30,7 @@ class Channel(BaseModel):
 			feed = feedparser.parse(self.url)
 			feed_updated = datetime(3000, 1, 1)
 			if 'updated_parsed' in feed : 
-				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed or 0))
+				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed))
 			if (feed_updated > self.updated):
 				for item in feed.entries:
 					item_updated = datetime.fromtimestamp(mktime(item.updated_parsed))
@@ -60,7 +60,7 @@ class Item(BaseModel):
 	
 Channel.create_table(fail_silently = True)
 if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
-	Channel.create_from_url("http://rss.slashdot.org/Slashdot/slashdot")
+	Channel.create("http://rss.slashdot.org/Slashdot/slashdot")
 Item.create_table(fail_silently = True)
 
 @hook('before_request')
@@ -91,7 +91,10 @@ def patch_item(id):
 
 @route('/channels/<url:re:https?://.+>', method = 'DELETE')
 def delete_channel(url):
-	Channel.delete().where(Channel.url == url).execute()	
+	try:
+		Channel.delete().where(Channel.url == url).execute()
+	except Channel.DoesNotExist:
+		abort(404)	
 
 @route('/channels/<url:re:https?://.+>/items')
 def channel_items(url = ''):
@@ -134,4 +137,4 @@ def starred():
 def server_static(filename):
     return static_file(filename, root='static/')
 
-run(host='localhost', port=3002, reloader = True, debug = True)
+run(host='localhost', port=3000, reloader = True, debug = True)
