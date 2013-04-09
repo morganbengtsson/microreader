@@ -60,7 +60,7 @@ class Item(BaseModel):
 	
 Channel.create_table(fail_silently = True)
 if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
-	Channel.create("http://rss.slashdot.org/Slashdot/slashdot")
+	Channel.create_from_url("http://rss.slashdot.org/Slashdot/slashdot")
 Item.create_table(fail_silently = True)
 
 @hook('before_request')
@@ -92,7 +92,7 @@ def patch_item(id):
 @route('/channels/<url:re:https?://.+>', method = 'DELETE')
 def delete_channel(url):
 	try:
-		Channel.delete().where(Channel.url == url).execute()
+		Channel.delete().where(Channel.id == 1).execute()
 	except Channel.DoesNotExist:
 		abort(404)	
 
