@@ -92,7 +92,9 @@ def patch_item(id):
 @route('/channels/<url:re:https?://.+>', method = 'DELETE')
 def delete_channel(url):
 	try:
-		Channel.delete().where(Channel.id == 1).execute()
+		c = Channel.get(Channel.url == url)
+		Item.delete().where(Item.channel == c).execute()	
+		Channel.delete().where(Channel.url == url).execute()			
 	except Channel.DoesNotExist:
 		abort(404)	
 
