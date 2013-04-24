@@ -75,11 +75,13 @@ def db_disconnect():
 def items():
 	since_id = request.query.since_id
 	max_id = request.query.max_id
-	count = request.query.count
+	count = int(request.query.count)
+	page = int(request.query.page)
 
 	query = Item.select()
 	if since_id: query = query.where(Item.id >= since_id)
-	if max_id: query = query.where(Item.id <= max_id)	
+	if max_id: query = query.where(Item.id <= max_id)
+	if page: query = query.paginate(page, count)	
 	
 	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count).dicts()]}
 
