@@ -8,7 +8,7 @@ from time import mktime
 
 class CustomJsonEncoder(json.JSONEncoder):
     def default(self, obj):
-        if isinstance(obj, datetime.datetime):
+        if isinstance(obj, datetime):
             return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
         return json.JSONEncoder.default(self, obj)
 
@@ -73,7 +73,9 @@ def db_disconnect():
 
 @route('/items')
 def items():
-	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).dicts()]}
+	from_id = request.query.from_id or 0
+	count = request.query.count or None
+	return {'items' : [i for i in Item.select().where((Item.id > from_id)).order_by(Item.updated.desc()).limit(count).dicts()]}
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
