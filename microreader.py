@@ -73,9 +73,15 @@ def db_disconnect():
 
 @route('/items')
 def items():
-	from_id = request.query.from_id or 0
-	count = request.query.count or None
-	return {'items' : [i for i in Item.select().where((Item.id > from_id)).order_by(Item.updated.desc()).limit(count).dicts()]}
+	since_id = request.query.since_id
+	max_id = request.query.max_id
+	count = request.query.count
+
+	query = Item.select()
+	if since_id: query = query.where(Item.id >= since_id)
+	if max_id: query = query.where(Item.id <= max_id)	
+	
+	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count).dicts()]}
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
