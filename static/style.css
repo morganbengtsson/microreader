@@ -3,7 +3,8 @@
 			font-size: 0.8em;
 			line-height: 1.2em;
 			margin: 0;
-			padding: 0;								
+			padding: 0;
+			max-width: 800px;								
 		}			
 				
 		dl, dt, dd, ul, li {
@@ -106,6 +107,7 @@
 		{		
 			border-bottom: 1px solid #e1e1e1;
 			border-left: 1px solid #e1e1e1;			 
+			border-right: 1px solid #e1e1e1;			 
 		}
 		.title 
 		{				
@@ -121,8 +123,9 @@
 			display: inline;
         } 
         .description
-       {
-			padding: 1em;
+       {			
+			line-height: 1.5;			
+			padding: 1em 1.5em 2em 1.5em;
 			display: block;						
 		}
 		.read
