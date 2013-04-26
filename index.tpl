@@ -82,7 +82,7 @@
 		$('.mark-star').click(function(event)
 		{
 			event.preventDefault();
-			var element = $(this);	
+			var element = $(this);			
 			$.ajax({
 				url: '/items/' + element.data('id'),				
 				data: '{"starred" : ' + !element.data('checked') + '}',				
@@ -101,15 +101,17 @@
 		{
 			event.preventDefault();
 			var element = $(this);	
-			$.ajax({
-				url: element.attr('href'),
-				contentType: "application/json; charset=utf-8",
-				type: 'DELETE',
-				success: function()
-				{
-					element.parent().remove();	
-				}							
-			});			
+			if (confirm('Are you sure?')){
+				$.ajax({
+					url: element.attr('href'),
+					contentType: "application/json; charset=utf-8",
+					type: 'DELETE',
+					success: function()
+					{
+						element.parent().remove();	
+					}							
+				});
+			}			
 		});
 		
 		$('.mark-read').click(function(event)

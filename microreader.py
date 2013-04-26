@@ -34,9 +34,9 @@ class Channel(BaseModel):
 			if (feed_updated > self.updated):
 				for item in feed.entries:
 					item_updated = datetime.fromtimestamp(mktime(item.updated_parsed))
-					if not Item.select().where(Item.url == item.link).exists():
-						d = item.content[0].value if hasattr(item, 'content') else item.description
-						d = lxml.html.fromstring(d).text_content()
+					d = item.content[0].value if hasattr(item, 'content') else item.description
+					d = lxml.html.fromstring(d).text_content()
+					if not Item.select().where(Item.url == item.link).exists():						
 						Item.create(updated = item_updated, title = item.title, description = d, url = item.link, channel = self)
 					else:
 						Item.update(updated = item_updated, title = item.title, description = d, url = item.link, channel = self).where(Item.url == item.link).execute()
