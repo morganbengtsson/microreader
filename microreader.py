@@ -37,9 +37,9 @@ class Channel(BaseModel):
 					d = item.content[0].value if hasattr(item, 'content') else item.description
 					d = lxml.html.fromstring(d).text_content()
 					if not Item.select().where(Item.url == item.link).exists():						
-						Item.create(updated = item_updated, title = item.title, description = d, url = item.link, channel = self)
+						Item.create(updated = item_updated, title = item.title, description = d, author = item.author, url = item.link, channel = self)
 					else:
-						Item.update(updated = item_updated, title = item.title, description = d, url = item.link, channel = self).where(Item.url == item.link).execute()
+						Item.update(updated = item_updated, title = item.title, description = d, author = item.author, url = item.link, channel = self).where(Item.url == item.link).execute()
 						
 				
 			self.updated = feed_updated
@@ -54,6 +54,7 @@ class Channel(BaseModel):
 class Item(BaseModel):
 	title = TextField()
 	description = TextField()
+	author = TextField()
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)

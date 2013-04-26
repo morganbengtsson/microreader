@@ -49,8 +49,9 @@
 			</div>
 						
 		</dt>
-		<dd class = "description">
+		<dd class = "description">			
 			{{item['description']}}
+			<span class = "author">by {{item['author']}}</span>
 		</dd>
 		</div>		
 		%end	
