@@ -32,6 +32,7 @@ class Channel(BaseModel):
 			if 'updated_parsed' in feed : 
 				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed))
 			if (feed_updated > self.updated):
+				print (feed.entries[0])
 				for item in feed.entries:
 					item_updated = datetime.fromtimestamp(mktime(item.updated_parsed))
 					if not Item.select().where(Item.url == item.link).exists():
@@ -75,8 +76,8 @@ def db_disconnect():
 def items():
 	since_id = request.query.since_id
 	max_id = request.query.max_id
-	count = int(request.query.count)
-	page = int(request.query.page)
+	count = int(request.query.count) if request.query.count else None
+	page = int(request.query.page) if request.query.page else None
 
 	query = Item.select()
 	if since_id: query = query.where(Item.id >= since_id)
