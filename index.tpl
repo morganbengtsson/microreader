@@ -18,9 +18,9 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/{{channel.url}}" class = "nav-link {{"active" if (channel.url == url) else ""}}">
+				<a href = "/{{channel.url}}" class = "nav-link {{"active" if (channel.url == url) else ""}} {{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">
 					{{channel.title}}
-					({{channel.new_count()}})
+					<span class="unread-count">({{channel.unread_count()}})</span>
 				</a>
 				<a href = "/channels/{{channel.url}}" class = "delete">&nbsp;</a>					
 			</li>		
