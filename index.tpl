@@ -18,10 +18,11 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/{{channel['url']}}" class = "nav-link {{"active" if (channel['url'] == url) else ""}}">
-					{{channel['title']}}
+				<a href = "/{{channel.url}}" class = "nav-link {{"active" if (channel.url == url) else ""}}">
+					{{channel.title}}
+					({{channel.new_count()}})
 				</a>
-				<a href = "/channels/{{channel['url']}}" class = "delete">&nbsp;</a>					
+				<a href = "/channels/{{channel.url}}" class = "delete">&nbsp;</a>					
 			</li>		
 		%end
 		</ul>	
