@@ -30,29 +30,29 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
-		<dt class = "{{"read" if item['read'] else ""}}">
+		<dt class = "{{"read" if item.read else ""}}">
 		    			
 			<div class = "side"> 
-				<a class = "link" href = "{{item['url']}}" target="_new">&nbsp;</a>
-				{{item['updated'].strftime('%H:%M') if (item['updated'].date() == datetime.today().date()) else item['updated'].strftime('%Y-%m-%d')}}
+				<a class = "link" href = "{{item.url}}" target="_new">&nbsp;</a>
+				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%Y-%m-%d')}}
 			</div>
 			
 			<div class = "header">
-				<a class = "mark-star {{"starred" if item['starred'] else "un-starred"}}" data-id = "{{item['id']}}" data-checked = "{{"true" if item['starred'] else "false"}}"  href ="/items/{{item['id']}}">&nbsp;</a>
+				<a class = "mark-star {{"starred" if item.starred else "un-starred"}}" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">&nbsp;</a>
 			   
-				<a class = "mark-read" href ="/items/{{item['id']}}">		    
-					<h2 class="title">{{item['title']}}</h2>
+				<a class = "mark-read" href ="/items/{{item.id}}">		    
+					<h2 class="title">{{item.title}}</h2>
 					 -
 				<span class="summary">
-					{{!item['description']}}
+					{{!item.description}}
 				</span>
 				</a>
 			</div>
 						
 		</dt>
 		<dd class = "description">			
-			{{item['description']}}
-			<span class = "author">by {{item['author']}}</span>
+			{{item.description}}
+			<span class = "author">by {{item.author}}</span>
 		</dd>
 		</div>		
 		%end	

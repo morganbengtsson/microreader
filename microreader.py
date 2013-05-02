@@ -10,6 +10,8 @@ class CustomJsonEncoder(json.JSONEncoder):
     def default(self, obj):
         if isinstance(obj, datetime):
             return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
+        if isinstance(obj, Model):			
+			return obj.__dict__['_data']
         return json.JSONEncoder.default(self, obj)
 
 install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
@@ -94,7 +96,7 @@ def items():
 	if max_id: query = query.where(Item.id <= max_id)
 	if page: query = query.paginate(page, count)	
 	
-	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count).dicts()]}
+	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
@@ -127,7 +129,7 @@ def channel_items(url = ''):
 	except Channel.DoesNotExist:
 		c = Channel.create_from_url(url)
 	
-	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c).dicts()]}
+	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c)]}
 
 @route('/channels')
 def channels():
@@ -152,7 +154,7 @@ def index(url = ''):
 @route('/starred')
 @view('index')
 def starred():
-	starred = dict({"items" : [i for i in Item.select().where(Item.starred == True).dicts()]},**channels())
+	starred = dict({"items" : [i for i in Item.select().where(Item.starred == True)]},**channels())
 	starred['url'] = 'starred'
 	return starred
 	
