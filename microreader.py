@@ -26,6 +26,14 @@ class Channel(BaseModel):
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
 	
+	def new_count(self):
+		feed = feedparser.parse(self.url)
+		count = 0
+		for item in feed.entries:
+			if not Item.select().where(Item.url == item.link).exists():
+				count += 1
+		return count
+	
 	def update_feed(self):
 			feed = feedparser.parse(self.url)
 			feed_updated = datetime(3000, 1, 1)
