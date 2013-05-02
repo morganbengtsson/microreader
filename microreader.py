@@ -28,6 +28,8 @@ class Channel(BaseModel):
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
 	
+	def unread_count(self):
+		return Item.select().where(Item.channel == self & Item.read == False).count()
 	def new_count(self):
 		feed = feedparser.parse(self.url)
 		count = 0

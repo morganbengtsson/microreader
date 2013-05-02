@@ -171,3 +171,119 @@
 			background-image: url('/static/star-empty.png');
 			background-repeat: no-repeat;
 		}
+		.unread-count
+		{
+			color: grey;
+			font-size: 0.8em;
+		}
+		.new-count-0 {
+			/*padding-left: 20px;		 
+			background-image: url('/static/notification-counter-0.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-1 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-01.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-2 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-02.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-3 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-03.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-4 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-04.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-5 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-05.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-6 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-06.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-7 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-07.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-8 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-08.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-9 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-09.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-10 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-10.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-11 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-11.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-12 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-12.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-13 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-13.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-14 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-14.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-15 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-15.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-16 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-16.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-17 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-17.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-18 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-18.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-19 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-19.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-20 {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-20.png');
+			background-repeat: no-repeat;*/
+		}
+		.new-count-max {
+			padding-left: 20px;		 
+			background-image: url('/static/notification-counter-20-plus.png');
+			background-repeat: no-repeat;*/
+		}
+		
