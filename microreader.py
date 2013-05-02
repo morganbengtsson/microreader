@@ -131,7 +131,7 @@ def channel_items(url = ''):
 
 @route('/channels')
 def channels():
-	return {'channels' : [c for c in Channel.select().dicts()]}
+	return {'channels' : [c for c in Channel.select()]}
 	
 @route('/channels', method = 'POST')
 def post_channel():			
