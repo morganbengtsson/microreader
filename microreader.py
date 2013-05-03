@@ -7,12 +7,12 @@ from peewee import *
 from time import mktime
 
 class CustomJsonEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, datetime):
-            return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
-        if isinstance(obj, Model):			
+	def default(self, obj):
+		if isinstance(obj, datetime):
+			return str(obj.strftime("%Y-%m-%d %H:%M:%S"))
+		if isinstance(obj, Model):			
 			return obj.__dict__['_data']
-        return json.JSONEncoder.default(self, obj)
+		return json.JSONEncoder.default(self, obj)
 
 install(bottle.JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
@@ -162,6 +162,6 @@ def starred():
 	
 @route('/static/<filename>')
 def server_static(filename):
-    return static_file(filename, root='static/')
+	return static_file(filename, root='static/')
 
 run(host='localhost', port=3000, reloader = True, debug = True)
