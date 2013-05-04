@@ -31,7 +31,7 @@
 		
 		#subscribe	{
 			font-size: 1em;
-			margin-bottom: 1em;				
+			margin-bottom: 1em;							
 		}
 		#all
 		{
@@ -56,11 +56,24 @@
 			background-image: url('/static/cross-small.png');
 			background-repeat: no-repeat;
 			padding-left: 20px;
-		}		
-		.navigation {	
+		}
+		.navigation
+		{
 			padding: 1em;
-			max-width: 200px;					
-			float: left;								
+			
+		}
+		@media only screen and (max-width: 480px)
+		{
+			.navigation
+			{
+				float: none;
+				border-bottom: 1px solid #e1e1e1;				
+			}
+		}
+		@media only screen and (min-width: 480px) {		
+			.navigation {								
+				float: left;								
+			}
 		}
 		.navigation li
 		{
