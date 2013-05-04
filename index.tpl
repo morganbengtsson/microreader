@@ -34,7 +34,7 @@
 		    			
 			<div class = "side"> 
 				<a class = "link" href = "{{item.url}}" target="_new">&nbsp;</a>
-				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%Y-%m-%d')}}
+				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
 			</div>
 			
 			<div class = "header">

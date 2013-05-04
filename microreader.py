@@ -164,4 +164,4 @@ def starred():
 def server_static(filename):
 	return static_file(filename, root='static/')
 
-run(host='0.0.0.0', port=3001, reloader = True, debug = True)
+run(host='0.0.0.0', port=3000, reloader = True, debug = True)
