@@ -71,7 +71,7 @@
 		{
 			background-image: url('/static/feed.png');
 			background-repeat: no-repeat;
-			padding-left: 20px;			
+			padding-left: 20px;					
 		}
 		.actions
 		{
@@ -79,8 +79,7 @@
 			margin-bottom: 1em;
 		}
 		.active
-       {
-			font-weight: bold;
+       {			
 			color: #000;
 		}
 		.url
