@@ -164,6 +164,10 @@ def starred():
 def server_static(filename):
 	return static_file(filename, root='static/')
 
+@route('/favicon.ico')
+def get_favicon():
+    return server_static('favicon.ico')
+
 try:
 	from mod_wsgi import version
 except:
