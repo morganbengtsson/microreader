@@ -18,9 +18,9 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/{{channel.url}}" class = "nav-link {{"active" if (channel.url == url) else ""}} {{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">
+				<a href = "/{{channel.url}}" class = "nav-link {{"active" if (channel.url == url) else ""}}">
 					{{channel.title}}
-					<span class="unread-count">({{channel.unread_count()}})</span>
+					<span class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</span>
 				</a>
 				<a href = "/channels/{{channel.url}}" class = "delete">&nbsp;</a>					
 			</li>		
@@ -34,7 +34,7 @@
 		    			
 			<div class = "side"> 
 				<a class = "link" href = "{{item.url}}" target="_new">&nbsp;</a>
-				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%Y-%m-%d')}}
+				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
 			</div>
 			
 			<div class = "header">
