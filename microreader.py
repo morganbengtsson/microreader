@@ -164,4 +164,7 @@ def starred():
 def server_static(filename):
 	return static_file(filename, root='static/')
 
-run(host='localhost', port=3000, reloader = True, debug = True)
+try:
+	from mod_wsgi import version
+except:
+	run(host='0.0.0.0', port=3000, reloader = True, debug = True)
