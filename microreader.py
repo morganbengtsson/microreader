@@ -114,19 +114,19 @@ def patch_item(id):
 	item.save()	
 	return response.status
 
-@route('/channels/<url:re:https?://.+>', method = 'DELETE')
-def delete_channel(url):
+@route('/channels/:id', method = 'DELETE')
+def delete_channel(id):
 	try:
-		c = Channel.get(Channel.url == url)
+		c = Channel.get(Channel.id == id)
 		Item.delete().where(Item.channel == c).execute()	
 		Channel.delete().where(Channel.url == url).execute()			
 	except Channel.DoesNotExist:
 		abort(404)	
 
-@route('/channels/<url:re:https?://.+>/items')
-def channel_items(url = ''):
+@route('/channels/:id/items')
+def channel_items(id = ''):
 	try: 
-		c = Channel.get(Channel.url == url)
+		c = Channel.get(Channel.id == id)
 		c.update_feed()
 	except Channel.DoesNotExist:
 		c = Channel.create_from_url(url)
@@ -146,11 +146,11 @@ def post_channel():
 	redirect('/' + request.forms.get('url'))
 			
 @route("/")
-@route("/<url:re:https?://.+>")
+@route("/:id")
 @view('index')
-def index(url = ''):	
-	index = dict((channel_items(url) if url else items()),**channels())
-	index['url'] = url
+def index(id = ''):	
+	index = dict((channel_items(id) if id else items()),**channels())
+	index['url'] = id
 	return index	
 	
 @route('/starred')
