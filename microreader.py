@@ -30,12 +30,17 @@ class Channel(BaseModel):
 	
 	def unread_count(self):
 		return Item.select().where(Item.channel == self & Item.read == False).count()
+	
 	def new_count(self):
 		feed = feedparser.parse(self.url)
 		count = 0
-		for item in feed.entries:
-			if not Item.select().where(Item.url == item.link).exists():
+		try:
+			item = Item.get(Item.channel == self)
+			for e in feed.entries:
+				if e.link == item.url : break
 				count += 1
+		except Item.DoesNotExist:
+			count = len(feed.entries)	
 		return count
 	
 	def update_feed(self):
