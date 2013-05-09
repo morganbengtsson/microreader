@@ -27,7 +27,7 @@ class Channel(BaseModel):
 	updated = DateTimeField(default = datetime(1900, 1, 1))
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
-	
+			
 	def unread_count(self):
 		return Item.select().where(Item.channel == self & Item.read == False).count()
 	
@@ -49,14 +49,16 @@ class Channel(BaseModel):
 			if 'updated_parsed' in feed : 
 				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed))
 			if (feed_updated > self.updated):
-				for item in feed.entries:
-					item_updated = datetime.fromtimestamp(mktime(item.updated_parsed))
-					d = item.content[0].value if hasattr(item, 'content') else item.description
-					d = lxml.html.fromstring(d).text_content()
-					if not Item.select().where(Item.url == item.link).exists():						
-						Item.create(updated = item_updated, title = item.title, description = d, author = item.author, url = item.link, channel = self)
+				for entry in feed.entries:
+					updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
+					description = entry.content[0].value if hasattr(entry, 'content') else entry.description
+					description = lxml.html.fromstring(description).text_content()
+					
+					parameters = dict(updated = updated, title = entry.title, description = description, author = entry.author, url = entry.link, channel = self)
+					if not Item.select().where(Item.url == entry.link).exists():						
+						Item.create(**parameters)
 					else:
-						Item.update(updated = item_updated, title = item.title, description = d, author = item.author, url = item.link, channel = self).where(Item.url == item.link).execute()
+						Item.update(**parameters).where(Item.url == entry.link).execute()
 						
 				
 			self.updated = feed_updated
