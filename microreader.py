@@ -1,6 +1,7 @@
 import feedparser, json, bottle
 import lxml.html
 import xml.etree.ElementTree as ET
+import mimerender
 from datetime import datetime
 from bottle import route, run, view, install, redirect, hook, request, response, abort, static_file
 from peewee import *
