@@ -1,10 +1,11 @@
 %from datetime import datetime
+%from bottle import request
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
-<body>
+<body>	
 	<nav class="navigation">		
 		<button href ="#" id ="subscribe">Subscribe</button>
 		<form style ="display:none" action="/channels" method="POST">
@@ -12,13 +13,13 @@
 		<input type="submit" value = "Add">
 		</form>
 		<ul class = "actions">
-			<li><a href = "/" id ="all" class = "nav-link {{"active" if ("" == url) else ""}}">All</a></li>
-			<li><a href = "/starred" id = "starred" class = "nav-link {{"active" if ("starred" == url) else ""}}">Starred</a></li>
+			<li><a href = "/" id ="all" class = "nav-link {{"active" if ("/" == request.path) else ""}}">All</a></li>
+			<li><a href = "/starred" id = "starred" class = "nav-link {{"active" if ("/starred" == request.path) else ""}}">Starred</a></li>
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/{{channel.id}}" class = "nav-link {{"active" if (str(channel.id) == url) else ""}}">
+				<a href = "/{{channel.id}}" class = "nav-link {{"active" if ("/" + str(channel.id) == request.path) else ""}}">
 					{{channel.title}}
 					<span class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</span>
 				</a>

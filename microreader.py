@@ -1,8 +1,6 @@
 import feedparser, json
-import lxml.html
-import xml.etree.ElementTree as ET
 from bottle import route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
-from time import mktime
+
 import mimerender
 
 from models import *
@@ -18,6 +16,7 @@ class CustomJsonEncoder(json.JSONEncoder):
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
 mimerender = mimerender.BottleMimeRender()
+render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
 
 @hook('before_request')
 def db_connect():
@@ -27,13 +26,16 @@ def db_connect():
 def db_disconnect():
 	db.close()
 
-@route('/test')
-def test():
-	return { 'message': 'test'}
+@route("/")
+@route("/:id")
+@mimerender(default = 'html', json = render_json, html = lambda **args: template('index', args) )
+def index(id = ''):	
+	index = dict((channel_items(id) if id else items()),**channels())
+	return index
 
 @route('/items')
 def items():
-	since_id = request.query.since_id
+	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
 	page = int(request.query.page) if request.query.page else None
@@ -91,22 +93,11 @@ def post_channel():
 	redirect('/' + request.forms.get('url'))
 			
 
-render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
-render_html = lambda **args: template('index', args) 
-
-@route("/")
-@route("/:id")
-@mimerender(default = 'html', json = render_json, html = render_html)
-def index(id = ''):	
-	index = dict((channel_items(id) if id else items()),**channels())
-	index['url'] = id
-	return index
 	
 @route('/starred')
 @view('index')
 def starred():
 	starred = dict({"items" : [i for i in Item.select().where(Item.starred == True)]},**channels())
-	starred['url'] = 'starred'
 	return starred
 	
 @route('/static/<filename>')
