@@ -1,6 +1,9 @@
 import feedparser
 from peewee import *
+import lxml.html
+import xml.etree.ElementTree as ET
 from datetime import datetime
+from time import mktime
 
 db = SqliteDatabase('database.db')
 
