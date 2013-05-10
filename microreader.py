@@ -33,8 +33,9 @@ def index(id = ''):
 	index = dict((channel_items(id) if id else items()),**channels())
 	return index
 
-@route('/items')
-def items():
+@route('/items', method = 'GET')
+@mimerender(default = 'json', json = render_json)
+def get_items():
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
@@ -47,9 +48,14 @@ def items():
 	
 	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
 
-@route('/items/:id' method = 'GET')
-def item():
-	return Item.get(Item.id == id)
+@route('/items/:id', method = 'GET')
+@mimerender(default = 'json', json = render_json)
+def get_item(id):
+	try: 
+		item = Item.get(Item.id == id)
+	except Item.DoesNotExist:
+		abort(404)
+	return {'item' : item}
 
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
