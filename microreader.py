@@ -28,14 +28,63 @@ def disconnect():
 
 @route("/")
 @route("/:id")
-@mimerender(default = 'html', json = render_json, html = lambda **args: template('index', args) )
-def index(id = ''):	
-	index = dict((channel_items(id) if id else items()),**channels())
-	return index
+@mimerender(default = 'html', json = render_json, html = lambda **args : template('index', args))
+def index(id = ''):
+	return dict({'channels' : Channel.select()}, **{'items' : Item.select().where(Item.channel == id) if id else Item.select()})
 
+@route('/channels', method = 'GET')
+def channels():
+	return {'channels' : Channel.select()}
+
+@route('/channels/:id/delete', method = 'GET')
+def delete_channel_confirm(id):
+	try: 
+		channel = Channel.get(Channel.id == id)
+	except Channel.DoesNotExist:
+		abort(404)
+	return template('Delete channel {{channel.title}}?<form action="/channels/{{channel.id}}/delete" method="post"><input type ="submit" name="Ok"></form>', channel = channel)
+
+@route('/channels/:id', method = 'DELETE')
+@route('/channels/:id/delete', method = 'POST')
+def delete_channel(id):
+	try:
+		c = Channel.get(Channel.id == id)
+		Item.delete().where(Item.channel == c).execute()	
+		Channel.delete().where(Channel.id == id).execute()			
+	except Channel.DoesNotExist:
+		abort(404, 'Channel does not exist')
+	redirect('/')	
+	
+@route('/channels', method = 'POST')
+def post_channel():			
+	try:		
+		Channel.create_from_url(request.forms.get('url'))
+	except:
+		abort(404, "Feed does not exist")
+	redirect('/' + request.forms.get('url'))
+
+@route('/channels/:id/items')
+@mimerender(default = 'json', json = render_json)
+def channel_items(id = ''):
+	try: 
+		c = Channel.get(Channel.id == id)		
+	except Channel.DoesNotExist:
+		abort(404, 'Channel does not exist')
+	
+	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c)]}
+
+@route('/channels/:id/update', method='GET')
+def update_channel(id):
+	try: 
+		c = Channel.get(Channel.id == id)
+		c.update_feed()		
+	except Channel.DoesNotExist:
+		abort(404)
+	return response.status
+		
 @route('/items', method = 'GET')
 @mimerender(default = 'json', json = render_json)
-def get_items():
+def items():
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
@@ -50,7 +99,7 @@ def get_items():
 
 @route('/items/:id', method = 'GET')
 @mimerender(default = 'json', json = render_json)
-def get_item(id):
+def item(id):
 	try: 
 		item = Item.get(Item.id == id)
 	except Item.DoesNotExist:
@@ -70,44 +119,11 @@ def patch_item(id):
 		
 	item.save()	
 	return response.status
-
-@route('/channels/:id', method = 'DELETE')
-def delete_channel(id):
-	try:
-		c = Channel.get(Channel.id == id)
-		Item.delete().where(Item.channel == c).execute()	
-		Channel.delete().where(Channel.url == url).execute()			
-	except Channel.DoesNotExist:
-		abort(404)	
-
-@route('/channels/:id/items')
-def channel_items(id = ''):
-	try: 
-		c = Channel.get(Channel.id == id)
-		c.update_feed()
-	except Channel.DoesNotExist:
-		c = Channel.create_from_url(url)
-	
-	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c)]}
-
-@route('/channels')
-def channels():
-	return {'channels' : [c for c in Channel.select()]}
-	
-@route('/channels', method = 'POST')
-def post_channel():			
-	try:		
-		Channel.create_from_url(request.forms.get('url'))
-	except:
-		abort(404, "Feed does not exist")
-	redirect('/' + request.forms.get('url'))
-			
-
 	
 @route('/starred')
 @view('index')
 def starred():
-	starred = dict({"items" : [i for i in Item.select().where(Item.starred == True)]},**channels())
+	starred = dict({ 'items' : [i for i in Item.select().where(Item.starred == True)]}, **channels())
 	return starred
 	
 @route('/static/<filename>')
@@ -121,4 +137,4 @@ def get_favicon():
 try:
 	from mod_wsgi import version
 except:
-	run(host='0.0.0.0', port=3000, reloader = True, debug = True)
+	run(host='0.0.0.0', port=3003, reloader = True, debug = True)
