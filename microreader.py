@@ -1,9 +1,9 @@
 import feedparser, json
 import lxml.html
 import xml.etree.ElementTree as ET
-import mimerender
-from bottle import route, run, view, install, redirect, hook, request, response, abort, static_file, JSONPlugin
+from bottle import route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from time import mktime
+import mimerender
 
 from models import *
 
@@ -17,6 +17,8 @@ class CustomJsonEncoder(json.JSONEncoder):
 
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
+mimerender = mimerender.BottleMimeRender()
+
 @hook('before_request')
 def db_connect():
 	db.connect()	
@@ -24,6 +26,10 @@ def db_connect():
 @hook('after_request')
 def db_disconnect():
 	db.close()
+
+@route('/test')
+def test():
+	return { 'message': 'test'}
 
 @route('/items')
 def items():
@@ -84,13 +90,17 @@ def post_channel():
 		abort(404, "Feed does not exist")
 	redirect('/' + request.forms.get('url'))
 			
+
+render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
+render_html = lambda **args: template('index', args) 
+
 @route("/")
 @route("/:id")
-@view('index')
+@mimerender(default = 'html', json = render_json, html = render_html)
 def index(id = ''):	
 	index = dict((channel_items(id) if id else items()),**channels())
 	index['url'] = id
-	return index	
+	return index
 	
 @route('/starred')
 @view('index')
