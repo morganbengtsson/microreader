@@ -103,7 +103,7 @@ def item(id):
 	try: 
 		item = Item.get(Item.id == id)
 	except Item.DoesNotExist:
-		abort(404)
+		abort(404, 'Item does not exist')
 	return {'item' : item}
 
 @route('/items/:id', method = 'PATCH')
