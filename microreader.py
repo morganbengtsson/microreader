@@ -47,6 +47,10 @@ def items():
 	
 	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
 
+@route('/items/:id' method = 'GET')
+def item():
+	return Item.get(Item.id == id)
+
 @route('/items/:id', method = 'PATCH')
 def patch_item(id):
 	try: 
