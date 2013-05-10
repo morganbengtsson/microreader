@@ -19,11 +19,11 @@ mimerender = mimerender.BottleMimeRender()
 render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
 
 @hook('before_request')
-def db_connect():
+def connect():
 	db.connect()	
 
 @hook('after_request')
-def db_disconnect():
+def disconnect():
 	db.close()
 
 @route("/")
