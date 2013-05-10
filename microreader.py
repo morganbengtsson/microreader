@@ -55,13 +55,22 @@ def delete_channel(id):
 		abort(404, 'Channel does not exist')
 	redirect('/')	
 	
+@route('/channels/add', method = 'GET')
+def create_channel():
+	return """<form action="/channels" method="POST">
+		Url: <input type="text" name = "url" class="url"/>
+		<input type="submit" value = "Add">"""
+
 @route('/channels', method = 'POST')
-def post_channel():			
+def post_channel():
+	url = request.forms.get('url')
 	try:		
-		Channel.create_from_url(request.forms.get('url'))
+		Channel.create_from_url(url)
 	except:
 		abort(404, "Feed does not exist")
-	redirect('/' + request.forms.get('url'))
+	channel = Channel.get(Channel.url == url)
+	channel.update_feed()
+	redirect('/' + str(channel.id))
 
 @route('/channels/:id/items')
 @mimerender(default = 'json', json = render_json)
@@ -137,4 +146,4 @@ def get_favicon():
 try:
 	from mod_wsgi import version
 except:
-	run(host='0.0.0.0', port=3003, reloader = True, debug = True)
+	run(host='0.0.0.0', port=3000, reloader = True, debug = True)
