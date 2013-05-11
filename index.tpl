@@ -11,16 +11,19 @@
 			<li><a href ="/channels/create" class = "nav-link" id ="subscribe-link">Subscribe</a></li>	
 		</ul>
 		<ul class = "filters">			
-			<li><a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a></li>
+			<li>
+				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a>
+			</li>
 			<li><a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">Starred</a></li>
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
 				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
-					{{channel.title}}					
+					{{channel.title}}
+					<span class = "unread-count">({{channel.unread_count()}})</span>					
 				</a>
-				<a href = "/channels/{{channel.id}}/update" class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</a>
+				<a href = "/channels/{{channel.id}}/update" class= "update">&nbsp;</a>
 				<a href = "/channels/{{channel.id}}/delete" class = "delete">&nbsp;</a>					
 			</li>		
 		%end
