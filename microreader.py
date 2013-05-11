@@ -134,7 +134,7 @@ def post_channel():
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
-@route('/blaaa', method = 'GET')
+@route('/channels/update', method = 'GET')
 def update_channels():
 	for c in Channel.select():
 		c.update()
