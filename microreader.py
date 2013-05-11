@@ -33,14 +33,15 @@ def disconnect():
 @route('/')
 def index():
 	redirect('/items')
-	
+
+@route('/channels/:id/items', method = 'GET')	
 @route('/items', method = 'GET')
-def items():
+def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
 	read = valid_params.get(request.query.getone('read'))
 	
-	channel = request.query.channel
+	channel = request.query.channel or id
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
@@ -100,7 +101,10 @@ def delete_channel_confirm(id):
 		channel = Channel.get(Channel.id == id)
 	except Channel.DoesNotExist:
 		abort(404)
-	return template('Delete channel {{channel.title}}?<form action="/channels/{{channel.id}}/delete" method="post"><input type ="submit" name="Ok"></form>', channel = channel)
+	tpl = """Delete channel {{channel.title}}? 
+	<form action="/channels/{{channel.id}}/delete" method="post">
+	<input type ="submit" value="Ok"></form>"""
+	return template(tpl, channel = channel)
 
 @route('/channels/:id', method = 'DELETE')
 @route('/channels/:id/delete', method = 'POST')
@@ -128,16 +132,7 @@ def post_channel():
 		abort(404, "Feed does not exist")
 	channel = Channel.get(Channel.url == url)
 	channel.update_feed()
-	redirect('/' + str(channel.id))
-
-@route('/channels/:id/items')
-def channel_items(id = ''):
-	try: 
-		c = Channel.get(Channel.id == id)		
-	except Channel.DoesNotExist:
-		abort(404, 'Channel does not exist')
-	
-	return {'items' : list(Item.select().order_by(Item.updated.desc()).where(Item.channel == c))}
+	redirect('/channels/' + str(channel.id) + "/items")
 
 @route('/channels/:id/update', method='GET')
 def update_channel(id):
@@ -146,7 +141,7 @@ def update_channel(id):
 		c.update_feed()		
 	except Channel.DoesNotExist:
 		abort(404)
-	return redirect('/items?channel=' + str(c.id))
+	return redirect('/channels/' + str(c.id) + 'items')
 	
 @route('/static/<filename>')
 def server_static(filename):

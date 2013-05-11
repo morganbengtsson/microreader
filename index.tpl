@@ -6,24 +6,21 @@
 	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
 <body>	
-	<nav class="navigation">		
-		<button href ="#" id ="subscribe">Subscribe</button>
-		<form style ="display:none" action="/channels" method="POST">
-		Url: <input type="text" name = "url" class="url"/>
-		<input type="submit" value = "Add">
-		</form>
-		{{is_active('/items')}}
+	<nav class="navigation">
 		<ul class = "actions">
+			<li><a href ="/channels/create" class = "nav-link" id ="subscribe-link">Subscribe</a></li>	
+		</ul>
+		<ul class = "filters">			
 			<li><a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a></li>
 			<li><a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">Starred</a></li>
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/channels/{{channel.id}}" class = "nav-link {{is_active("/" + str(channel.id))}}">
-					{{channel.title}}
-					<span class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</span>
+				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
+					{{channel.title}}					
 				</a>
+				<a href = "/channels/{{channel.id}}/update" class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</a>
 				<a href = "/channels/{{channel.id}}/delete" class = "delete">&nbsp;</a>					
 			</li>		
 		%end
@@ -59,6 +56,7 @@
 		</div>		
 		%end	
 	</dl>
+	<div style="display:none" id = "modal"></div>		
 
 </body>
 </html>
@@ -104,18 +102,11 @@
 		$('.delete').click(function(event)
 		{
 			event.preventDefault();
-			var element = $(this);	
-			if (confirm('Are you sure?')){
-				$.ajax({
-					url: element.attr('href'),
-					contentType: "application/json; charset=utf-8",
-					type: 'DELETE',
-					success: function()
-					{
-						element.parent().remove();	
-					}							
-				});
-			}			
+			var l = $(this);			
+			$.get($(this).attr('href'), function(data){
+				$('#modal').html(data).toggle();
+				$('#modal').css('top', l.position().top + l.height());				
+			});			
 		});
 		
 		$('.mark-read').click(function(event)
@@ -130,15 +121,20 @@
 			}
 			return false;
 		});
-		$('#subscribe').click(function(){$('form').toggle()});
-		$(document).mouseup(function (e)
-{
-		var container = $("form");
-
-		if (container.has(e.target).length === 0)
-		{
-			container.hide();
-		}
-});
+		$('#subscribe-link').click(function(event){
+			event.preventDefault();
+			var l = $('#subscribe-link')			
+			$.get($('#subscribe-link').attr('href'), function(data){
+				$('#modal').html(data).toggle();
+				$('#modal').css('top', l.position().top + l.height());
+			});
+		});
+		
+		$(document).mouseup(function (e) {
+			var container = $("#modal");
+			if (container.has(e.target).length === 0) {
+				container.hide();
+			}
+		});
 	});
 </script>
