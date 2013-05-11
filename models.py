@@ -43,7 +43,7 @@ class Channel(BaseModel):
 					description = entry.content[0].value if hasattr(entry, 'content') else entry.description
 					description = lxml.html.fromstring(description).text_content()
 					
-					parameters = dict(updated = updated, title = entry.title, description = description, author = (entry.author or ''), url = entry.link, channel = self)
+					parameters = dict(updated = updated, title = entry.title, description = description, author = entry.get('author'), url = entry.link, channel = self)
 					if not Item.select().where(Item.url == entry.link).exists():						
 						Item.create(**parameters)
 					else:
@@ -62,7 +62,7 @@ class Channel(BaseModel):
 class Item(BaseModel):
 	title = TextField()
 	description = TextField()
-	author = TextField()
+	author = TextField(null = True)
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)

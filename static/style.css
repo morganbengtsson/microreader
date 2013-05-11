@@ -29,15 +29,28 @@
 			overflow: hidden;	
 		}
 		
-		#subscribe	{
+		#modal	{
+			margin-left: 1em;
 			font-size: 1em;
-			margin-bottom: 1em;							
+			margin-bottom: 1em;			
+			width: 50%;
+			background-color: #fff;
+			border: 1px solid grey;
+			padding: 1em;
+			position: absolute;
+			z-index:10;											
 		}
-		#all
+		#subscribe-link
 		{
+			background-image: url('/static/feed--plus.png');
+			background-repeat: no-repeat;
+			padding-left: 20px;	
+		}		
+		#all {
 			background-image: url('/static/box.png');
 			background-repeat: no-repeat;
-			padding-left: 20px;		}
+			padding-left: 20px;		
+		}
 			
 		#starred
 		{
@@ -86,7 +99,7 @@
 			background-repeat: no-repeat;
 			padding-left: 20px;					
 		}
-		.actions
+		.filters, .actions
 		{
 			border-bottom: 1px solid #e1e1e1;
 			margin-bottom: 1em;
@@ -155,15 +168,6 @@
 		.read h2
 		{
 			font-weight: normal;			
-		}
-		form
-		{
-			width: 50%;
-			background-color: #fff;
-			border: 1px solid grey;
-			padding: 1em;
-			position: absolute;
-			z-index:10;
 		}		
 		.link { 
 			position:relative;
