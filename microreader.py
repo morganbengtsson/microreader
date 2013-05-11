@@ -1,8 +1,6 @@
 import feedparser, json
 from bottle import route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 
-import mimerender
-
 from models import *
 
 class CustomJsonEncoder(json.JSONEncoder):
@@ -15,9 +13,6 @@ class CustomJsonEncoder(json.JSONEncoder):
 
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
-mimerender = mimerender.BottleMimeRender()
-render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
-
 @hook('before_request')
 def connect():
 	db.connect()	
@@ -28,11 +23,58 @@ def disconnect():
 
 @route('/')
 def index():
-	redirect('/channels')
+	redirect('/items')
+	
+@route('/items', method = 'GET')
+def items():
+	valid_params = {'1' : True, '0' : False}
+	starred = valid_params.get(request.query.getone('starred'))
+	
+	since_id  = request.query.since_id
+	max_id = request.query.max_id
+	count = int(request.query.count) if request.query.count else None
+	page = int(request.query.page) if request.query.page else None
+	
+	print (starred)
+
+	query = Item.select()
+	if starred: query = query.where(Item.starred == starred)
+	if since_id: query = query.where(Item.id >= since_id)
+	if max_id: query = query.where(Item.id <= max_id)
+	if page: query = query.paginate(page, count)	
+	
+	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
+
+@route('/items/:id', method = 'GET')
+def item(id):
+	try: 
+		item = Item.get(Item.id == id)
+	except Item.DoesNotExist:
+		abort(404, 'Item does not exist')
+	return {'item' : item}
+
+@route('/items/:id', method = 'PATCH')
+def patch_item(id):
+	try: 
+		item = Item.get(Item.id == id)
+	except Item.DoesNotExist:
+		abort(404)
+		
+	valid_keys = ['read', 'starred']
+	for key in set(valid_keys).intersection(set(request.json.keys())):
+		setattr(item, key, request.json[key])
+		
+	item.save()	
+	return response.status
+	
+@route('/starred')
+@view('index')
+def starred():
+	starred = dict({ 'items' : [i for i in Item.select().where(Item.starred == True)]}, **channels())
+	return starred
 
 @route("/channels", method = 'GET')
 @route("/channels/:id", method = 'GET')
-@mimerender(default = 'html', html = lambda **args : template('index', args))
 def root(id = ''):
 	return dict({'channels' : Channel.select()}, **{'items' : Item.select().where(Item.channel == id) if id else Item.select()})
 
@@ -77,7 +119,6 @@ def post_channel():
 	redirect('/' + str(channel.id))
 
 @route('/channels/:id/items')
-@mimerender(default = 'json', json = render_json)
 def channel_items(id = ''):
 	try: 
 		c = Channel.get(Channel.id == id)		
@@ -95,50 +136,7 @@ def update_channel(id):
 		abort(404)
 	return response.status
 		
-@route('/items', method = 'GET')
-@mimerender(default = 'json', json = render_json)
-def items():
-	
-	since_id  = request.query.since_id
-	max_id = request.query.max_id
-	count = int(request.query.count) if request.query.count else None
-	page = int(request.query.page) if request.query.page else None
 
-	query = Item.select()
-	if since_id: query = query.where(Item.id >= since_id)
-	if max_id: query = query.where(Item.id <= max_id)
-	if page: query = query.paginate(page, count)	
-	
-	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
-
-@route('/items/:id', method = 'GET')
-@mimerender(default = 'json', json = render_json)
-def item(id):
-	try: 
-		item = Item.get(Item.id == id)
-	except Item.DoesNotExist:
-		abort(404, 'Item does not exist')
-	return {'item' : item}
-
-@route('/items/:id', method = 'PATCH')
-def patch_item(id):
-	try: 
-		item = Item.get(Item.id == id)
-	except Item.DoesNotExist:
-		abort(404)
-		
-	valid_keys = ['read', 'starred']
-	for key in set(valid_keys).intersection(set(request.json.keys())):
-		setattr(item, key, request.json[key])
-		
-	item.save()	
-	return response.status
-	
-@route('/starred')
-@view('index')
-def starred():
-	starred = dict({ 'items' : [i for i in Item.select().where(Item.starred == True)]}, **channels())
-	return starred
 	
 @route('/static/<filename>')
 def server_static(filename):
