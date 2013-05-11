@@ -5,7 +5,24 @@
 			margin: 0;
 			padding: 0;
 			max-width: 800px;								
-		}			
+		}	
+		@media
+		only screen and (-webkit-min-device-pixel-ratio : 1.5),
+		only screen and (min-device-pixel-ratio : 1.5) {
+		body { 
+			font-size: 150%; 
+			max-width: 150%;
+		}
+		}
+		
+		@media
+		only screen and (-webkit-min-device-pixel-ratio : 2),
+		only screen and (min-device-pixel-ratio : 2) {
+		body { 
+				font-size: 200%; 
+				max-width: 200%;
+		}
+		}	
 				
 		dl, dt, dd, ul, li {
           list-style: none;
