@@ -12,18 +12,19 @@
 		Url: <input type="text" name = "url" class="url"/>
 		<input type="submit" value = "Add">
 		</form>
+		{{is_active('/items')}}
 		<ul class = "actions">
-			<li><a href = "/" id ="all" class = "nav-link {{"active" if ("/" == request.path) else ""}}">All</a></li>
-			<li><a href = "/starred" id = "starred" class = "nav-link {{"active" if ("/starred" == request.path) else ""}}">Starred</a></li>
+			<li><a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a></li>
+			<li><a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">Starred</a></li>
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/{{channel.id}}" class = "nav-link {{"active" if ("/" + str(channel.id) == request.path) else ""}}">
+				<a href = "/channels/{{channel.id}}" class = "nav-link {{is_active("/" + str(channel.id))}}">
 					{{channel.title}}
 					<span class="{{"new-count-" + str('max' if( channel.new_count() > 20) else channel.new_count())}}">&nbsp;</span>
 				</a>
-				<a href = "/channels/{{channel.id}}" class = "delete">&nbsp;</a>					
+				<a href = "/channels/{{channel.id}}/delete" class = "delete">&nbsp;</a>					
 			</li>		
 		%end
 		</ul>	
