@@ -26,15 +26,19 @@ def connect():
 def disconnect():
 	db.close()
 
-@route("/")
-@route("/:id")
-@mimerender(default = 'html', json = render_json, html = lambda **args : template('index', args))
-def index(id = ''):
+@route('/')
+def index():
+	redirect('/channels')
+
+@route("/channels", method = 'GET')
+@route("/channels/:id", method = 'GET')
+@mimerender(default = 'html', html = lambda **args : template('index', args))
+def root(id = ''):
 	return dict({'channels' : Channel.select()}, **{'items' : Item.select().where(Item.channel == id) if id else Item.select()})
 
-@route('/channels', method = 'GET')
-def channels():
-	return {'channels' : Channel.select()}
+#@route('/channels', method = 'GET')
+#@mimerender(default = 'html', json = render_json)
+#	return {'channels' : Channel.select()}
 
 @route('/channels/:id/delete', method = 'GET')
 def delete_channel_confirm(id):
@@ -94,6 +98,7 @@ def update_channel(id):
 @route('/items', method = 'GET')
 @mimerender(default = 'json', json = render_json)
 def items():
+	
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
