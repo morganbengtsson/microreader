@@ -18,8 +18,9 @@ class Channel(BaseModel):
 	icon = TextField(default = '/static/feed.png')
 			
 	def unread_count(self):
-		return Item.select().where(Item.channel == self & Item.read == False).count()
+		return self.items.where(Item.read == False).count()
 	
+	# Note: Pretty slow!
 	def new_count(self):
 		feed = feedparser.parse(self.url)
 		count = 0
@@ -66,7 +67,7 @@ class Item(BaseModel):
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
-	channel = ForeignKeyField(Channel, cascade = True)
+	channel = ForeignKeyField(Channel, cascade = True, related_name = 'items')
 	updated = DateTimeField()
 
 	

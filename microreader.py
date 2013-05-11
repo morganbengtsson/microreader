@@ -147,7 +147,7 @@ def update_channel(id):
 		c.update_feed()		
 	except Channel.DoesNotExist:
 		abort(404)
-	return redirect('/channels/' + str(c.id) + 'items')
+	return redirect('/channels/' + str(c.id) + '/items')
 	
 @route('/static/<filename>')
 def server_static(filename):
