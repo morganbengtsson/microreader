@@ -1,5 +1,5 @@
 import feedparser, json
-from bottle import route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
+from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 
 from models import *
 
@@ -12,6 +12,15 @@ class CustomJsonEncoder(json.JSONEncoder):
 		return json.JSONEncoder.default(self, obj)
 
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
+
+def accept_json(self):
+	return True if (self.get_header('Accept') == 'application/json') else False
+
+Request.accept_json = accept_json
+
+def is_active(url):
+	fullpath = request.path + ('?' + request.query_string if request.query_string else '')
+	return 'active' if fullpath == url else ''
 
 @hook('before_request')
 def connect():
@@ -29,22 +38,28 @@ def index():
 def items():
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
+	read = valid_params.get(request.query.getone('read'))
 	
+	channel = request.query.channel
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
 	page = int(request.query.page) if request.query.page else None
-	
-	print (starred)
 
 	query = Item.select()
+	if channel: query = query.where(Item.channel == channel)
 	if starred: query = query.where(Item.starred == starred)
+	if read: query = query.where(Item.read == read)
 	if since_id: query = query.where(Item.id >= since_id)
 	if max_id: query = query.where(Item.id <= max_id)
 	if page: query = query.paginate(page, count)	
 	
-	return {'items' : [i for i in query.order_by(Item.updated.desc()).limit(count)]}
-
+	items = list(query.order_by(Item.updated.desc()).limit(count))
+	if (request.accept_json()):
+		return { 'items' : items }
+	else:
+		return template('index', items = items, channels = Channel.select(), is_active = is_active)
+	
 @route('/items/:id', method = 'GET')
 def item(id):
 	try: 
@@ -67,20 +82,17 @@ def patch_item(id):
 	item.save()	
 	return response.status
 	
-@route('/starred')
-@view('index')
-def starred():
-	starred = dict({ 'items' : [i for i in Item.select().where(Item.starred == True)]}, **channels())
-	return starred
-
 @route("/channels", method = 'GET')
-@route("/channels/:id", method = 'GET')
-def root(id = ''):
-	return dict({'channels' : Channel.select()}, **{'items' : Item.select().where(Item.channel == id) if id else Item.select()})
+def channels():
+	return { 'channels' : Channel.select() }
 
-#@route('/channels', method = 'GET')
-#@mimerender(default = 'html', json = render_json)
-#	return {'channels' : Channel.select()}
+@route("/channels/:id", method = 'GET')
+def channel(id):	
+	try: 
+		channel = Channel.get(Channel.id == id)
+	except: 
+		abort(404, 'Channel does not exist')
+	return { 'channel' : channel }
 
 @route('/channels/:id/delete', method = 'GET')
 def delete_channel_confirm(id):
@@ -101,7 +113,7 @@ def delete_channel(id):
 		abort(404, 'Channel does not exist')
 	redirect('/')	
 	
-@route('/channels/add', method = 'GET')
+@route('/channels/create', method = 'GET')
 def create_channel():
 	return """<form action="/channels" method="POST">
 		Url: <input type="text" name = "url" class="url"/>
@@ -125,7 +137,7 @@ def channel_items(id = ''):
 	except Channel.DoesNotExist:
 		abort(404, 'Channel does not exist')
 	
-	return {'items' : [i for i in Item.select().order_by(Item.updated.desc()).where(Item.channel == c)]}
+	return {'items' : list(Item.select().order_by(Item.updated.desc()).where(Item.channel == c))}
 
 @route('/channels/:id/update', method='GET')
 def update_channel(id):
@@ -134,9 +146,7 @@ def update_channel(id):
 		c.update_feed()		
 	except Channel.DoesNotExist:
 		abort(404)
-	return response.status
-		
-
+	return redirect('/items?channel=' + str(c.id))
 	
 @route('/static/<filename>')
 def server_static(filename):
