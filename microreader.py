@@ -34,7 +34,7 @@ def disconnect():
 def index():
 	redirect('/items')
 
-@route('/channels/:id/items', method = 'GET')	
+@route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
@@ -61,7 +61,7 @@ def items(id = None):
 	else:
 		return template('index', items = items, channels = Channel.select(), is_active = is_active)
 	
-@route('/items/:id', method = 'GET')
+@route('/items/<id:int>', method = 'GET')
 def item(id):
 	try: 
 		item = Item.get(Item.id == id)
@@ -69,7 +69,7 @@ def item(id):
 		abort(404, 'Item does not exist')
 	return {'item' : item}
 
-@route('/items/:id', method = 'PATCH')
+@route('/items/<id:int>', method = 'PATCH')
 def patch_item(id):
 	try: 
 		item = Item.get(Item.id == id)
@@ -87,7 +87,7 @@ def patch_item(id):
 def channels():
 	return { 'channels' : Channel.select() }
 
-@route("/channels/:id", method = 'GET')
+@route("/channels/<id:int>", method = 'GET')
 def channel(id):	
 	try: 
 		channel = Channel.get(Channel.id == id)
@@ -95,7 +95,7 @@ def channel(id):
 		abort(404, 'Channel does not exist')
 	return { 'channel' : channel }
 
-@route('/channels/:id/delete', method = 'GET')
+@route('/channels/<id:int>/delete', method = 'GET')
 def delete_channel_confirm(id):
 	try: 
 		channel = Channel.get(Channel.id == id)
@@ -106,8 +106,8 @@ def delete_channel_confirm(id):
 	<input type ="submit" value="Ok"></form>"""
 	return template(tpl, channel = channel)
 
-@route('/channels/:id', method = 'DELETE')
-@route('/channels/:id/delete', method = 'POST')
+@route('/channels/<id:int>', method = 'DELETE')
+@route('/channels/<id:int>/delete', method = 'POST')
 def delete_channel(id):
 	try:
 		c = Channel.get(Channel.id == id)
@@ -134,7 +134,13 @@ def post_channel():
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
-@route('/channels/:id/update', method='GET')
+@route('/blaaa', method = 'GET')
+def update_channels():
+	for c in Channel.select():
+		c.update()
+	return redirect('/items')
+
+@route('/channels/<id:int>/update', method='GET')
 def update_channel(id):
 	try: 
 		c = Channel.get(Channel.id == id)
