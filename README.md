@@ -9,7 +9,7 @@ An example app.wsgi is included in the repository.
 To have automatic aggregation of feeds every five minutes, enter the 
 following into crontab:
 `*/5 * * * * wget -O - -q -t 1  http://<host>:<port>/channels/update`. 
-Replace <host> and <port> with corresponding values.
+Replace `<host>` and `<port>` with corresponding values.
 
 A JSON api is available for most url:s, by adding 'application/json' 
 to the Accept header.
