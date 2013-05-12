@@ -8,11 +8,14 @@
 <body>	
 	<nav class="navigation">
 		<ul class = "actions">
-			<li><a href ="/channels/create" class = "nav-link" id ="subscribe-link">Subscribe</a></li>	
+			<li>
+				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">Subscribe</a>				
+			</li>	
 		</ul>
 		<ul class = "filters">			
 			<li>
 				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a>
+				<a href = "/channels/update" class= "update">&nbsp;</a>
 			</li>
 			<li><a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">Starred</a></li>
 		</ul>
