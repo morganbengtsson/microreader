@@ -11,7 +11,7 @@ following into crontab:
 `*/5 * * * * wget -O - -q -t 1  http://<host>:<port>/channels/update`. 
 Replace `<host>` and `<port>` with corresponding values.
 
-A JSON api is available for most url:s, by adding 'application/json' 
+A JSON api is available for most url:s, by adding `application/json`
 to the Accept header.
 
 ![Microreader](http://morganbengtsson.github.io/images/microreader.png "Microreader")
