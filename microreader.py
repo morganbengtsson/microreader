@@ -41,7 +41,7 @@ def index():
 
 @route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
-@mimerender(default = 'html', html = render_html, json = render_json)
+@mimerender(default = 'html', html = lambda **m : render_html('index', **m), json = render_json)
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
