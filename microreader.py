@@ -1,6 +1,6 @@
 import feedparser, json
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
-
+import mimerender
 from models import *
 
 class CustomJsonEncoder(json.JSONEncoder):
@@ -17,6 +17,11 @@ def accept_json(self):
 	return True if (self.get_header('Accept') == 'application/json') else False
 
 Request.accept_json = accept_json
+
+mimerender = mimerender.BottleMimeRender()
+
+render_json = lambda **args: json.dumps(args, cls = CustomJsonEncoder)
+render_html = lambda name = 'index', **kwargs: template(name, kwargs, is_active = is_active, channels = Channel.select())
 
 def is_active(url):
 	fullpath = request.path + ('?' + request.query_string if request.query_string else '')
@@ -36,6 +41,7 @@ def index():
 
 @route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
+@mimerender(default = 'html', html = render_html, json = render_json)
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
@@ -56,10 +62,7 @@ def items(id = None):
 	if page: query = query.paginate(page, count)	
 	
 	items = list(query.order_by(Item.updated.desc()).limit(count))
-	if (request.accept_json()):
-		return { 'items' : items }
-	else:
-		return template('index', items = items, channels = Channel.select(), is_active = is_active)
+	return { 'items' : items }	
 	
 @route('/items/<id:int>', method = 'GET')
 def item(id):
