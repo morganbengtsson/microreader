@@ -13,26 +13,14 @@ class BaseModel(Model):
 
 class Channel(BaseModel):
 	title = TextField()
-	updated = DateTimeField(default = datetime(1900, 1, 1))
+	updated = DateTimeField(default = datetime(1900, 1, 1), null = True)
+	fetched = DateTimeField(default = datetime.now())
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
 			
 	def unread_count(self):
 		return self.items.where(Item.read == False).count()
-	
-	# Note: Pretty slow!
-	def new_count(self):
-		feed = feedparser.parse(self.url)
-		count = 0
-		try:
-			item = Item.get(Item.channel == self)
-			for e in feed.entries:
-				if e.link == item.url : break
-				count += 1
-		except Item.DoesNotExist:
-			count = len(feed.entries)	
-		return count
-	
+		
 	def update_feed(self):
 			feed = feedparser.parse(self.url)			
 			feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed)) if feed.get('updated_parsed') else datetime.now()
@@ -49,11 +37,13 @@ class Channel(BaseModel):
 						
 			self.updated = feed_updated
 			self.save()
+			
 	@classmethod
 	def create_from_url(cls, url):
 		feed = feedparser.parse(url)
 		if not 'title' in feed.feed : raise cls.FeedDoesNotExist
 		cls.create(url = url, title = feed.feed.title)
+		
 	class FeedDoesNotExist(Exception) : pass
 	
 class Item(BaseModel):
@@ -64,7 +54,8 @@ class Item(BaseModel):
 	read = BooleanField(default = False)
 	starred = BooleanField(default = False)
 	channel = ForeignKeyField(Channel, cascade = True, related_name = 'items')
-	updated = DateTimeField()
+	updated = DateTimeField(null = True)
+	fetched = DateTimeField(default = datetime.now())
 
 	
 Channel.create_table(fail_silently = True)
