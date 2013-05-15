@@ -38,7 +38,7 @@
 		<dt class = "{{"read" if item.read else ""}}">
 		    			
 			<div class = "side"> 
-				<a class = "link" href = "{{item.url}}" target="_new">&nbsp;</a>
+				<a class = "link" href = "{{item.url}}" target="_blank">&nbsp;</a>
 				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
 			</div>
 			

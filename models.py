@@ -34,8 +34,8 @@ class Channel(BaseModel):
 		return count
 	
 	def update_feed(self):
-			feed = feedparser.parse(self.url)
-			feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed))		
+			feed = feedparser.parse(self.url)			
+			feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed)) if feed.get('updated_parsed') else datetime.now()
 			for entry in feed.entries:
 				updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description
@@ -47,7 +47,6 @@ class Channel(BaseModel):
 				else:
 					Item.update(**parameters).where(Item.url == entry.link).execute()
 						
-				
 			self.updated = feed_updated
 			self.save()
 	@classmethod
