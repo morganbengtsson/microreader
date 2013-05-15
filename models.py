@@ -34,22 +34,18 @@ class Channel(BaseModel):
 		return count
 	
 	def update_feed(self):
-			feed = feedparser.parse(self.url)
-			feed_updated = datetime(3000, 1, 1)
-			if 'updated_parsed' in feed : 
-				feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed))
-			if (feed_updated > self.updated):
-				for entry in feed.entries:
-					updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
-					description = entry.content[0].value if hasattr(entry, 'content') else entry.description
-					description = lxml.html.fromstring(description).text_content()
-					
-					parameters = dict(updated = updated, title = entry.title, description = description, author = entry.get('author'), url = entry.link, channel = self)
-					if not Item.select().where(Item.url == entry.link).exists():						
-						Item.create(**parameters)
-					else:
-						Item.update(**parameters).where(Item.url == entry.link).execute()
-						
+			feed = feedparser.parse(self.url)			
+			feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed)) if feed.get('updated_parsed') else datetime.now()
+			for entry in feed.entries:
+				updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
+				description = entry.content[0].value if hasattr(entry, 'content') else entry.description
+				description = lxml.html.fromstring(description).text_content()
+				
+				parameters = dict(updated = updated, title = entry.title, description = description, author = entry.get('author'), url = entry.link, channel = self)
+				if not Item.select().where(Item.url == entry.link).exists():						
+					Item.create(**parameters)
+				else:
+					Item.update(**parameters).where(Item.url == entry.link).execute()						
 				
 			self.updated = feed_updated
 			self.save()
