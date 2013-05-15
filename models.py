@@ -1,6 +1,6 @@
 import feedparser
 from peewee import *
-import lxml.html
+import lxml.html as ht
 import xml.etree.ElementTree as ET
 from datetime import datetime
 from time import mktime
@@ -13,7 +13,7 @@ class BaseModel(Model):
 
 class Channel(BaseModel):
 	title = TextField()
-	updated = DateTimeField(default = datetime(1900, 1, 1), null = True)
+	updated = DateTimeField(null = True)
 	fetched = DateTimeField(default = datetime.now())
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
@@ -22,28 +22,30 @@ class Channel(BaseModel):
 		return self.items.where(Item.read == False).count()
 		
 	def update_feed(self):
-			feed = feedparser.parse(self.url)			
-			feed_updated = datetime.fromtimestamp(mktime(feed.updated_parsed)) if feed.get('updated_parsed') else datetime.now()
-			for entry in feed.entries:
-				updated = datetime.fromtimestamp(mktime(entry.updated_parsed))
+			feed = feedparser.parse(self.url)
+			for entry in feed.entries:				
+				updated = datetime(*entry.updated_parsed[:6]) if entry.updated_parsed else None
+							
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description
-				description = lxml.html.fromstring(description).text_content()
+				description = ht.fromstring(description).text_content()
 				
-				parameters = dict(updated = updated, title = entry.title, description = description, author = entry.get('author'), url = entry.link, channel = self)
+				parameters = dict(updated = updated, title = entry.get('title', 'No title'), description = description, author = entry.get('author'), url = entry.get('link', 'No url'), channel = self)
 				if not Item.select().where(Item.url == entry.link).exists():						
 					Item.create(**parameters)
 				else:
-					Item.update(**parameters).where(Item.url == entry.link).execute()
-						
-			self.updated = feed_updated
+					Item.update(**parameters).where(Item.url == entry.link).execute()			
+			
+			self.updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None
+			
+			self.fetched = datetime.now()
 			self.save()
 			
 	@classmethod
 	def create_from_url(cls, url):
-		feed = feedparser.parse(url)
-		if not 'title' in feed.feed : raise cls.FeedDoesNotExist
-		cls.create(url = url, title = feed.feed.title)
-		
+		feed = feedparser.parse(url).feed					
+		updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None	
+		cls.create(url = url, updated = updated, title = feed.get('title', 'No title')) 
+				
 	class FeedDoesNotExist(Exception) : pass
 	
 class Item(BaseModel):

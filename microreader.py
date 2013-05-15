@@ -128,11 +128,8 @@ def create_channel():
 
 @route('/channels', method = 'POST')
 def post_channel():
-	url = request.forms.get('url')
-	try:		
-		Channel.create_from_url(url)
-	except:
-		abort(404, "Feed does not exist")
+	url = request.forms.get('url')			
+	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
