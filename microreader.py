@@ -41,7 +41,6 @@ def index():
 
 @route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
-@mimerender(default = 'html', html = lambda **m : render_html('index', **m), json = render_json)
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
@@ -61,8 +60,8 @@ def items(id = None):
 	if max_id: query = query.where(Item.id <= max_id)
 	if page: query = query.paginate(page, count)	
 	
-	items = list(query.order_by(Item.updated.desc()).limit(count))
-	return { 'items' : items }	
+	items = list(query.order_by(Item.updated.desc()).limit(count))		
+	return { 'items' : items }
 	
 @route('/items/<id:int>', method = 'GET')
 def item(id):
@@ -157,7 +156,8 @@ def server_static(filename):
 def get_favicon():
     return server_static('favicon.ico')
 
-try:
-	from mod_wsgi import version
-except:
-	run(host='0.0.0.0', port=3000, reloader = True, debug = True)
+if __name__ == '__main__':
+	try:
+		from mod_wsgi import version
+	except:
+		run(host='0.0.0.0', port=3000, reloader = True, debug = True)
