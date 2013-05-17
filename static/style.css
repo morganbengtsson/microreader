@@ -198,4 +198,8 @@
 			background-image: url('/static/arrow-circle.png');
 			background-repeat: no-repeat;
 		}
+		.dropdown
+		{
+			display: none;
+		}
 		
