@@ -43,8 +43,18 @@
 				<ul class = "nav-dropdown">
 				<a href = "#"><i class = "icon-caret-down"></i></a>
 				<ul class= "dropdown">
-					<li><a href = "/channels/{{channel.id}}/update" class= "update">Update</a></li>
-					<li><a href = "/channels/{{channel.id}}/delete" class = "delete">Delete</a></li>
+					<li>
+						<a href = "/channels/{{channel.id}}/update" class= "update">
+						<i class = "icon-refresh"></i>
+						Update
+						</a>
+					</li>
+					<li>
+						<a href = "/channels/{{channel.id}}/delete" class = "delete">
+							<i class = "icon-remove"></i>
+							Delete
+						</a>
+					</li>
 				</ul>
 				</ul>								
 			</li>						
@@ -55,9 +65,11 @@
 		%for item in items:
 		<div class = "item">			
 		<dt class = "{{"read" if item.read else ""}}">		    			
-			<div class = "side"> 
-				<a class = "link" href = "{{item.url}}" target="_blank">&nbsp;</a>
-				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
+			<div class = "side">
+				<span>{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
+				<a class = "link" href = "{{item.url}}" target="_blank">
+					<i class = "icon-external-link-sign"></i>
+				</a>
 			</div>
 			
 			<div class = "header">
