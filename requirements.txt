@@ -2,3 +2,4 @@ lxml>=2.3.2
 feedparser>=5.1
 bottle>=0.11.6
 peewee>=2.0.9
+mimerender>=0.5.1
