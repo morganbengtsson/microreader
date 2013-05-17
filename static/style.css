@@ -40,36 +40,13 @@
 			position: absolute;
 			z-index:10;											
 		}
-		#subscribe-link
-		{
-			background-image: url('/static/feed--plus.png');
-			background-repeat: no-repeat;
-			padding-left: 20px;	
-		}		
-		#all {
-			background-image: url('/static/box.png');
-			background-repeat: no-repeat;
-			padding-left: 20px;		
-		}
-			
-		#starred
-		{
-			background-image: url('/static/star.png');
-			background-repeat: no-repeat;
-			padding-left: 20px;
-		}
+	
 		.author
 		{			
 			text-align: right;
 			display:block;
 			color: grey;
-		}
-		.delete
-		{
-			background-image: url('/static/cross-small.png');
-			background-repeat: no-repeat;
-			padding-left: 20px;
-		}
+		}		
 		.navigation
 		{
 			padding: 1em;
@@ -94,12 +71,7 @@
 			display: block;
 			margin-bottom: 0.5em;
 		}			
-		.nav-link
-		{
-			background-image: url('/static/feed.png');
-			background-repeat: no-repeat;
-			padding-left: 20px;
-		}
+		
 		.filters, .actions
 		{
 			border-bottom: 1px solid #e1e1e1;
@@ -107,7 +79,7 @@
 		}
 		.active
        {			
-			color: #000;
+			color: grey;
 		}
 		.url
 		{
@@ -128,7 +100,7 @@
 		.item .side
 		{	
 			float: right;			
-			direction:rtl;							
+			/*direction:rtl;*/							
 		}
 		.accordion a
 		{
@@ -169,35 +141,20 @@
 		.read h2
 		{
 			font-weight: normal;			
-		}		
+		}	
+			
 		.link { 
 			position:relative;
-			padding-left: 20px;
 			margin-left: 0.5em;			
-			background-image: url('/static/external.png');
-			background-repeat: no-repeat;
-		}
-		
-		.starred{
-			padding-left: 20px;
-			background-image: url('/static/star.png');
-			background-repeat: no-repeat;			
-		}	
-		.un-starred {
-			padding-left: 20px;		 
-			background-image: url('/static/star-empty.png');
-			background-repeat: no-repeat;
-		}
+
+		}		
+	
 		.unread-count
 		{
 			color: grey;
 			font-size: 0.8em;
 		}
-		.update {
-			padding-left: 20px;		 
-			background-image: url('/static/arrow-circle.png');
-			background-repeat: no-repeat;
-		}
+		
 		.dropdown
 		{
 			display: none;
