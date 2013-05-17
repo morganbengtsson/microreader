@@ -1,6 +1,8 @@
 import feedparser, json
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
+from mimerender import *
+
 
 class CustomJsonEncoder(json.JSONEncoder):
 	def default(self, obj):
@@ -12,14 +14,14 @@ class CustomJsonEncoder(json.JSONEncoder):
 
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
-def accept_json(self):
-	return True if (self.get_header('Accept') == 'application/json') else False
-
-Request.accept_json = accept_json
-
 def is_active(url):
 	fullpath = request.path + ('?' + request.query_string if request.query_string else '')
 	return 'active' if fullpath == url else ''
+
+mimerender = BottleMimeRender(global_charset = 'utf8')
+
+render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
+render_html = lambda **args: template('index', channels = Channel.select(), is_active = is_active, **args)
 
 @hook('before_request')
 def connect():
@@ -35,6 +37,7 @@ def index():
 
 @route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
+@mimerender(json = render_json, html = render_html)
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
@@ -54,11 +57,9 @@ def items(id = None):
 	if max_id: query = query.where(Item.id <= max_id)
 	if page: query = query.paginate(page, count)	
 	
-	items = list(query.order_by(Item.updated.desc()).limit(count))		
-	if request.accept_json(): 
-		return { 'items' : items }
-	else:
-		return template('index', items = items, channels = Channel.select(), is_active = is_active)
+	items = list(query.order_by(Item.updated.desc()).limit(count))
+	return { 'items' : items }
+
 		
 @route('/items/<id:int>', method = 'GET')
 def item(id):

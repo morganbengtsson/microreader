@@ -26,9 +26,14 @@
 					{{channel.title}}
 					<span class = "unread-count">({{channel.unread_count()}})</span>					
 				</a>
-				<a href = "/channels/{{channel.id}}/update" class= "update">&nbsp;</a>
-				<a href = "/channels/{{channel.id}}/delete" class = "delete">&nbsp;</a>					
-			</li>		
+				<ul>
+				<a href = "#" class = "nav-dropdown">Dropdown</a>
+				<ul class= "dropdown">
+					<li><a href = "/channels/{{channel.id}}/update" class= "update">Update</a></li>
+					<li><a href = "/channels/{{channel.id}}/delete" class = "delete">Delete</a></li>
+				</ul>
+				</ul>								
+			</li>						
 		%end
 		</ul>	
 	</nav>
@@ -142,5 +147,7 @@
 				container.hide();
 			}
 		});
+		
+		$('.nav-dropdown').hover(function(){$('.dropdown', this).fadeIn();}, function(){$('.dropdown', this).fadeOut();});
 	});
 </script>
