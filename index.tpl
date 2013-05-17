@@ -3,31 +3,45 @@
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.1.1/css/font-awesome.css" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/static/style.css">	
 </head>
 <body>	
 	<nav class="navigation">
 		<ul class = "actions">
 			<li>
-				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">Subscribe</a>				
+				
+				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">
+					<i class = "icon-plus-sign"></i>
+					Subscribe
+				</a>				
 			</li>	
 		</ul>
 		<ul class = "filters">			
 			<li>
-				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">All</a>
+				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">
+					<i class = "icon-folder-close-alt"></i>
+					All
+				</a>
 				<a href = "/channels/update" class= "update">&nbsp;</a>
 			</li>
-			<li><a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">Starred</a></li>
+			<li>
+				<a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">
+					<i class = "icon-star"></i>
+					Starred
+				</a>
+			</li>
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
 				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
+					<i class = "icon-rss-sign"></i>
 					{{channel.title}}
 					<span class = "unread-count">({{channel.unread_count()}})</span>					
 				</a>
-				<ul>
-				<a href = "#" class = "nav-dropdown">Dropdown</a>
+				<ul class = "nav-dropdown">
+				<a href = "#"><i class = "icon-caret-down"></i></a>
 				<ul class= "dropdown">
 					<li><a href = "/channels/{{channel.id}}/update" class= "update">Update</a></li>
 					<li><a href = "/channels/{{channel.id}}/delete" class = "delete">Delete</a></li>
@@ -40,15 +54,16 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
-		<dt class = "{{"read" if item.read else ""}}">
-		    			
+		<dt class = "{{"read" if item.read else ""}}">		    			
 			<div class = "side"> 
 				<a class = "link" href = "{{item.url}}" target="_blank">&nbsp;</a>
 				{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
 			</div>
 			
 			<div class = "header">
-				<a class = "mark-star {{"starred" if item.starred else "un-starred"}}" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">&nbsp;</a>
+				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
+					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
+				</a>
 			   
 				<a class = "mark-read" href ="/items/{{item.id}}">		    
 					<h2 class="title">{{item.title}}</h2>
@@ -148,6 +163,7 @@
 			}
 		});
 		
-		$('.nav-dropdown').hover(function(){$('.dropdown', this).fadeIn();}, function(){$('.dropdown', this).fadeOut();});
+		$('.nav-dropdown').hover(function(){
+			$('.dropdown',this).fadeIn();}, function(){$('.dropdown', this).fadeOut();});
 	});
 </script>
