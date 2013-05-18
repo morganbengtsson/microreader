@@ -106,15 +106,16 @@
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
+			item.addClass('read');
 			event.preventDefault();			
 			$.ajax({
 				url: $(this).attr('href'),				
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
-				success: function()
+				error: function()
 				{					
-					item.addClass('read');
+					item.removeClass('read');
 				}							
 			});
 		});
@@ -122,17 +123,22 @@
 		$('.mark-star').click(function(event)
 		{
 			event.preventDefault();
-			var element = $(this);			
+			var element = $(this);
+			element.find('i').toggleClass('icon-star');
+			element.find('i').toggleClass('icon-star-empty');					
 			$.ajax({
 				url: '/items/' + element.data('id'),				
 				data: '{"starred" : ' + !element.data('checked') + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
 				success: function()
+				{					
+					element.data('checked', !element.data('checked'));					
+				},
+				error: function()
 				{
-					element.toggleClass('starred');
-					element.toggleClass('un-starred');
-					element.data('checked', !element.data('checked'));	
+					element.find('i').toggleClass('icon-star');
+					element.find('i').toggleClass('icon-star-empty');					
 				}							
 			});			
 		});
@@ -159,6 +165,7 @@
 			}
 			return false;
 		});
+		
 		$('#subscribe-link').click(function(event){
 			event.preventDefault();
 			var l = $('#subscribe-link')			
@@ -176,7 +183,7 @@
 		});
 		
 		$('.nav-dropdown').click(function(){
-				$('.dropdown',this).fadeIn();
-			});
+				$('.dropdown',this).show();
+		});
 	});
 </script>
