@@ -49,8 +49,7 @@
 		}		
 		.navigation
 		{
-			padding: 1em;
-			max-width: 200px;		
+			padding: 1em;					
 			
 		}
 		@media only screen and (max-width: 480px)
@@ -58,12 +57,15 @@
 			.navigation
 			{
 				float: none;
-				border-bottom: 1px solid #e1e1e1;				
+				border-bottom: 1px solid #e1e1e1;
+				text-align: center;
+								
 			}
 		}
 		@media only screen and (min-width: 480px) {		
 			.navigation {								
-				float: left;								
+				float: left;
+				max-width: 200px;												
 			}
 		}
 		.navigation li
