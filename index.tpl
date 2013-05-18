@@ -8,7 +8,7 @@
 </head>
 <body>	
 	<nav class="navigation">
-		<ul class = "actions">
+		<ul class = "nav-section">
 			<li>
 				
 				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">
@@ -17,7 +17,7 @@
 				</a>				
 			</li>	
 		</ul>
-		<ul class = "filters">			
+		<ul class = "nav-section">			
 			<li>
 				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">
 					<i class = "icon-folder-close-alt"></i>
@@ -149,15 +149,15 @@
 			var l = $(this);			
 			$.get($(this).attr('href'), function(data){
 				$('#modal').html(data).toggle();
-				$('#modal').css('top', l.position().top + l.height());				
+				$('#modal').css('top', l.offset().top + l.height());
+				$('#modal').css('left', l.offset().left + l.width());				
 			});			
 		});
 		
 		$('.mark-read').click(function(event)
 		{									
 			cur_stus = $(this).parent().parent().attr('stus');
-			if(cur_stus != "active")
-			{
+			if(cur_stus != "active") {
 				$('.accordion dd').hide();
 				$('.accordion dt').attr('stus', '');			
 				$(this).parent().parent().next().show();
@@ -171,7 +171,8 @@
 			var l = $('#subscribe-link')			
 			$.get($('#subscribe-link').attr('href'), function(data){
 				$('#modal').html(data).toggle();
-				$('#modal').css('top', l.position().top + l.height());
+				$('#modal').css('top', l.offset().top + l.height());
+				$('#modal').css('left', l.offset().left + l.width());
 			});
 		});
 		
@@ -183,6 +184,9 @@
 		});
 		
 		$('.nav-dropdown').click(function(){
+				var l = $(this);
+				$('.dropdown', this).css('top', l.offset().top + l.height());
+				$('.dropdown', this).css('left', l.offset().left + l.width());
 				$('.dropdown',this).show();
 		});
 	});

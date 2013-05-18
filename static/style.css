@@ -1,6 +1,6 @@
 		body {
 			font-family: sans-serif;
-			font-size: 13px;
+			font-size: 0.8em;
 			line-height: 1.2em;
 			margin: 0;
 			padding: 0;
@@ -24,21 +24,24 @@
 		{
 			text-decoration: none;
 			color: #003C7D;
+		}		
+		[type=text]
+		{
+			border: 1px solid #e1e1e1
 		}
 		#content {
 			overflow: hidden;	
 		}
 		
-		.popup	{
-			margin-left: 1em;
-			font-size: 1em;
-			margin-bottom: 1em;			
-			width: 50%;
+		.popup	{			
+			font-size: 1em;						
 			background-color: #fff;
-			border: 1px solid grey;
+			border: 1px solid #e1e1e1;
 			padding: 1em;
+			padding-bottom: 0.5em;		
 			position: absolute;
-			z-index:10;											
+			z-index:10;
+			box-shadow: 2px 2px 10px #e1e1e1;											
 		}
 	
 		.author
@@ -52,6 +55,11 @@
 			padding: 1em;					
 			
 		}
+		.navigation li
+		{
+			display: block;
+			margin-bottom: 0.5em;			
+		}	
 		@media only screen and (max-width: 480px)
 		{
 			.navigation
@@ -67,14 +75,9 @@
 				float: left;
 				max-width: 200px;												
 			}
-		}
-		.navigation li
-		{
-			display: block;
-			margin-bottom: 0.5em;
-		}			
+		}				
 		
-		.filters, .actions
+		.nav-section
 		{
 			border-bottom: 1px solid #e1e1e1;
 			margin-bottom: 1em;
@@ -83,14 +86,10 @@
        {			
 			color: grey;
 		}
-		.url
-		{
-			width: 100%;
-		}			
+				
 		.item .header {			
 			margin-top: 0;
-			margin-bottom: 0;
-			
+			margin-bottom: 0;			
 		}		
 		.item .header {		
 			float: none;
@@ -157,6 +156,10 @@
 			font-size: 0.8em;
 		}
 		
+		.nav-dropdown
+		{
+			display: inline;
+		}
 		.dropdown
 		{
 			display: none;
