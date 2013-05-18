@@ -29,7 +29,7 @@
 			overflow: hidden;	
 		}
 		
-		#modal	{
+		.popup	{
 			margin-left: 1em;
 			font-size: 1em;
 			margin-bottom: 1em;			

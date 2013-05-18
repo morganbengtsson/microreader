@@ -42,7 +42,7 @@
 				</a>
 				<ul class = "nav-dropdown">
 				<a href = "#"><i class = "icon-caret-down"></i></a>
-				<ul class= "dropdown">
+				<ul class= "dropdown popup">
 					<li>
 						<a href = "/channels/{{channel.id}}/update" class= "update">
 						<i class = "icon-refresh"></i>
@@ -94,7 +94,7 @@
 		</div>		
 		%end	
 	</dl>
-	<div style="display:none" id = "modal"></div>		
+	<div style="display:none" id = "modal" class ="popup"></div>		
 
 </body>
 </html>
@@ -169,13 +169,14 @@
 		});
 		
 		$(document).mouseup(function (e) {
-			var container = $("#modal");
+			var container = $(".popup");
 			if (container.has(e.target).length === 0) {
 				container.hide();
 			}
 		});
 		
-		$('.nav-dropdown').hover(function(){
-			$('.dropdown',this).fadeIn();}, function(){$('.dropdown', this).fadeOut();});
+		$('.nav-dropdown').click(function(){
+				$('.dropdown',this).fadeIn();
+			});
 	});
 </script>
