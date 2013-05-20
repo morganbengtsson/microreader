@@ -38,7 +38,7 @@
 				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
 					<i class = "icon-rss-sign"></i>
 					{{channel.title}}
-					<span class = "unread-count">({{channel.unread_count()}})</span>					
+					<span class = "not-important">({{channel.unread_count()}})</span>					
 				</a>
 				<ul class = "nav-dropdown">
 				<a href = "#"><i class = "icon-caret-down"></i></a>
@@ -66,7 +66,7 @@
 		<div class = "item">			
 		<dt class = "{{"read" if item.read else ""}}">		    			
 			<div class = "side">
-				<span>{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
+				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
 				<a class = "link" href = "{{item.url}}" target="_blank">
 					<i class = "icon-external-link-sign"></i>
 				</a>
