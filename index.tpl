@@ -11,7 +11,7 @@
 			<li>
 				
 				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">
-					<i class = "icon-plus-sign"></i>
+					<i class = "icon-plus"></i>
 					Subscribe
 				</a>				
 			</li>	
@@ -19,7 +19,7 @@
 		<ul class = "nav-section">			
 			<li>
 				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">
-					<i class = "icon-folder-close-alt"></i>
+					<i class = "icon-folder"></i>
 					All
 				</a>
 				<a href = "/channels/update" class= "update">&nbsp;</a>
@@ -35,7 +35,7 @@
 		%for channel in channels:		
 			<li>			
 				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
-					<i class = "icon-rss-sign"></i>
+					<i class = "icon-feed"></i>
 					{{channel.title}}
 					<span class = "not-important">({{channel.unread_count()}})</span>					
 				</a>
@@ -44,13 +44,13 @@
 				<ul class= "dropdown popup">
 					<li>
 						<a href = "/channels/{{channel.id}}/update" class= "update">
-						<i class = "icon-refresh"></i>
+						<i class = "icon-arrow-circle"></i>
 						Update
 						</a>
 					</li>
 					<li>
 						<a href = "/channels/{{channel.id}}/delete" class = "delete">
-							<i class = "icon-remove"></i>
+							<i class = "icon-cross"></i>
 							Delete
 						</a>
 					</li>
@@ -67,7 +67,7 @@
 			<div class = "side">
 				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
 				<a class = "link" href = "{{item.url}}" target="_blank">
-					<i class = "icon-external-link-sign"></i>
+					<i class = "icon-external"></i>
 				</a>
 			</div>
 			
