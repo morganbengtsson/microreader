@@ -49,6 +49,12 @@
 						</a>
 					</li>
 					<li>
+						<a href = "/channels/{{channel.id}}/edit" class = "edit">
+							<i class = "icon-pen"></i>
+							Edit
+						</a>
+					</li>
+					<li>
 						<a href = "/channels/{{channel.id}}/delete" class = "delete">
 							<i class = "icon-cross"></i>
 							Delete
@@ -143,6 +149,17 @@
 		});
 		
 		$('.delete').click(function(event)
+		{
+			event.preventDefault();
+			var l = $(this);			
+			$.get($(this).attr('href'), function(data){
+				$('#modal').html(data).toggle();
+				$('#modal').css('top', l.offset().top + l.height());
+				$('#modal').css('left', l.offset().left + l.width());				
+			});			
+		});
+		
+		$('.edit').click(function(event)
 		{
 			event.preventDefault();
 			var l = $(this);			

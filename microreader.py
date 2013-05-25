@@ -128,9 +128,20 @@ def post_channel():
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
-@route('/channels/edit/<id:int>' method = 'GET')
+@route('/channels/<id:int>/edit', method = 'GET')
 def edit_channel(id):
-	
+	channel = Channel.get(Channel.id == id)
+	return template('edit', channel = channel)
+
+@route('/channels/<id:int>/edit', method = 'POST')
+def edit_channel_post(id):	
+	title = request.forms.get('title')
+	url = request.forms.get('url')
+	channel = Channel.get(Channel.id == id)
+	channel.title = title
+	channel.url = url
+	channel.save()
+	redirect('/channels/' + str(channel.id) + "/items")
 
 @route('/channels/update', method = 'GET')
 def update_channels():
@@ -159,4 +170,4 @@ if __name__ == '__main__':
 	try:
 		from mod_wsgi import version
 	except:
-		run(host='0.0.0.0', port=3001, reloader = True, debug = True)
+		run(host='0.0.0.0', port=3000, reloader = True, debug = True)
