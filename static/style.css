@@ -22,6 +22,10 @@
 		a {
 			text-decoration: none;
 			color: #003C7D;
+		}
+		a:hover
+		{
+			color: grey;
 		}		
 		[type=text] {
 			border: 1px solid #e1e1e1
@@ -40,7 +44,8 @@
 			font-size: 1em;						
 			background-color: #fff;
 			border: 1px solid #e1e1e1;
-			padding: 1em;
+			padding: 0.5em;
+			padding-right: 1em;
 			padding-bottom: 0.5em;		
 			position: absolute;
 			z-index:10;
@@ -185,6 +190,10 @@
 		
 		.icon-arrow-circle {
 			background-image: url('/static/arrow-circle.svg');
+		}
+		
+		.icon-pen {
+			background-image: url('/static/pen.svg');
 		}
 		
 		@media all and (max-device-width: 40em),
