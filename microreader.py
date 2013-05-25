@@ -102,10 +102,8 @@ def delete_channel_confirm(id):
 		channel = Channel.get(Channel.id == id)
 	except Channel.DoesNotExist:
 		abort(404)
-	tpl = """Delete channel {{channel.title}}? 
-	<form action="/channels/{{channel.id}}/delete" method="post">
-	<input type ="submit" value="Ok"></form>"""
-	return template(tpl, channel = channel)
+
+	return template('delete', channel = channel)
 
 @route('/channels/<id:int>', method = 'DELETE')
 @route('/channels/<id:int>/delete', method = 'POST')
@@ -120,9 +118,7 @@ def delete_channel(id):
 	
 @route('/channels/create', method = 'GET')
 def create_channel():
-	return """<form action="/channels" method="POST">
-		Url: <input type="text" name = "url" class="url"/>
-		<input type="submit" value = "Add">"""
+	return template('create')
 
 @route('/channels', method = 'POST')
 def post_channel():
@@ -131,6 +127,10 @@ def post_channel():
 	channel = Channel.get(Channel.url == url)
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
+
+@route('/channels/edit/<id:int>' method = 'GET')
+def edit_channel(id):
+	
 
 @route('/channels/update', method = 'GET')
 def update_channels():
