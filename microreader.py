@@ -1,4 +1,5 @@
 import feedparser, json
+from functools import partial
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
 from mimerender import *
@@ -21,7 +22,7 @@ def is_active(url):
 mimerender = BottleMimeRender(global_charset = 'utf8')
 
 render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
-render_html = lambda **args: template('index', channels = Channel.select(), is_active = is_active, **args)
+render_html = lambda tpl='index': lambda **args: template(tpl, channels = Channel.select(), is_active = is_active, **args)
 
 @hook('before_request')
 def connect():
@@ -37,7 +38,7 @@ def index():
 
 @route('/channels/<id:int>/items', method = 'GET')	
 @route('/items', method = 'GET')
-@mimerender(json = render_json, html = render_html)
+@mimerender(json = render_json, html = render_html('index'))
 def items(id = None):
 	valid_params = {'1' : True, '0' : False}
 	starred = valid_params.get(request.query.getone('starred'))
@@ -158,4 +159,4 @@ if __name__ == '__main__':
 	try:
 		from mod_wsgi import version
 	except:
-		run(host='0.0.0.0', port=3000, reloader = True, debug = True)
+		run(host='0.0.0.0', port=3001, reloader = True, debug = True)
