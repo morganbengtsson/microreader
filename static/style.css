@@ -1,6 +1,6 @@
 		html, body {
 			font-family: sans-serif;
-			font-size: 90%;
+			font-size: 0.9em;
 			line-height: 1.2em;
 			margin: 0;
 			padding: 0;																	
@@ -54,14 +54,14 @@
 		}	
 			
 		.navigation {
-			padding: 1em;
+			padding: 0.5em;
 			float: left;
 			max-width: 12em;
 		}
 		
 		.navigation li {
 			display: block;
-			margin-bottom: 0.5em;			
+			margin-bottom: 0.5em;						
 		}			
 		
 		.nav-section {
@@ -202,12 +202,25 @@
 			html, body {
 				font-size: 130%;				
 			}
+			
+			i
+			{								
+				width: 42px;
+				height: 42px;
+				background-size: 42px 42px;								
+			}
 		}
 		
 		@media all and (-webkit-min-device-pixel-ratio: 1.5), 
 		screen and (min-resolution: 144dpi) {			
 			html, body  {
 				font-size: 150%;				
+			}
+			i
+			{								
+				width: 48px;
+				height: 48px;
+				background-size: 48px 48px;								
 			}
 		}
 		
@@ -218,8 +231,8 @@
 			}   
 			i
 			{								
-				width: 200%;
-				height: 200%;
-				background-size: 200% 200%;								
+				width: 64px;
+				height: 64px;
+				background-size: 64px 64px;								
 			}
 		}	
