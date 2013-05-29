@@ -14,4 +14,4 @@ Replace `<host>` and `<port>` with corresponding values.
 A JSON api is available for most url:s, by adding `application/json`
 to the Accept header.
 
-![Microreader](http://morganbengtsson.github.io/images/microreader.png "Microreader")
+![Microreader](https://raw.github.com/morganbengtsson/morganbengtsson.github.com/master/images/microreader.png "Microreader")
