@@ -199,6 +199,22 @@
 			}
 		});
 		
+		$('.link').click(function(e){
+			e.preventDefault();			
+			var item = $(this).parent().parent();
+			item.addClass('read');					
+			$.ajax({
+				url: $(this).attr('href'),				
+				data: '{"read" : true}',				
+				contentType: "application/json; charset=utf-8",
+				type: 'PATCH',
+				error: function()
+				{					
+					item.removeClass('read');
+				}							
+			});
+		});
+		
 		$('.nav-dropdown').click(function(){
 				var l = $(this);
 				$('.dropdown', this).css('top', l.offset().top + l.height());
