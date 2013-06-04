@@ -1,4 +1,4 @@
-Very simple web based RSS/Atom reader, written in Python and [Bottle](http://bottlepy.org/). 
+Very simple/lightweight self hosted RSS/Atom reader, somewhat inspired by Google reader. Microreader is written in Python and [Bottle](http://bottlepy.org/). 
 
 Try it out by installing requirements `pip install requirements.txt` and 
 run `python microreader.py` . Then access http://localhost:3000
