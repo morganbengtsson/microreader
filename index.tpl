@@ -111,11 +111,11 @@
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
-			item.addClass('read');
+			item.toggleClass('read');
 			event.preventDefault();			
 			$.ajax({
 				url: $(this).attr('href'),				
-				data: '{"read" : true}',				
+				data: '{"read" : ' + item.hasClass('read') + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
 				error: function()
