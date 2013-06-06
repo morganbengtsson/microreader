@@ -92,7 +92,7 @@
 			</div>
 						
 		</dt>
-		<dd class = "description">			
+		<dd class = "description" style = "display: none;">			
 			{{item.description}}
 			<span class = "author">by {{item.author}}</span>
 		</dd>
@@ -107,7 +107,7 @@
 		
 	$(document).ready(function()
 	{
-		$('.accordion dd').hide();	
+		
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
@@ -199,12 +199,12 @@
 			}
 		});
 		
-		$('.link').click(function(e){
+		$('.link').click(function(e) {
 			e.preventDefault();			
 			var item = $(this).parent().parent();
 			item.addClass('read');					
 			$.ajax({
-				url: $(this).attr('href'),				
+				url: item.find('.mark-read').attr('href'),				
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
@@ -213,9 +213,10 @@
 					item.removeClass('read');
 				}							
 			});
+			window.open($(this).attr('href'));
 		});
 		
-		$('.nav-dropdown').click(function(){
+		$('.nav-dropdown').click(function() {
 				var l = $(this);
 				$('.dropdown', this).css('top', l.offset().top + l.height());
 				$('.dropdown', this).css('left', l.offset().left + l.width());
