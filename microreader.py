@@ -1,4 +1,5 @@
-import feedparser, json
+import feedparser, json, urllib
+from urlparse import urlunsplit, urlunparse
 from functools import partial
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
@@ -22,7 +23,7 @@ def is_active(url):
 mimerender = BottleMimeRender(global_charset = 'utf8')
 
 render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
-render_html = lambda tpl='index': lambda **args: template(tpl, channels = Channel.select(), is_active = is_active, **args)
+render_html = lambda tpl='index', **args: lambda **args: template(tpl, channels = Channel.select(), is_active = is_active, **args)
 
 @hook('before_request')
 def connect():
@@ -48,7 +49,7 @@ def items(id = None):
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
 	count = int(request.query.count) if request.query.count else None
-	page = int(request.query.page) if request.query.page else None
+	page = int(request.query.page) if request.query.page else 0
 
 	query = Item.select()
 	if channel: query = query.where(Item.channel == channel)
@@ -56,10 +57,17 @@ def items(id = None):
 	if read: query = query.where(Item.read == read)
 	if since_id: query = query.where(Item.id >= since_id)
 	if max_id: query = query.where(Item.id <= max_id)
-	if page: query = query.paginate(page, count)	
+	if page and count: query = query.paginate(page, count)	
 	
-	items = list(query.order_by(Item.updated.desc()).limit(count))
-	return { 'items' : items }
+	out = { 'items' : list(query.order_by(Item.updated.desc()).limit(count))}
+		
+	params = request.query
+	params['page'] = page + 1
+	out['next'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None))
+	params['page'] = page - 1 if page > 1 else 1
+	out['prev'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None))
+	
+	return out
 
 		
 @route('/items/<id:int>', method = 'GET')

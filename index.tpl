@@ -97,8 +97,13 @@
 			<span class = "author">by {{item.author}}</span>
 		</dd>
 		</div>		
-		%end	
+		%end
+		<a class = "page-link" href = {{next}} > Next </a>	
+		<a class = "page-link" href = {{prev}} > Prev </a>
+		
 	</dl>
+	
+	
 	<div style="display:none" id = "modal" class ="popup"></div>		
 
 </body>
