@@ -97,8 +97,17 @@
 			<span class = "author">by {{item.author}}</span>
 		</dd>
 		</div>		
-		%end	
+		%end
+		
+		%if next:
+			<a class = "page-link" href = {{next}} > Next &rarr; </a>
+		%end
+		%if prev:
+		  <a class = "page-link" href = {{prev}} > &larr; Prev </a>	
+		%end
 	</dl>
+	
+	
 	<div style="display:none" id = "modal" class ="popup"></div>		
 
 </body>
@@ -111,11 +120,11 @@
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
-			item.addClass('read');
+			item.toggleClass('read');
 			event.preventDefault();			
 			$.ajax({
 				url: $(this).attr('href'),				
-				data: '{"read" : true}',				
+				data: '{"read" : ' + item.hasClass('read') + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
 				error: function()
