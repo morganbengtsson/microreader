@@ -98,9 +98,13 @@
 		</dd>
 		</div>		
 		%end
-		<a class = "page-link" href = {{next}} > Next </a>	
-		<a class = "page-link" href = {{prev}} > Prev </a>
 		
+		%if next:
+			<a class = "page-link" href = {{next}} > Next &rarr; </a>
+		%end
+		%if prev:
+		  <a class = "page-link" href = {{prev}} > &larr; Prev </a>	
+		%end
 	</dl>
 	
 	
