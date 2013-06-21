@@ -1,4 +1,5 @@
-import feedparser, json
+import feedparser, json, urllib, math
+from urlparse import urlunsplit, urlunparse
 from functools import partial
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
@@ -16,13 +17,17 @@ class CustomJsonEncoder(json.JSONEncoder):
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
 def is_active(url):
-	fullpath = request.path + ('?' + request.query_string if request.query_string else '')
+	params = request.query
+	valid_keys = ('starred')
+	valid_params = dict((k,v) for k, v in params.items() if k in valid_keys)
+	fullpath = urlunsplit((None, None, request.path, urllib.urlencode(valid_params), None))
+	#fullpath = request.path + ('?' + request.query_string if request.query_string else '')
 	return 'active' if fullpath == url else ''
 
 mimerender = BottleMimeRender(global_charset = 'utf8')
 
 render_json = lambda **args: json.dumps(args, cls=CustomJsonEncoder)
-render_html = lambda tpl='index': lambda **args: template(tpl, channels = Channel.select(), is_active = is_active, **args)
+render_html = lambda tpl='index', **args: lambda **args: template(tpl, channels = Channel.select(), is_active = is_active, **args)
 
 @hook('before_request')
 def connect():
@@ -47,8 +52,8 @@ def items(id = None):
 	channel = request.query.channel or id
 	since_id  = request.query.since_id
 	max_id = request.query.max_id
-	count = int(request.query.count) if request.query.count else None
-	page = int(request.query.page) if request.query.page else None
+	count = int(request.query.count) if request.query.count else 25
+	page = int(request.query.page) if request.query.page else 1
 
 	query = Item.select()
 	if channel: query = query.where(Item.channel == channel)
@@ -56,11 +61,18 @@ def items(id = None):
 	if read: query = query.where(Item.read == read)
 	if since_id: query = query.where(Item.id >= since_id)
 	if max_id: query = query.where(Item.id <= max_id)
-	if page: query = query.paginate(page, count)	
+	total_count = query.count()
+	if page and count: query = query.paginate(page, count)	
 	
-	items = list(query.order_by(Item.updated.desc()).limit(count))
-	return { 'items' : items }
-
+	out = { 'items' : list(query.order_by(Item.updated.desc()).limit(count))}	
+	
+	params = request.query
+	params['page'] = page + 1
+	out['next'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None)) if page <= math.ceil(total_count / count) else None
+	params['page'] = page - 1 if page > 1 else 1
+	out['prev'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None)) if page > 1 else None
+	
+	return out
 		
 @route('/items/<id:int>', method = 'GET')
 def item(id):
