@@ -115,25 +115,7 @@
 <script>
 		
 	$(document).ready(function()
-	{
-		
-		$('.item .mark-read').click(function(event)
-		{
-			var item = $(this).parent().parent();
-			item.toggleClass('read');
-			event.preventDefault();			
-			$.ajax({
-				url: $(this).attr('href'),				
-				data: '{"read" : ' + item.hasClass('read') + '}',				
-				contentType: "application/json; charset=utf-8",
-				type: 'PATCH',
-				error: function()
-				{					
-					item.removeClass('read');
-				}							
-			});
-		});
-		
+	{	
 		$('.mark-star').click(function(event)
 		{
 			event.preventDefault();
