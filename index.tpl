@@ -39,29 +39,7 @@
 					{{channel.title}}
 					<span class = "not-important">({{channel.unread_count()}})</span>					
 				</a>
-				<ul class = "nav-dropdown">
-				<a href = "#"><i class = "icon-caret-down"></i></a>
-				<ul class= "dropdown popup">
-					<li>
-						<a href = "/channels/{{channel.id}}/update" class= "update">
-						<i class = "icon-arrow-circle"></i>
-						Update
-						</a>
-					</li>
-					<li>
-						<a href = "/channels/{{channel.id}}/edit" class = "edit">
-							<i class = "icon-pen"></i>
-							Edit
-						</a>
-					</li>
-					<li>
-						<a href = "/channels/{{channel.id}}/delete" class = "delete">
-							<i class = "icon-cross"></i>
-							Delete
-						</a>
-					</li>
-				</ul>
-				</ul>								
+				<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>											
 			</li>						
 		%end
 		</ul>	
@@ -167,7 +145,7 @@
 			});			
 		});
 		
-		$('.edit').click(function(event)
+		$('.nav-dropdown').click(function(event)
 		{
 			event.preventDefault();
 			var l = $(this);			
