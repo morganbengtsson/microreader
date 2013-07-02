@@ -116,6 +116,23 @@
 		
 	$(document).ready(function()
 	{	
+		$('.item .mark-read').click(function(event)
+		{
+			var item = $(this).parent().parent();
+			item.toggleClass('read');
+			event.preventDefault();			
+			$.ajax({
+				url: $(this).attr('href'),				
+				data: '{"read" : ' + item.hasClass('read') + '}',				
+				contentType: "application/json; charset=utf-8",
+				type: 'PATCH',
+				error: function()
+				{					
+					item.removeClass('read');
+				}							
+			});
+		});
+	
 		$('.mark-star').click(function(event)
 		{
 			event.preventDefault();
@@ -190,7 +207,8 @@
 			}
 		});
 		
-		$('.link').click(function(e) {
+		$('.link').mousedown(function(e) {			
+			if (e.which <= 2) {
 			e.preventDefault();			
 			var item = $(this).parent().parent();
 			item.addClass('read');					
@@ -205,6 +223,7 @@
 				}							
 			});
 			window.open($(this).attr('href'));
+			}
 		});
 		
 		$('.nav-dropdown').click(function() {
