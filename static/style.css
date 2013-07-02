@@ -9,7 +9,7 @@
 		{
 			font-size: 1em;
 		}			
-		dl, dt, dd, ul, li {
+		dl, dt, dd, ul, ol, li {
           list-style: none;
 			margin: 0;
 			padding: 0;
@@ -36,6 +36,23 @@
 		}
 		#content {
 			overflow: hidden;	
+		}
+		
+		.horizontal {
+		overflow: auto;
+		padding-bottom: 0.5em;
+		}
+		.horizontal li {
+			margin-right: 1em;
+			display: inline;
+			margin-bottom: 0.5em;				
+		}
+		label{
+			display: block;
+			font-size: 0.7em;			
+		}
+		input{
+			
 		}
 				
 		.not-important
@@ -74,7 +91,8 @@
 		
 		.nav-section {
 			border-bottom: 1px solid #e1e1e1;
-			margin-bottom: 1em;
+			margin-bottom: 1em;			
+			overflow: auto;
 		}
 		
 		.active {			
