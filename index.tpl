@@ -200,7 +200,7 @@
 					item.removeClass('read');
 				}							
 			});
-			window.open($(this).attr('href'));
+			return true;
 			}
 		});
 		
