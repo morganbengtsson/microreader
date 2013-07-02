@@ -1,5 +1,5 @@
 import feedparser, json, urllib, math
-from urlparse import urlunsplit, urlunparse
+#from urlparse import urlunsplit, urlunparse
 from functools import partial
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
@@ -20,7 +20,7 @@ def is_active(url):
 	params = request.query
 	valid_keys = ('starred')
 	valid_params = dict((k,v) for k, v in params.items() if k in valid_keys)
-	fullpath = urlunsplit((None, None, request.path, urllib.urlencode(valid_params), None))
+	fullpath = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(valid_params), ''))
 	#fullpath = request.path + ('?' + request.query_string if request.query_string else '')
 	return 'active' if fullpath == url else ''
 
@@ -68,9 +68,9 @@ def items(id = None):
 	
 	params = request.query
 	params['page'] = page + 1
-	out['next'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None)) if page <= math.ceil(total_count / count) else None
+	out['next'] = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(params), '')) if page <= math.ceil(total_count / count) else None
 	params['page'] = page - 1 if page > 1 else 1
-	out['prev'] = urlunsplit((None, None, request.path, urllib.urlencode(params), None)) if page > 1 else None
+	out['prev'] = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(params), '')) if page > 1 else None
 	
 	return out
 		
