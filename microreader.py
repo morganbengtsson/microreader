@@ -1,10 +1,12 @@
 import feedparser, json, urllib, math
-#from urlparse import urlunsplit, urlunparse
+try: from urllib.parse import urlencode, urlunsplit
+except ImportError:
+		from urlparse import urlunsplit
+		from urllib import urlencode
 from functools import partial
 from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
 from mimerender import *
-
 
 class CustomJsonEncoder(json.JSONEncoder):
 	def default(self, obj):
@@ -20,7 +22,7 @@ def is_active(url):
 	params = request.query
 	valid_keys = ('starred')
 	valid_params = dict((k,v) for k, v in params.items() if k in valid_keys)
-	fullpath = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(valid_params), ''))
+	fullpath = urlunsplit(('', '', request.path, urlencode(valid_params), ''))
 	#fullpath = request.path + ('?' + request.query_string if request.query_string else '')
 	return 'active' if fullpath == url else ''
 
@@ -68,9 +70,9 @@ def items(id = None):
 	
 	params = request.query
 	params['page'] = page + 1
-	out['next'] = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(params), '')) if page <= math.ceil(total_count / count) else None
+	out['next'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page <= math.ceil(total_count / count) else None
 	params['page'] = page - 1 if page > 1 else 1
-	out['prev'] = urllib.parse.urlunsplit(('', '', request.path, urllib.parse.urlencode(params), '')) if page > 1 else None
+	out['prev'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page > 1 else None
 	
 	return out
 		
