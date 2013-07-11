@@ -1,7 +1,5 @@
-@import url(http://fonts.googleapis.com/css?family=Noto+Sans);
-
 html, body {
-	font-family: 'Noto sans', arial, sans-serif;
+	font-family: arial, sans-serif;
 	font-size: small;
 	line-height: 1.2em;
 	margin: 0;
