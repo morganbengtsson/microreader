@@ -7,9 +7,9 @@ run `python microreader.py` . Then access http://localhost:3000. Microreader is 
 Runs on [Apache with mod_wsgi](http://bottlepy.org/docs/dev/deployment.html#apache-mod-wsgi).
 An example app.wsgi is included in the repository.
 
-To have automatic aggregation of feeds every five minutes, enter the 
+To have automatic aggregation of feeds every twenty minutes, enter the 
 following into crontab:
-`*/5 * * * * wget -O - -q -t 1  http://<host>:<port>/channels/update`. 
+`*/20 * * * * wget -O - -q -t 1  http://<host>:<port>/channels/update`. 
 Replace `<host>` and `<port>` with corresponding values.
 
 A JSON api is available for most url:s, by adding `application/json`
