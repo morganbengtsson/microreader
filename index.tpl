@@ -73,6 +73,9 @@
 		<dd class = "description" style = "display: none;">			
 			{{item.description}}
 			<span class = "author">by {{item.author}}</span>
+			<audio src = "{{item.url}}" controls data-id = "{{item.id}}">
+			</audio>
+			{{item.position}}
 		</dd>
 		</div>		
 		%end
@@ -94,6 +97,19 @@
 		
 	$(document).ready(function()
 	{	
+		$('audio').click(function(){
+			var id = $(this).data('id');
+			$.ajax({
+				url: '/items/' + id,
+				data : '{"position" : ' + this.currentTime + '}',
+				contentType: "application/json; charset=utf-8",
+				type: 'PATCH',
+				error: function(){
+					alert('error');
+				}
+			});
+		});
+	
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();

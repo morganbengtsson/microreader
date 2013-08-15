@@ -91,7 +91,7 @@ def patch_item(id):
 	except Item.DoesNotExist:
 		abort(404)
 		
-	valid_keys = ['read', 'starred']
+	valid_keys = ['read', 'starred', 'position']
 	for key in set(valid_keys).intersection(set(request.json.keys())):
 		setattr(item, key, request.json[key])
 		

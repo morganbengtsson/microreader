@@ -61,6 +61,7 @@ class Item(BaseModel):
 	channel = ForeignKeyField(Channel, cascade = True, related_name = 'items')
 	updated = DateTimeField(null = True)
 	fetched = DateTimeField(default = datetime.now())
+	position = IntegerField(default = 0)
 
 	
 Channel.create_table(fail_silently = True)
