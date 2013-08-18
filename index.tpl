@@ -73,7 +73,7 @@
 		<dd class = "description" style = "display: none;">			
 			{{item.description}}
 			<span class = "author">by {{item.author}}</span>
-			<audio src = "{{item.url}}" controls data-id = "{{item.id}}">
+			<audio preload = "metadata" src = "{{item.url}}" controls data-id = "{{item.id}}" currentTime = {{item.position}}>
 			</audio>
 			{{item.position}}
 		</dd>
@@ -96,8 +96,18 @@
 <script>
 		
 	$(document).ready(function()
-	{	
-		$('audio').click(function(){
+	{
+	
+		$('audio').bind('canplay', function(){
+			var id = $(this).data('id');
+			var audio = this;
+			$.getJSON('/items/' + id, function(data) {				
+				audio.currentTime = data.item.position;
+				
+			});			
+		});
+	
+		$('audio').bind('pause', function(){
 			var id = $(this).data('id');
 			$.ajax({
 				url: '/items/' + id,
