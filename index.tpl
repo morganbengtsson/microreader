@@ -57,19 +57,18 @@
 			<div class = "header">
 				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
-				</a>
-			   
-				<a class = "mark-read" href ="/items/{{item.id}}">		    
-					<h2 class="title">{{item.title}}</h2>
+				</a>			 
+				<a href= "#{{item.id}}" class = "mark-read" data-id="{{item.id}}">		    
+					<h2 class="title" id = {{item.id}}>{{item.title}}</h2>
 					 -
 				<span class="summary">
 					{{!item.description}}
 				</span>
-				</a>
+				</a>				
 			</div>
 						
 		</dt>
-		<dd class = "description" style = "display: none;">			
+		<dd class = "description" style = "display:none;">			
 			{{!item.description_html}}
 			<span class = "author">by {{item.author}}</span>
 		</dd>
@@ -92,14 +91,27 @@
 <script>
 		
 	$(document).ready(function()
-	{	
+	{		
+		//$('dd').hide();	
+		if(window.location.hash) {
+			$(window.location.hash).parent().parent().parent().next().show();
+						
+		}
+			
+		
+		window.onhashchange = function(){
+			$('dd').hide();	
+			$(window.location.hash).parent().parent().parent().next().show();
+			return true;
+		}
+	
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
 			item.addClass('read');
-			event.preventDefault();			
+			//event.preventDefault();			
 			$.ajax({
-				url: $(this).attr('href'),				
+				url: '/items/' + $(this).attr('data-id'),				
 				data: '{"read" : ' + true + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
@@ -108,6 +120,7 @@
 					item.removeClass('read');
 				}							
 			});
+			return true;
 		});
 	
 		$('.mark-star').click(function(event)
@@ -154,19 +167,7 @@
 				$('#modal').css('top', l.offset().top + l.height());
 				$('#modal').css('left', l.offset().left + l.width());				
 			});			
-		});
-		
-		$('.mark-read').click(function(event)
-		{									
-			cur_stus = $(this).parent().parent().attr('stus');
-			if(cur_stus != "active") {
-				$('.accordion dd').hide();
-				$('.accordion dt').attr('stus', '');			
-				$(this).parent().parent().next().show();
-				$(this).parent().parent().attr('stus', 'active');
-			}
-			return false;
-		});
+		});		
 		
 		$('#subscribe-link').click(function(event){
 			event.preventDefault();
