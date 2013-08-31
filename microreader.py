@@ -4,9 +4,19 @@ except ImportError:
 		from urlparse import urlunsplit
 		from urllib import urlencode
 from functools import partial
-from bottle import Request, Response, HTTPResponse, error, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
+from bottle import  Bottle, Request, Response, HTTPResponse, error, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
 from mimerender import *
+
+@error(500)
+@error(404)
+@error(403)
+@error(510)
+def custom_error(error):
+	if (request.get_header('Accept') == 'application/json'):
+		return Response(json.dumps({'message' : error.body}), status = error.status_code)
+	else:
+		return Response(error.status + ", " + error.body, status = error.status_code)
 
 class CustomJsonEncoder(json.JSONEncoder):
 	def default(self, obj):
@@ -171,17 +181,7 @@ def update_channel(id):
 		abort(404, 'Channel does not exist')
 	return redirect('/channels/' + str(c.id) + '/items')
 
-@route('/bla')
-def bla():
-	return {'hello' : 'bla'}
 
-@error(404)
-def error404(error):
-	if (request.get_header('Accept') == 'application/json'):
-		return Response(json.dumps({'message' : error.body}), status = error.status_code)
-	else:
-		return Response(error.status + error.body, status = error.status_code)
-	
 @route('/static/<filename>')
 def server_static(filename):
 	return static_file(filename, root='static/')
