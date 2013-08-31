@@ -87,7 +87,7 @@ input{
 .navigation {
 	padding: 0.5em;
 	float: left;
-	max-width: 12em;
+	max-width: 13em;
 }
 
 .navigation li {
@@ -146,6 +146,9 @@ input{
 	text-overflow: ellipsis;
    white-space: nowrap;
    width: auto;           
+}
+.header h2{
+	display: inline;
 }
 
 .item .side {	
