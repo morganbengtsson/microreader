@@ -70,7 +70,7 @@
 						
 		</dt>
 		<dd class = "description" style = "display: none;">			
-			{{item.description}}
+			{{!item.description_html}}
 			<span class = "author">by {{item.author}}</span>
 		</dd>
 		</div>		

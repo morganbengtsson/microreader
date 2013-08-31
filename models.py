@@ -1,7 +1,7 @@
 import feedparser
 from peewee import *
-import lxml.html as ht
-import xml.etree.ElementTree as ET
+import lxml.html.soupparser as sp
+from lxml.html import tostring, fromstring
 from datetime import datetime
 from time import mktime
 
@@ -26,12 +26,15 @@ class Channel(BaseModel):
 			for entry in feed.entries:				
 				updated = datetime(*entry.updated_parsed[:6]) if entry.updated_parsed else None
 							
-				description = entry.content[0].value if hasattr(entry, 'content') else entry.description
-				description = ht.fromstring(description).text_content()
+				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
+				description_text = sp.fromstring(description).text_content()
+				description_html = tostring(sp.fromstring(description), pretty_print=True)
 				
 				parameters = dict(updated = updated, 
-								  title = ht.fromstring(entry.get('title', 'No title')).text_content(), 
-								  description = description, author = entry.get('author'), 
+								  title = sp.fromstring(entry.get('title', 'No title')).text_content(), 
+								  description = description_text, 
+								  description_html = description_html,
+								  author = entry.get('author'), 
 								  url = entry.get('link', 'No url'), channel = self)
 				if not Item.select().where(Item.url == entry.link).exists():						
 					Item.create(**parameters)
@@ -54,6 +57,7 @@ class Channel(BaseModel):
 class Item(BaseModel):
 	title = TextField()
 	description = TextField()
+	description_html = TextField()
 	author = TextField(null = True)
 	url = TextField(unique = True)
 	read = BooleanField(default = False)

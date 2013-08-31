@@ -152,7 +152,8 @@ label{
 	float: right;	
 }
 
-.item a {
+
+.header a {
 	text-decoration: none;
 	color: black;	
 }
@@ -203,7 +204,7 @@ label{
 	margin: 0.5em;
 }
 
-i
+[class^="icon"]
 {			
 	background-repeat: no-repeat;
 	*margin-right: 0.3em;			
