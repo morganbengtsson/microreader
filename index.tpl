@@ -148,7 +148,8 @@
 		$('.nav-dropdown').click(function(event)
 		{
 			event.preventDefault();
-			var l = $(this);			
+			var l = $(this);	
+			l.addClass("active-modal");		
 			$.get($(this).attr('href'), function(data){
 				$('#modal').html(data).toggle();
 				$('#modal').css('top', l.offset().top + l.height());
@@ -170,7 +171,8 @@
 		
 		$('#subscribe-link').click(function(event){
 			event.preventDefault();
-			var l = $('#subscribe-link')			
+			var l = $('#subscribe-link')
+			l.addClass("active-modal");			
 			$.get($('#subscribe-link').attr('href'), function(data){
 				$('#modal').html(data).toggle();
 				$('#modal').css('top', l.offset().top + l.height());
@@ -182,6 +184,7 @@
 			var container = $(".popup");
 			if (container.has(e.target).length === 0) {
 				container.hide();
+				$('a').removeClass('active-modal');		
 			}
 		});
 		
