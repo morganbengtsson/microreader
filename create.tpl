@@ -1,4 +1,11 @@
 <form action="/channels" method="POST">
-Url: <input type="text" name = "url" class="url"/>
-<input type="submit" value = "Add">
+<ul>
+<li>
+	<label for = "title">Url</label> 
+	<input type="text" name = "url" class="url"/>
+</li>
+<li>
+	<input type="submit" value = "Add">
+</li>
+</ul>
 </form>
