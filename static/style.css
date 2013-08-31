@@ -260,7 +260,14 @@ all and (max-width: 40em) {
 	.navigation {
 		float: none;
 		border-bottom: 1px solid #e1e1e1;
-		max-width: none;												
+		max-width: none;											
+	}
+	.navigation:after{
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;		
 	}
 	
 }
