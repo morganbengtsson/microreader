@@ -4,7 +4,7 @@ except ImportError:
 		from urlparse import urlunsplit
 		from urllib import urlencode
 from functools import partial
-from bottle import Request, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
+from bottle import Request, Response, HTTPResponse, error, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
 from mimerender import *
 
@@ -23,7 +23,6 @@ def is_active(url):
 	valid_keys = ('starred')
 	valid_params = dict((k,v) for k, v in params.items() if k in valid_keys)
 	fullpath = urlunsplit(('', '', request.path, urlencode(valid_params), ''))
-	#fullpath = request.path + ('?' + request.query_string if request.query_string else '')
 	return 'active' if fullpath == url else ''
 
 mimerender = BottleMimeRender(global_charset = 'utf8')
@@ -169,8 +168,19 @@ def update_channel(id):
 		c = Channel.get(Channel.id == id)
 		c.update_feed()		
 	except Channel.DoesNotExist:
-		abort(404)
+		abort(404, 'Channel does not exist')
 	return redirect('/channels/' + str(c.id) + '/items')
+
+@route('/bla')
+def bla():
+	return {'hello' : 'bla'}
+
+@error(404)
+def error404(error):
+	if (request.get_header('Accept') == 'application/json'):
+		return Response(json.dumps({'message' : error.body}), status = error.status_code)
+	else:
+		return Response(error.status + error.body, status = error.status_code)
 	
 @route('/static/<filename>')
 def server_static(filename):
