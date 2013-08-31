@@ -21,8 +21,7 @@
 				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">
 					<i class = "icon-folder"></i>
 					All
-				</a>
-				<a href = "/channels/update" class= "update">&nbsp;</a>
+				</a>				
 			</li>
 			<li>
 				<a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">
