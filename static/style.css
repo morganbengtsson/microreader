@@ -92,7 +92,15 @@ input{
 
 .navigation li {
 	display: block;
-	margin-bottom: 0.5em;						
+	clear: both;
+	/*margin-bottom: 0.5em*/;					
+}
+.navigation a {
+	float: left;
+	padding-top: 0.4em;
+	padding-bottom: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
 }			
 
 .nav-section {
@@ -101,13 +109,26 @@ input{
 	overflow: auto;
 }
 
-.active {			
+.active-modal{	
 	color: grey;
+	
 }
-.active i {
+.active-modal i
+{
 	-webkit-filter: grayscale(100%);
 	filter: gray;
 	filter: grayscale(100%);
+}
+
+.active {			
+	color: #fff;
+	background-color: #0099FF;
+}
+.active .not-important{
+	color: #fff;
+}
+.active i ,
+	-webkit-filter: invert(100%);
 }
 	
 .header h2 {		
