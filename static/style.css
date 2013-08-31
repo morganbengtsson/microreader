@@ -31,6 +31,12 @@ a:hover
 {
 	color: #0099FF;
 }		
+a:hover i
+{
+	-webkit-filter: hue-rotate(150deg);
+	filter: hue-rotate(150deg);
+}
+
 [type=text] {
 	border: 1px solid #e1e1e1
 }
@@ -97,6 +103,11 @@ input{
 
 .active {			
 	color: grey;
+}
+.active i {
+	-webkit-filter: grayscale(100%);
+	filter: gray;
+	filter: grayscale(100%);
 }
 	
 .header h2 {		
