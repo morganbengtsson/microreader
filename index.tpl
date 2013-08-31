@@ -97,11 +97,11 @@
 		$('.item .mark-read').click(function(event)
 		{
 			var item = $(this).parent().parent();
-			item.toggleClass('read');
+			item.addClass('read');
 			event.preventDefault();			
 			$.ajax({
 				url: $(this).attr('href'),				
-				data: '{"read" : ' + item.hasClass('read') + '}',				
+				data: '{"read" : ' + true + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
 				error: function()
