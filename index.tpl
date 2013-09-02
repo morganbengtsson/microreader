@@ -194,7 +194,7 @@
 			var item = $(this).parent().parent();
 			item.addClass('read');					
 			$.ajax({
-				url: item.find('.mark-read').attr('href'),				
+				url: '/items/' + $(this).attr('data-id'),				
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
