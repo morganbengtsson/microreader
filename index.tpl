@@ -49,7 +49,7 @@
 		<dt class = "{{"read" if item.read else ""}}">		    			
 			<div class = "side">
 				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
-				<a class = "link" href = "{{item.url}}" target="_blank">
+				<a class = "link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"></i>
 				</a>
 			</div>
@@ -194,7 +194,7 @@
 			var item = $(this).parent().parent();
 			item.addClass('read');					
 			$.ajax({
-				url: '/items/' + item.attr('data-id'),				
+				url: '/items/' + $(this).data('id'),				
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
