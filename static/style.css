@@ -208,9 +208,9 @@ label{
 {			
 	background-repeat: no-repeat;
 	*margin-right: 0.3em;			
-	width: 16px;
-	height: 16px;
-	background-size: 16px 16px;
+	width: 1.33em;
+	height: 1.33em;
+	background-size: 1.33em 1.33em;
 	text-decoration: inherit;
 	display: inline-block;
 	vertical-align: -20%;
@@ -271,44 +271,4 @@ all and (max-width: 40em) {
 		visibility: hidden;		
 	}
 	
-}
-						
-@media all and (-webkit-min-device-pixel-ratio: 1.3),
-screen and (min-resolution: 1.3dppx) {
-	html, body {
-		font-size: 130%;				
-	}
-	
-	i
-	{								
-		width: 42px;
-		height: 42px;
-		background-size: 42px 42px;								
-	}
-}
-
-@media all and (-webkit-min-device-pixel-ratio: 1.5), 
-screen and (min-resolution: 1.5dppx) {			
-	html, body {
-		font-size: 150%;				
-	}
-	i
-	{								
-		width: 48px;
-		height: 48px;
-		background-size: 48px 48px;								
-	}
-}
-
-@media all and (-webkit-min-device-pixel-ratio: 2), 
-screen and (min-resolution: 2.0dppx) {
-	html, body  {
-		font-size: 200%;								
-	}   
-	i
-	{								
-		width: 64px;
-		height: 64px;
-		background-size: 64px 64px;								
-	}
 }	
