@@ -33,7 +33,7 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}">
+				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
 					<i class = "icon-feed"></i>
 					{{channel.title}}
 					<span class = "not-important">({{channel.unread_count()}})</span>					
@@ -59,7 +59,7 @@
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
 				</a>			 
 				<a href= "#{{item.id}}" class = "mark-read" data-id="{{item.id}}">		    
-					<h2 class="title" id = {{item.id}}>{{item.title}}</h2>
+					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>{{item.title}}</h2>
 					 -
 				<span class="summary">
 					{{!item.description}}

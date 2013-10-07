@@ -17,7 +17,10 @@ class Channel(BaseModel):
 	fetched = DateTimeField(default = datetime.now())
 	url = TextField(unique = True)
 	icon = TextField(default = '/static/feed.png')
-			
+	
+	def has_new(self):
+		return True if (self.items.where(Item.new == True).count() > 0) else False
+					
 	def unread_count(self):
 		return self.items.where(Item.read == False).count()
 		
@@ -61,6 +64,7 @@ class Item(BaseModel):
 	author = TextField(null = True)
 	url = TextField(unique = True)
 	read = BooleanField(default = False)
+	new = BooleanField(default = True)
 	starred = BooleanField(default = False)
 	channel = ForeignKeyField(Channel, cascade = True, related_name = 'items')
 	updated = DateTimeField(null = True)

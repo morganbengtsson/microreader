@@ -203,6 +203,17 @@ label{
 	margin: 0.5em;
 }
 
+.has-new
+{
+	font-weight: bold;
+}
+
+.new-item:after
+{
+	content: ' *';
+	color: #C7A506;
+}
+
 [class^="icon"]
 {			
 	background-repeat: no-repeat;
