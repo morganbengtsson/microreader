@@ -83,7 +83,10 @@ def items(id = None):
 	params['page'] = page - 1 if page > 1 else 1
 	out['prev'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page > 1 else None
 	
-	return template('index', out, channels = channels, is_active = is_active)
+	if (request.get_header('Accept') == 'application/json'):
+		return out
+	else:
+		return template('index', out, is_active = is_active, channels = channels)
 		
 @route('/items/<id:int>', method = 'GET')
 def item(id):
