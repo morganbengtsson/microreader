@@ -5,7 +5,7 @@ from lxml.html import tostring, fromstring
 from datetime import datetime
 from time import mktime
 
-db = SqliteDatabase('database.db')
+db = SqliteDatabase('database.db', threadlocals=True)
 
 class BaseModel(Model):
 	class Meta:
