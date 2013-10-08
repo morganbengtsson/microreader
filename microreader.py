@@ -75,9 +75,7 @@ def items(id = None):
 		c.new = c.has_new()
 	
 	if channel : 
-		for item in Item.select().where(Item.channel == channel).limit(count):
-			item.new = False
-			item.save()
+		Item.update(new = True).where(Item.channel == channel).execute()		
 	
 	params = request.query
 	params['page'] = page + 1
