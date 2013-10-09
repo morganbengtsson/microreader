@@ -5,8 +5,8 @@ from lxml.html import tostring, fromstring
 from datetime import datetime
 from time import mktime
 
-#db = SqliteDatabase('database.db', threadlocals=True)
-db = MySQLDatabase('microreader', user = 'microreader', passwd='microreader')
+db = SqliteDatabase('database.db', threadlocals=True)
+#db = MySQLDatabase('microreader', user = 'microreader', passwd='...')
 
 class BaseModel(Model):
 	class Meta:
