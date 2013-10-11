@@ -1,8 +1,9 @@
-Very simple/lightweight self hosted RSS/Atom reader, somewhat inspired by Google reader. 
-Microreader is written in Python and [Bottle](http://bottlepy.org/). 
+Microreader is a simple, lightweight and hackable self hosted RSS/Atom reader.
+Written in [Python](http://python.org/) with help of the web framework [Bottle](http://bottlepy.org/), 
+and the orm [Peewee](https://github.com/coleifer/peewee). 
 
 Try it out by installing requirements `pip install -r requirements.txt` and 
-run `python microreader.py` . Then access http://localhost:3000. Microreader is developed with Python 3, but should work with Python 2.x.
+run `python microreader.py` . Then access http://localhost:3000.
 
 Runs on [Apache with mod_wsgi](http://bottlepy.org/docs/dev/deployment.html#apache-mod-wsgi).
 An example app.wsgi is included in the repository.
@@ -17,4 +18,4 @@ to the Accept header.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/75b5f7c4e3722ff84d2f46e14dba6590 "githalytics.com")](http://githalytics.com/morganbengtsson/Micro-reader)
 
-![Microreader](https://raw.github.com/morganbengtsson/morganbengtsson.github.com/master/images/microreader.png "Microreader")
+![Microreader](https://raw.github.com/morganbengtsson/Micro-reader/master/screenshots/microreader.png "Microreader")
