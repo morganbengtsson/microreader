@@ -227,43 +227,43 @@ label{
 	speak: none;			
 }		
 .icon-star	{
-	background-image: url('/static/star.svg');
+	background-image: url('/static/star.png');
 }
 
 .icon-star-empty {
-	background-image: url('/static/star-empty.svg');
+	background-image: url('/static/star-empty.png');
 }
 
 .icon-plus {
-	background-image: url('/static/plus.svg');
+	background-image: url('/static/plus.png');
 }
 
 .icon-folder {
-	background-image: url('/static/folder.svg');
+	background-image: url('/static/folder.png');
 }
 
 .icon-feed	{
-	background-image: url('/static/feed.svg');
+	background-image: url('/static/feed.png');
 }
 
 .icon-external {
-	background-image: url('/static/external.svg');
+	background-image: url('/static/external.png');
 }
 
 .icon-cross		{
-	background-image: url('/static/cross.svg');
+	background-image: url('/static/cross.png');
 }
 
 .icon-caret-down {
-	background-image: url('/static/caret-down.svg');
+	background-image: url('/static/caret-down.png');
 }
 
 .icon-arrow-circle {
-	background-image: url('/static/arrow-circle.svg');
+	background-image: url('/static/arrow-circle.png');
 }
 
 .icon-pen {
-	background-image: url('/static/pen.svg');
+	background-image: url('/static/pen.png');
 }
 
 @media all and (max-device-width: 40em),
