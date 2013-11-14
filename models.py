@@ -1,12 +1,17 @@
 import feedparser
 from peewee import *
-import lxml.html.soupparser as sp
-from lxml.html import tostring, fromstring
+from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from time import mktime
 
 db = SqliteDatabase('database.db', threadlocals=True)
 #db = MySQLDatabase('microreader', user = 'microreader', passwd='...')
+
+def strip_tags(xml):
+	if xml is None:
+			return None
+	else:
+		return ''.join(bs(xml).findAll(text=True)) 
 
 class BaseModel(Model):
 	class Meta:
@@ -31,15 +36,16 @@ class Channel(BaseModel):
 				updated = datetime(*entry.updated_parsed[:6]) if entry.updated_parsed else None
 							
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
-				description_text = sp.fromstring(description).text_content()
-				description_html = tostring(sp.fromstring(description), pretty_print=True)
+				description_text = strip_tags(description)								
+				description_html = bs(description).prettify()
 				
 				parameters = dict(updated = updated, 
-								  title = unicode(sp.fromstring(entry.get('title', 'No title')).text_content()), 
-								  description = unicode(description_text), 
-								  description_html = unicode(description_html),
-								  author = unicode(entry.get('author')), 
-								  url = unicode(entry.get('link', 'No url')), channel = self)
+								  title = strip_tags(entry.get('title', 'No title')), 
+								  description = description_text, 
+								  description_html = description_html,
+								  author = entry.get('author'), 
+								  url = entry.get('link', 'No url'), 
+								  channel = self)
 				if not Item.select().where(Item.url == entry.link).exists():						
 					Item.create(**parameters)
 				else:
