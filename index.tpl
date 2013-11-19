@@ -58,17 +58,17 @@
 				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
 				</a>			 
-				<a href= "#{{item.id}}" class = "mark-read" data-id="{{item.id}}">		    
+				<span class = "mark-read" data-id="{{item.id}}">		    
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>{{item.title}}</h2>
 					 -
-				<span class="summary">
-					{{!item.description}}
-				</span>
-				</a>				
+					<span class="summary">
+						{{!item.description}}
+					</span>
+				</span>				
 			</div>
 						
 		</dt>
-		<dd class = "description" style = "display:none;">			
+		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">			
 			{{!item.description_html}}
 			<span class = "author">by {{item.author}}</span>
 		</dd>
@@ -89,24 +89,34 @@
 </body>
 </html>
 <script>
-		
 	$(document).ready(function()
-	{		
-		//$('dd').hide();	
-		if(window.location.hash) {
-			$(window.location.hash).parent().parent().parent().next().show();
+	{
+
+		// $('dd').hide();	
+		// if(window.location.hash) {
+		// 	$(window.location.hash).parent().parent().parent().next().show();
 						
-		}
-			
+		// }
 		
-		window.onhashchange = function(){
-			$('dd').hide();	
-			$(window.location.hash).parent().parent().parent().next().show();
-			return true;
-		}
-	
+		// window.onhashchange = function(){
+		// 	$('dd').hide();	
+		// 	$(window.location.hash).parent().parent().parent().next().show();
+		// 	return true;
+		// }
+
 		$('.item .mark-read').click(function(event)
 		{
+			// show description
+			var id = $(this).attr('data-id');
+			var e = 'dd[data-id="' + id + '"]';
+			if ($(e).is(":hidden")) {
+				// only show this element
+				$('dd').hide();
+				$(e).show();
+			} else {
+				$(e).hide();
+			}
+			
 			var item = $(this).parent().parent();
 			item.addClass('read');
 			//event.preventDefault();			
