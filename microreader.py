@@ -40,7 +40,8 @@ def connect():
 
 @hook('after_request')
 def disconnect():
-	db.close()
+	if not db.is_closed():
+		db.close()
 
 @route('/')
 def index():
