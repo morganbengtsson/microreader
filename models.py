@@ -5,7 +5,7 @@ from datetime import datetime
 from time import mktime
 
 db = SqliteDatabase('database.db', threadlocals=True)
-#db = MySQLDatabase('microreader', user = 'microreader', passwd='...')
+#db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True)
 
 def strip_tags(xml):
 	if xml is None:
