@@ -14,7 +14,14 @@
 					<i class = "icon-plus"></i>
 					Subscribe
 				</a>				
-			</li>	
+			</li>
+			<li>
+				
+				<a href ="/channels/import" class = "nav-link" id ="import-link">
+					<i class = "icon-import"></i>
+					Import
+				</a>				
+			</li>		
 		</ul>
 		<ul class = "nav-section">			
 			<li>
@@ -181,9 +188,20 @@
 		
 		$('#subscribe-link').click(function(event){
 			event.preventDefault();
-			var l = $('#subscribe-link')
+			var l = $(this)
 			l.addClass("active-modal");			
-			$.get($('#subscribe-link').attr('href'), function(data){
+			$.get(l.attr('href'), function(data){
+				$('#modal').html(data).toggle();
+				$('#modal').css('top', l.offset().top + l.height());
+				$('#modal').css('left', l.offset().left + l.width());
+			});
+		});
+		
+		$('#import-link').click(function(event){
+			event.preventDefault();
+			var l = $(this)
+			l.addClass("active-modal");			
+			$.get(l.attr('href'), function(data){
 				$('#modal').html(data).toggle();
 				$('#modal').css('top', l.offset().top + l.height());
 				$('#modal').css('left', l.offset().left + l.width());
