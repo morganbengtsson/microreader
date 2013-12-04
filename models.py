@@ -1,4 +1,4 @@
-import feedparser
+import feedparser, listparser
 from peewee import *
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
@@ -61,6 +61,13 @@ class Channel(BaseModel):
 		feed = feedparser.parse(url).feed					
 		updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None	
 		cls.create(url = url, updated = updated, title = feed.get('title', 'No title')) 
+	
+	@classmethod
+	def create_from_file(cls, file):
+		opml = listparser.parse(file)
+		print('found %s feeds' % (len(opml.feeds)))
+		for feed in opml.feeds:
+			cls.create(url = feed.url, title = feed.title)		
 				
 	class FeedDoesNotExist(Exception) : pass
 	
