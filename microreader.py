@@ -1,5 +1,6 @@
 import feedparser, json, urllib, math
-try: from urllib.parse import urlencode, urlunsplit
+try: 
+	from urllib.parse import urlencode, urlunsplit
 except ImportError:
 		from urlparse import urlunsplit
 		from urllib import urlencode
@@ -148,7 +149,7 @@ def create_channel():
 
 @route('/channels', method = 'POST')
 def post_channel():
-	url = request.forms.get('url')			
+	url = request.forms.get('url')		
 	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
 	channel.update_feed()
@@ -191,7 +192,7 @@ def server_static(filename):
 
 @route('/favicon.ico')
 def get_favicon():
-    return server_static('favicon.ico')
+	return server_static('favicon.ico')
 
 if __name__ == '__main__':
 	try:
