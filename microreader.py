@@ -185,6 +185,14 @@ def update_channel(id):
 		abort(404, 'Channel does not exist')
 	return redirect('/channels/' + str(c.id) + '/items')
 
+@route('/channels/import', method = 'GET')
+def import_channels():
+	return template('import')
+
+@route('/channels/import', method = 'POST')
+def import_channels_post():
+	upload = request.files.get('file')
+	Channel.create_from_file(upload.file)	
 
 @route('/static/<filename>')
 def server_static(filename):

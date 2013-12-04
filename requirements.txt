@@ -1,4 +1,5 @@
-feedparser>=5.1
+feedparser=5.1.2
 bottle>=0.11.6
 peewee>=2.0.9
 beautifulsoup4
+listparser
