@@ -38,7 +38,7 @@
 					{{channel.title}}
 					<span class = "not-important">({{channel.unread_count()}})</span>					
 				</a>
-				<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>											
+				<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>									
 			</li>						
 		%end
 		</ul>	
@@ -58,12 +58,11 @@
 				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
 				</a>			 
-				<span class = "mark-read" data-id="{{item.id}}">		    
-					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>{{item.title}}</h2>
-					 -
-					<span class="summary">
-						{{!item.description}}
-					</span>
+				<span class = "mark-read" data-id="{{item.id}}">	
+					<span class="author">{{item.channel.title}}</span>	    
+					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
+						{{item.title}}
+					</h2>
 				</span>				
 			</div>
 						
@@ -76,10 +75,10 @@
 		%end
 		
 		%if next:
-			<a class = "page-link" href = {{next}} > Next &rarr; </a>
+			<a class = "page-link" href = {{next}} > Next &raquo; </a>
 		%end
 		%if prev:
-		  <a class = "page-link" href = {{prev}} > &larr; Prev </a>	
+		  <a class = "page-link" href = {{prev}} > &laquo; Prev </a>	
 		%end
 	</dl>
 	
