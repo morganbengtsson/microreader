@@ -231,6 +231,10 @@ label{
 	background-image: url('/static/star.png');
 }
 
+.icon-import	{
+	background-image: url('/static/import.png');
+}
+
 .icon-star-empty {
 	background-image: url('/static/star-empty.png');
 }

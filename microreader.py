@@ -191,8 +191,9 @@ def import_channels():
 
 @route('/channels/import', method = 'POST')
 def import_channels_post():
-	upload = request.files.get('file')
-	Channel.create_from_file(upload.file)	
+	upload = request.files.get('file')	
+	Channel.create_from_file(upload.file)
+	redirect('/items')	
 
 @route('/static/<filename>')
 def server_static(filename):
