@@ -1,5 +1,6 @@
 %from datetime import datetime
 %from bottle import request
+%import os
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
@@ -57,7 +58,8 @@
 			<div class = "header">
 				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
-				</a>			 
+				</a>
+
 				<span class = "mark-read" data-id="{{item.id}}">	
 					<span class="author">{{item.channel.title}}</span>	    
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
