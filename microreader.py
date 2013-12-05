@@ -180,9 +180,8 @@ def update_channels():
 	for c in Channel.select():
 		try:
 			c.update_feed()
-		except Exception as e:
+		except:
 			print('Unable to update channel: "%s" [%s]' % (c.title, c.url))
-			print(e.strerror)
 			continue
 		
 	return redirect('/items')
