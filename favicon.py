@@ -1,6 +1,8 @@
 from bs4 import BeautifulSoup
 import urllib.request
 
+
+# TODO: try top domain if subdomain fails
 def get_domain(url):
 	parsed_uri = urllib.request.urlparse(url)
 	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)

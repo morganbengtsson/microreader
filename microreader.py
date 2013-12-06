@@ -155,8 +155,8 @@ def post_channel():
 	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
 	# save favicon
-	icon_path = os.path.join('static', 'favicons', str(channel.id) + '.ico')
-	favicon.save_favicon(url, icon_path)
+	# icon_path = os.path.join('static', 'favicons', str(channel.id) + '.ico')
+	# favicon.save_favicon(url, icon_path)
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
