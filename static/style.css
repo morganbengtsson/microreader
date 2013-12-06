@@ -135,14 +135,27 @@ label{
 	display: inline;						
 }	
 
+.header .author {
+	margin: 0;
+	padding: 0;
+	color: #444;
+	font-weight: normal;
+	width: 15%;
+	text-align: left;
+	overflow: hidden;	
+	display: inline-block;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .item .header {			
 	margin-top: 0;
 	margin-bottom: 0;	
 	float: none;
 	overflow: hidden;			
 	text-overflow: ellipsis;
-   white-space: nowrap;
-   width: auto;           
+	white-space: nowrap;
+	width: auto;           
 }
 .header h2{
 	display: inline;
@@ -174,6 +187,7 @@ label{
 	padding: 1em 1.5em 1em 1.5em;
 	display: block;						
 }
+
 .read {
 	font-weight: normal;
 	background-color: #F0F0F0;
@@ -181,8 +195,9 @@ label{
 }
 
 .read h2 {
-	font-weight: normal;			
-}	
+	font-weight: normal;	
+	color: #000;		
+}
 	
 .link { 
 	position:relative;
@@ -196,6 +211,7 @@ label{
 .dropdown {
 	display: none;
 }
+
 .page-link
 {
 	float: right;
@@ -269,6 +285,11 @@ label{
 
 .icon-pen {
 	background-image: url('/static/pen.png');
+}
+
+.icon-fav {
+	margin-left: .5em;
+	margin-right: .3em;
 }
 
 @media all and (max-device-width: 40em),

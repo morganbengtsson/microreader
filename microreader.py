@@ -1,11 +1,14 @@
+import os
 import feedparser, json, urllib, math
-try: from urllib.parse import urlencode, urlunsplit
+try: 
+	from urllib.parse import urlencode, urlunsplit
 except ImportError:
 		from urlparse import urlunsplit
 		from urllib import urlencode
 from functools import partial
 from bottle import  Bottle, Request, Response, HTTPResponse, error, route, run, view, template, install, redirect, hook, request, response, abort, static_file, JSONPlugin
 from models import *
+import favicon
 
 @error(500)
 @error(404)
@@ -149,9 +152,12 @@ def create_channel():
 
 @route('/channels', method = 'POST')
 def post_channel():
-	url = request.forms.get('url')			
+	url = request.forms.get('url')		
 	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
+	# save favicon
+	# icon_path = os.path.join('static', 'favicons', str(channel.id) + '.ico')
+	# favicon.save_favicon(url, icon_path)
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
@@ -173,7 +179,17 @@ def edit_channel_post(id):
 @route('/channels/update', method = 'GET')
 def update_channels():
 	for c in Channel.select():
-		c.update_feed()
+		try:
+			try:
+				print('Updating channel: "%s" [%s]' % (c.title, c.url))
+				c.update_feed()
+			except:
+				print('Unable to update channel: "%s" [%s]' % (c.title, c.url))
+				continue
+		except:
+			print('super error!')
+
+		
 	return redirect('/items')
 
 @route('/channels/<id:int>/update', method='GET')
@@ -199,9 +215,13 @@ def import_channels_post():
 def server_static(filename):
 	return static_file(filename, root='static/')
 
+@route('/static/favicons/<filename>')
+def server_static(filename):
+	return static_file(filename, root='static/favicons/')
+
 @route('/favicon.ico')
 def get_favicon():
-    return server_static('favicon.ico')
+	return server_static('favicon.ico')
 
 if __name__ == '__main__':
 	try:
