@@ -1,17 +1,20 @@
 from bs4 import BeautifulSoup
-import urllib.request
-
+try: 
+	from urllib.request	 import urlparse, Request, urlopen
+except ImportError:
+	from urlparse import urlparse
+	from urllib2 import Request, urlopen
 
 # TODO: try top domain if subdomain fails
 def get_domain(url, toplevel=False):
-	parsed_uri = urllib.request.urlparse(url)
+	parsed_uri = urlparse(url)
 	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
 	return domain
 
 def open_url(url):
-	req = urllib.request.Request(url) 
+	req = Request(url) 
 	req.add_header('User-Agent', 'Micro-reader Browser')	
-	return urllib.request.urlopen(req)
+	return urlopen(req)
 
 def get_icon_link(domain):
 	page = open_url(domain)
