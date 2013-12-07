@@ -42,7 +42,12 @@
 		%for channel in channels:		
 			<li>			
 				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
+					%favicon = str(channel.id) + '.ico'
+					%if os.path.exists(os.path.join('static', 'favicons', favicon)):
+					<i class = "icon-fav" style="background-image: url('/static/favicons/{{favicon}}');"></i>
+					%else:
 					<i class = "icon-feed"></i>
+					%end
 					{{channel.title}}
 					<span class = "not-important">({{channel.unread_count()}})</span>					
 				</a>
@@ -67,7 +72,7 @@
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
 				</a>
 
-				<span class = "mark-read" data-id="{{item.id}}">	
+				<span class = "mark-read" data-id="{{item.id}}">
 					<span class="author">{{item.channel.title}}</span>	    
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
@@ -193,6 +198,7 @@
 				$('#modal').html(data).show();
 				$('#modal').css('top', l.offset().top + l.height());
 				$('#modal').css('left', l.offset().left + l.width());
+				$('input[name=url]').focus();
 			});
 		});
 		
