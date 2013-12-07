@@ -77,6 +77,10 @@
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</h2>
+					-
+					<span class="summary">
+							{{!item.description}}
+					</span>
 				</span>				
 			</div>
 						
