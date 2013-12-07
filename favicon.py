@@ -3,7 +3,7 @@ import urllib.request
 
 
 # TODO: try top domain if subdomain fails
-def get_domain(url):
+def get_domain(url, toplevel=False):
 	parsed_uri = urllib.request.urlparse(url)
 	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
 	return domain
@@ -30,6 +30,7 @@ def write_icon(icon_link, save_as):
 def save_favicon(url, save_as):
 	print('saving url %s as %s' % (url, save_as))
 	domain = get_domain(url)
+	print('domain:', domain)
 	# direct link first
 	try:
 		write_icon(domain + 'favicon.ico', save_as)
@@ -39,7 +40,9 @@ def save_favicon(url, save_as):
 		if icon_link:
 			write_icon(icon_link, save_as)
 		else:
-			print('no icon link found')
+			print('no icon link found, trying top level')
+			top = 'http://' + '.'.join(domain.split('.')[1:])
+			save_favicon(top, save_as)
 	
 
 

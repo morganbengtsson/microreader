@@ -287,10 +287,10 @@ label{
 	background-image: url('/static/pen.png');
 }
 
-.icon-fav {
+/*.icon-fav {
 	margin-left: .5em;
 	margin-right: .3em;
-}
+}*/
 
 @media all and (max-device-width: 40em),
 all and (max-width: 40em) {

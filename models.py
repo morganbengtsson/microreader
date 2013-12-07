@@ -58,7 +58,7 @@ class Channel(BaseModel):
 			
 	@classmethod
 	def create_from_url(cls, url):
-		feed = feedparser.parse(url).feed					
+		feed = feedparser.parse(url).feed	
 		updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None	
 		cls.create(url = url, updated = updated, title = feed.get('title', 'No title')) 
 	
