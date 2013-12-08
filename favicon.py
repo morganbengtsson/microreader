@@ -1,3 +1,4 @@
+import os
 from bs4 import BeautifulSoup
 try: 
 	from urllib.request	 import urlparse, Request, urlopen
@@ -34,8 +35,10 @@ def save_favicon(url, save_as):
 	print('saving url %s as %s' % (url, save_as))
 	domain = get_domain(url)
 	print('domain:', domain)
-	# direct link first
-	try:
+	if not os.path.exists(os.path.dirname(save_as)):
+		os.mkdir(os.path.dirname(save_as))
+	
+	try: # direct link first
 		write_icon(domain + 'favicon.ico', save_as)
 	except Exception:
 		print('no direct icon; trying to find link')

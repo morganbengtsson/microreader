@@ -73,6 +73,12 @@
 				</a>
 
 				<span class = "mark-read" data-id="{{item.id}}">
+					%favicon = str(item.channel.id) + '.ico'
+					%if os.path.exists(os.path.join('static', 'favicons', favicon)):
+					<i class = "icon-fav" style="background-image: url('/static/favicons/{{favicon}}');"></i>
+					%else:
+					<i class = "icon-feed"></i>
+					%end
 					<span class="author">{{item.channel.title}}</span>	    
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
