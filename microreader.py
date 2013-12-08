@@ -98,7 +98,10 @@ def item(id):
 		item = Item.get(Item.id == id)
 	except Item.DoesNotExist:
 		abort(404, 'Item does not exist')
-	return {'item' : item}
+	if (request.get_header('Accept') == 'application/json'):		
+		return {'item' : item}
+	else:
+		return template('item', {'item' : item})
 
 @route('/items/<id:int>', method = 'PATCH')
 def patch_item(id):

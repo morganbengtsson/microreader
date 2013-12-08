@@ -72,7 +72,7 @@
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
 				</a>
 
-				<span class = "mark-read" data-id="{{item.id}}">
+				<a href = '/items/{{item.id}}' class = "mark-read" data-id="{{item.id}}">
 					%favicon = str(item.channel.id) + '.ico'
 					%if os.path.exists(os.path.join('static', 'favicons', favicon)):
 					<i class = "icon-fav" style="background-image: url('/static/favicons/{{favicon}}');"></i>
@@ -80,20 +80,17 @@
 					<i class = "icon-feed"></i>
 					%end
 					<span class="author">{{item.channel.title}}</span>	    
-					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
-						{{item.title}}
-					</h2>
+					<h2 class ="title {{'new-item' if item.new else ''}}">{{item.title}}</h2>					
 					-
 					<span class="summary">
-							{{!item.description}}
+							{{!item.description[:15]}}
 					</span>
-				</span>				
+				</a>				
 			</div>
 						
 		</dt>
 		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">			
-			{{!item.description_html}}
-			<span class = "author">by {{item.author}}</span>
+			<img src="/static/loading.gif"></img>
 		</dd>
 		</div>		
 		%end
@@ -126,9 +123,37 @@
 		// 	$(window.location.hash).parent().parent().parent().next().show();
 		// 	return true;
 		// }
+		
+		/*
+		$('.title').click(function(event){
+			event.preventDefault();
+			var title = $(this);
+			console.log('loading content: ' + title.attr('href'));
+			$.get(title.attr('href'), function(data){
+				$('*[data-description-id="' + title.data('title-id') + '"]').html(data);
+			});
+			
+			var id = $(this).attr('data-title-id');
+			var e = 'dd[data-description-id="' + id + '"]';
+			if ($(e).is(":hidden")) {
+				// only show this element
+				$('dd').hide();
+				$(e).show();
+			} else {
+				$(e).hide();
+			}
+			
+		});*/
 
 		$('.item .mark-read').click(function(event)
 		{
+			event.preventDefault();
+			var title = $(this);
+			console.log('loading content: ' + title.attr('href'));
+			$.get(title.attr('href'), function(data){
+				$('dd[data-id="' + title.data('id') + '"]').html(data);
+			});
+			
 			// show description
 			var id = $(this).attr('data-id');
 			var e = 'dd[data-id="' + id + '"]';
