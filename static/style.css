@@ -146,6 +146,7 @@ label{
 	display: inline-block;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+	vertical-align: bottom;
 }
 
 .item .header {			
