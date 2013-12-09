@@ -187,9 +187,21 @@ def update_channels():
 				print('Unable to update channel: "%s" [%s]' % (c.title, c.url))
 				continue
 		except:
-			print('super error!')
+			print('super error!') # TODO: clean up for more robust error handling
 
 		
+	return redirect('/items')
+
+# possibly temporary route to update favicons for already established db's
+@route('/channels/update/favicons', method = 'GET')
+def update_channels():
+	for c in Channel.select():
+		try:
+			icon_path = os.path.join('static', 'favicons', str(c.id) + '.ico')
+			favicon.save_favicon(c.url, icon_path)
+		except:
+			print('error updating favicon for:', c.url)
+
 	return redirect('/items')
 
 @route('/channels/<id:int>/update', method='GET')
