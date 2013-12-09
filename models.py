@@ -9,7 +9,7 @@ db = SqliteDatabase('database.db', threadlocals=True)
 
 def strip_tags(xml):
 	if xml is None:
-			return None
+		return None
 	else:
 		return ''.join(bs(xml).findAll(text=True)) 
 

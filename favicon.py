@@ -34,7 +34,7 @@ def get_feedburner_link(url):
 def write_icon(icon_link, save_as):
 	icon = open_url(icon_link)
 	with open(save_as, 'wb') as f:
-		f.write(icon.read())
+		f.write(icon.read()) # TODO: check for errors
 
 def save_favicon(url, save_as):
 	print('saving url %s as %s' % (url, save_as))
