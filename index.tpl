@@ -79,7 +79,7 @@
 					%else:
 					<i class = "icon-feed"></i>
 					%end
-					<span class="author">{{item.channel.title}}</span>	    
+					<span class="channel-title">{{item.channel.title}}</span>	    
 					<h2 class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</h2>
