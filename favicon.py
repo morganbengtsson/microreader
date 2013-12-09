@@ -26,6 +26,11 @@ def get_icon_link(domain):
 
 	return None
 
+def get_feedburner_link(url):
+	page = open_url(url)
+	soup = BeautifulSoup(page)
+	return soup.link.string
+
 def write_icon(icon_link, save_as):
 	icon = open_url(icon_link)
 	with open(save_as, 'wb') as f:
@@ -34,6 +39,10 @@ def write_icon(icon_link, save_as):
 def save_favicon(url, save_as):
 	print('saving url %s as %s' % (url, save_as))
 	domain = get_domain(url)
+	# special handling for feedburner
+	if 'feedburner.com' in domain:
+		print('got feedburner url')
+		domain = get_domain(get_feedburner_link(url)) 
 	print('domain:', domain)
 	if not os.path.exists(os.path.dirname(save_as)):
 		os.mkdir(os.path.dirname(save_as))
