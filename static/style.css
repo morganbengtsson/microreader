@@ -187,7 +187,8 @@ label{
 .description {			
 	line-height: 1.5;			
 	padding: 1em 1.5em 1em 1.5em;
-	display: block;						
+	display: block;		
+	overflow: auto;
 }
 
 .read {
