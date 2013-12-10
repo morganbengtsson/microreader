@@ -191,6 +191,12 @@ label{
 	overflow: auto;
 }
 
+hr {
+	border: 0;
+	color: #ccc;
+	background-color: #ccc;
+}
+
 .read {
 	font-weight: normal;
 	background-color: #F0F0F0;

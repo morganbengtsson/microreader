@@ -38,6 +38,13 @@ class Channel(BaseModel):
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
 				description_text = strip_tags(description)								
 				description_html = bs(description).prettify()
+
+				# temp fix for enclosures
+				enclosures = entry.get('enclosures')
+				if enclosures:
+					for enclosure in enclosures:
+						description_html += '<hr/><a href="' + enclosure['href'] + '">' + enclosure['href'] + '</a>'
+
 				# fix for feeds without item urls
 				url_guid = entry.get('link', None)
 				if not url_guid:
