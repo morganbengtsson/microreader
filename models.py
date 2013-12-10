@@ -9,7 +9,7 @@ db = SqliteDatabase('database.db', threadlocals=True)
 
 def strip_tags(xml):
 	if xml is None:
-			return None
+		return None
 	else:
 		return ''.join(bs(xml).findAll(text=True)) 
 
@@ -38,18 +38,29 @@ class Channel(BaseModel):
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
 				description_text = strip_tags(description)								
 				description_html = bs(description).prettify()
+
+				# temp fix for enclosures
+				enclosures = entry.get('enclosures')
+				if enclosures:
+					for enclosure in enclosures:
+						description_html += '<hr/><a href="' + enclosure['href'] + '">' + enclosure['href'] + '</a>'
+
+				# fix for feeds without item urls
+				url_guid = entry.get('link', None)
+				if not url_guid:
+					url_guid =  entry.get('guid', 'No url')
 				
 				parameters = dict(updated = updated, 
 								  title = strip_tags(entry.get('title', 'No title')), 
 								  description = description_text, 
 								  description_html = description_html,
 								  author = entry.get('author'), 
-								  url = entry.get('link', 'No url'), 
+								  url = url_guid, 
 								  channel = self)
-				if not Item.select().where(Item.url == entry.link).exists():						
+				if not Item.select().where(Item.url == url_guid).exists():						
 					Item.create(**parameters)
 				else:
-					Item.update(**parameters).where(Item.url == entry.link).execute()			
+					Item.update(**parameters).where(Item.url == url_guid).execute()			
 			
 			self.updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None
 			

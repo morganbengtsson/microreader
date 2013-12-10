@@ -135,7 +135,7 @@ label{
 	display: inline;						
 }	
 
-.header .author {
+.header .channel-title {
 	margin: 0;
 	padding: 0;
 	color: #444;
@@ -175,7 +175,8 @@ label{
 .item  {		
 	border-bottom: 1px solid #e1e1e1;
 	border-left: 1px solid #e1e1e1;			 
-	border-right: 1px solid #e1e1e1;			 
+	border-right: 1px solid #e1e1e1;	
+	clear: both;		 
 }
 
 .summary {			
@@ -186,7 +187,14 @@ label{
 .description {			
 	line-height: 1.5;			
 	padding: 1em 1.5em 1em 1.5em;
-	display: block;						
+	display: block;		
+	overflow: auto;
+}
+
+hr {
+	border: 0;
+	color: #ccc;
+	background-color: #ccc;
 }
 
 .read {
