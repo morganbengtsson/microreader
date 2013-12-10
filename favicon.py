@@ -18,13 +18,17 @@ def open_url(url):
 	return urlopen(req)
 
 def get_icon_link(domain):
-	page = open_url(domain)
-	soup = BeautifulSoup(page)
-	icon_link = soup.find('link', rel='shortcut icon')
-	if icon_link:
-		return icon_link['href']
-
-	return None
+	try:
+		page = open_url(domain)
+		soup = BeautifulSoup(page)
+		icon_link = soup.find('link', rel='shortcut icon')
+		if icon_link:
+			return icon_link['href']
+		else:
+			return None
+	except:
+		print('favicon: get_icon_link failed')
+		return None
 
 def get_feedburner_link(url):
 	page = open_url(url)
