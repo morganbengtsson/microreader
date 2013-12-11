@@ -1,16 +1,17 @@
-import os
+import os, logging
 from bs4 import BeautifulSoup
 try: 
-	from urllib.request	 import urlparse, Request, urlopen
+	from urllib.request	 import urlparse, Request, urlopen, urlretrieve
 except ImportError:
 	from urlparse import urlparse
-	from urllib2 import Request, urlopen
+	from urllib2 import Request, urlopen, urlretrieve
 
-# TODO: try top domain if subdomain fails
-def get_domain(url, toplevel=False):
-	parsed_uri = urlparse(url)
-	domain = '{uri.scheme}://{uri.netloc}/'.format(uri=parsed_uri)
-	return domain
+logging.basicConfig(level=logging.DEBUG)	
+
+def get_domain(url):
+	if not url.startswith('http://'):
+		url = 'http://' + url
+	return 'http://' + url.split('/')[2]
 
 def open_url(url):
 	req = Request(url) 
@@ -27,7 +28,7 @@ def get_icon_link(domain):
 		else:
 			return None
 	except:
-		print('favicon: get_icon_link failed')
+		logging.debug('favicon: get_icon_link failed')
 		return None
 
 def get_feedburner_link(url):
@@ -36,32 +37,40 @@ def get_feedburner_link(url):
 	return soup.link.string
 
 def write_icon(icon_link, save_as):
-	icon = open_url(icon_link)
-	with open(save_as, 'wb') as f:
-		f.write(icon.read()) # TODO: check for errors
+	urlretrieve(icon_link, save_as)
 
-def save_favicon(url, save_as):
-	print('saving url %s as %s' % (url, save_as))
-	domain = get_domain(url)
+def save_favicon(url, save_as, one_up=False):
+	logging.debug('saving url %s as %s' % (url, save_as))
+	if os.path.exists(save_as):
+		logging.debug('favicon: ' + save_as + ' already exists')
+		return
+	if not one_up:	
+		url = get_domain(url)
+
 	# special handling for feedburner
-	if 'feedburner.com' in domain:
-		print('got feedburner url')
-		domain = get_domain(get_feedburner_link(url)) 
-	print('domain:', domain)
+	if 'feedburner.com' in url:
+		logging.debug('got feedburner url')
+		url = get_domain(get_feedburner_link(url)) 
+	logging.debug('domain:', url)
+
+	# create save dir
 	if not os.path.exists(os.path.dirname(save_as)):
 		os.mkdir(os.path.dirname(save_as))
 	
 	try: # direct link first
-		write_icon(domain + 'favicon.ico', save_as)
-	except Exception:
-		print('no direct icon; trying to find link')
-		icon_link = get_icon_link(domain)
+		write_icon(url + 'favicon.ico', save_as)
+	except:
+		logging.debug('no direct icon; trying to find link')
+		icon_link = get_icon_link(url)
 		if icon_link:
 			write_icon(icon_link, save_as)
 		else:
-			print('no icon link found, trying top level')
-			top = 'http://' + '.'.join(domain.split('.')[1:])
-			save_favicon(top, save_as)
+			if not one_up: # try parent domain
+				logging.debug('no icon link found, trying top level')
+				top = 'http://' + '.'.join(url.split('.')[1:]) + '/'
+				save_favicon(top, save_as, True)
+			else:
+				logging.debug('giving up')
 	
 
 
