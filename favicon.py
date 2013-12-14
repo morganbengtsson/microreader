@@ -23,10 +23,11 @@ def get_icon_url(url):
 			# get absolute url if relative
 			page = open_url(icon_url)
 			if not page or (page.getcode() != 200):
-				if icon_url.startswith("/"):
+				if icon_url.startswith('//'):
+					return 'http:' + icon_url
+				elif icon_url.startswith('/'):
 					icon_url = icon_url[1:len(icon_url)]
-				absolute_url = url + '/' + icon_url
-				return absolute_url
+					return url + '/' + icon_url
 			else:
 				return icon_url
 		
