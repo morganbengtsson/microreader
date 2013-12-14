@@ -1,76 +1,105 @@
 import os, logging
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup as bs
 try: 
 	from urllib.request	 import urlparse, Request, urlopen, urlretrieve
 except ImportError:
 	from urlparse import urlparse
 	from urllib2 import Request, urlopen, urlretrieve
 
-logging.basicConfig(level=logging.DEBUG)	
+logging.basicConfig(level=logging.DEBUG)
 
-def get_domain(url):
-	if not url.startswith('http://'):
-		url = 'http://' + url
-	return 'http://' + url.split('/')[2]
+def get_icon_url(url):
+	''' looks for icon link directly at <url>/favicon.ico '''
+	url = "%s/favicon.ico" % url
+	page = open_url(url)
+	if page:
+		if page.getcode() == 200:
+			return url
 
-def open_url(url):
-	req = Request(url) 
-	req.add_header('User-Agent', 'Micro-reader Browser')	
-	return urlopen(req)
-
-def get_icon_link(domain):
-	try:
-		page = open_url(domain)
-		soup = BeautifulSoup(page)
-		icon_link = soup.find('link', rel='shortcut icon')
-		if icon_link:
-			return icon_link['href']
-		else:
-			return None
-	except:
-		logging.debug('favicon: get_icon_link failed')
-		return None
+	return None
 
 def get_feedburner_link(url):
+	''' read feedburner page and returns the "link" property 
+	which should contain a link back to the original site '''
 	page = open_url(url)
-	soup = BeautifulSoup(page)
-	return soup.link.string
+	if page:
+		soup = bs(page)
+		return soup.link.string
+	return None
 
-def write_icon(icon_link, save_as):
-	urlretrieve(icon_link, save_as)
+def get_domain(url):
+	''' http://domain.com/some/page.html => http://domain.com '''
+	parts = url.split('/')
+	return parts[0] + '//' + parts[2]
 
-def save_favicon(url, save_as, one_up=False):
-	logging.debug('saving url %s as %s' % (url, save_as))
+def get_superdomain(domain):
+	''' http://sub.super.com => http://super.com (half-guessing without a TLD list)'''
+	parts = domain.split('.')
+	# already at top?
+	if len(parts) <= 2:
+		return None
+	start = parts[0].find('//')
+	return parts[0][:start+2] + '.'.join(parts[1:])
+
+def normalize_url(url):
+	if url.startswith("http://"):
+		pass
+	elif url.startswith("https://"):
+		pass
+	else:
+		url = "http://%s" % url
+
+	if url.endswith("/"):
+		url = url[0:len(url)-1]
+	return url
+
+def open_url(url):
+	''' open a url for reading '''
+	try:
+		req = Request(url)
+		# need a custom user-agent to avoid bot blocking
+		req.add_header('User-Agent', 'Micro-reader Browser')	
+		return urlopen(req)
+	except:
+		return None
+
+def retrieve_url(url, save_as):
+	''' writes the file to disk '''
+	# create save dir if missing
+	if not os.path.exists(os.path.dirname(save_as)):
+		os.mkdir(os.path.dirname(save_as))
+	try:
+		urlretrieve(url, save_as)
+	except:
+		logging.debug('unable to retrieve url: ' + url)
+
+def save_favicon(url, save_as):
+	# exists?
 	if os.path.exists(save_as):
 		logging.debug('favicon: ' + save_as + ' already exists')
 		return
-	if not one_up:	
-		url = get_domain(url)
 
-	# special handling for feedburner
+	icon_url = None
+	url = normalize_url(url)
+	# check if feedburner
 	if 'feedburner.com' in url:
-		logging.debug('got feedburner url')
-		url = get_domain(get_feedburner_link(url)) 
-	logging.debug('domain:', url)
+		flink = get_feedburner_link(url)
+		# logging.debug('flink: ' + flink)
+		if flink:
+			icon_url = get_icon_url(flink)
+	else:		
+		# first get domain
+		domain = get_domain(url)
+		if domain:
+			icon_url = get_icon_url(domain)
+			if not icon_url:
+				# try superdomain
+				sdomain = get_superdomain(domain)
+				icon_url = get_icon_url(sdomain)
 
-	# create save dir
-	if not os.path.exists(os.path.dirname(save_as)):
-		os.mkdir(os.path.dirname(save_as))
-	
-	try: # direct link first
-		write_icon(url + 'favicon.ico', save_as)
-	except:
-		logging.debug('no direct icon; trying to find link')
-		icon_link = get_icon_link(url)
-		if icon_link:
-			write_icon(icon_link, save_as)
-		else:
-			if not one_up: # try parent domain
-				logging.debug('no icon link found, trying top level')
-				top = 'http://' + '.'.join(url.split('.')[1:]) + '/'
-				save_favicon(top, save_as, True)
-			else:
-				logging.debug('giving up')
-	
+	if icon_url:
+		retrieve_url(icon_url, save_as)
+	else:
+		logging.debug('no favicon found for url: [%s]' % url)
 
 
