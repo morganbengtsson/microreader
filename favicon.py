@@ -12,27 +12,27 @@ def get_icon_url(url):
 	''' looks for icon link directly at <url>/favicon.ico '''
 	# try finding header link first
 	page = open_url(url)
-	soup = bs(page)
-
-	try:
-		# actually this will fetch both 'shortcut icon' and 'icon'
-		icon_link = soup.find('link', rel='icon')
-		icon_url = icon_link['href']
-		if icon_url:
-			logging.debug('found header icon link: ' + icon_url)
-			# get absolute url if relative
-			page = open_url(icon_url)
-			if not page or (page.getcode() != 200):
-				if icon_url.startswith('//'):
-					return 'http:' + icon_url
-				elif icon_url.startswith('/'):
-					icon_url = icon_url[1:len(icon_url)]
-					return url + '/' + icon_url
-			else:
-				return icon_url
-		
-	except:
-		logging.debug('no header link found, trying direct')
+	if page and (page.getcode() == 200):
+		try:
+			soup = bs(page)
+			# actually this will fetch both 'shortcut icon' and 'icon'
+			icon_link = soup.find('link', rel='icon')
+			icon_url = icon_link['href']
+			if icon_url:
+				logging.debug('found header icon link: ' + icon_url)
+				# get absolute url if relative
+				page = open_url(icon_url)
+				if not page or (page.getcode() != 200):
+					if icon_url.startswith('//'):
+						return 'http:' + icon_url
+					elif icon_url.startswith('/'):
+						icon_url = icon_url[1:len(icon_url)]
+						return url + '/' + icon_url
+				else:
+					return icon_url
+			
+		except:
+			logging.debug('no header link found, trying direct')
 
 	url = "%s/favicon.ico" % url
 	page = open_url(url)
