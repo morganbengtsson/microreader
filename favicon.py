@@ -36,8 +36,9 @@ def get_icon_url(url):
 
 	url = "%s/favicon.ico" % url
 	page = open_url(url)
-	if page:
-		if page.getcode() == 200:
+	if page and (page.getcode() == 200):
+		# check that we're not being redirected
+		if 'favicon.ico' in page.geturl():
 			return url
 
 	return None
