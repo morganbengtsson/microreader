@@ -47,9 +47,17 @@ def get_feedburner_link(url):
 	''' read feedburner page and returns the "link" property 
 	which should contain a link back to the original site '''
 	page = open_url(url)
-	if page:
-		soup = bs(page)
-		return soup.link.string
+	if page and (page.getcode() == 200):
+		try:
+			soup = bs(page)
+			link = soup.link.string
+			# alternative solution
+			if not link:
+				link = soup.find('link', rel='alternate')['href']
+			logging.debug('link: %s' % link)
+			return link
+		except:
+			pass
 	return None
 
 def get_domain(url):
@@ -123,7 +131,7 @@ def save_favicon(url, save_as):
 	# check if feedburner
 	if 'feedburner.com' in url:
 		flink = get_feedburner_link(url)
-		logging.debug('flink: ' + flink)
+		logging.debug('flink: %s' % flink)
 		if flink:
 			icon_url = get_icon_url(flink)
 	else:		
