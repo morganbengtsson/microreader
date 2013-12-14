@@ -10,6 +10,29 @@ logging.basicConfig(level=logging.DEBUG)
 
 def get_icon_url(url):
 	''' looks for icon link directly at <url>/favicon.ico '''
+	# try finding header link first
+	page = open_url(url)
+	soup = bs(page)
+
+	try:
+		# actually this will fetch both 'shortcut icon' and 'icon'
+		icon_link = soup.find('link', rel='icon')
+		icon_url = icon_link['href']
+		if icon_url:
+			logging.debug('found header icon link: ' + icon_url)
+			# get absolute url if relative
+			page = open_url(icon_url)
+			if not page or (page.getcode() != 200):
+				if icon_url.startswith("/"):
+					icon_url = icon_url[1:len(icon_url)]
+				absolute_url = url + '/' + icon_url
+				return absolute_url
+			else:
+				return icon_url
+		
+	except:
+		logging.debug('no header link found, trying direct')
+
 	url = "%s/favicon.ico" % url
 	page = open_url(url)
 	if page:
@@ -68,10 +91,24 @@ def retrieve_url(url, save_as):
 	# create save dir if missing
 	if not os.path.exists(os.path.dirname(save_as)):
 		os.mkdir(os.path.dirname(save_as))
-	try:
-		urlretrieve(url, save_as)
-	except:
-		logging.debug('unable to retrieve url: ' + url)
+
+	page = open_url(url)
+	if page:	
+		try:
+			with open(save_as, 'wb') as icon:
+				icon.write(page.read())
+			# file check
+			if os.path.exists(save_as):
+				size = os.path.getsize(save_as)
+				if size < 100:
+					# file corrupted, lets trash it
+					logging.debug('icon corrupted')
+					os.remove(save_as)
+
+		except:
+			logging.debug('unable to retrieve url: ' + url)
+	else:
+		logging.debug('cannot read url: ' + url)
 
 def save_favicon(url, save_as):
 	# exists?
@@ -84,7 +121,7 @@ def save_favicon(url, save_as):
 	# check if feedburner
 	if 'feedburner.com' in url:
 		flink = get_feedburner_link(url)
-		# logging.debug('flink: ' + flink)
+		logging.debug('flink: ' + flink)
 		if flink:
 			icon_url = get_icon_url(flink)
 	else:		
@@ -98,6 +135,7 @@ def save_favicon(url, save_as):
 				icon_url = get_icon_url(sdomain)
 
 	if icon_url:
+		logging.debug('retrieving url: ' + icon_url)
 		retrieve_url(icon_url, save_as)
 	else:
 		logging.debug('no favicon found for url: [%s]' % url)
