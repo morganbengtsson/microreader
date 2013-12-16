@@ -78,7 +78,12 @@ class Channel(BaseModel):
 		opml = listparser.parse(file)
 		print('found %s feeds' % (len(opml.feeds)))
 		for feed in opml.feeds:
-			cls.create(url = feed.url, title = feed.title)		
+			cls.create(url = feed.url, title = feed.title)
+	
+	@classmethod
+	def save_favicon(cls, id):
+		icon_path = os.path.join('static', 'favicons', str(id) + '.ico')
+		favicon.save_favicon(url, icon_path)		
 				
 	class FeedDoesNotExist(Exception) : pass
 	
