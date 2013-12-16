@@ -4,7 +4,8 @@
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="/static/style.css">	
+	<link rel="stylesheet" type="text/css" href="/static/style.css" />
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/static/favicon.ico" />	
 </head>
 <body>	
 	<nav class="navigation">
