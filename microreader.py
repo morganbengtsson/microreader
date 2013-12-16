@@ -30,6 +30,9 @@ class CustomJsonEncoder(json.JSONEncoder):
 
 install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
+def request_accept_json():
+	return (request.get_header('Accept') == 'application/json')
+
 def is_active(url):
 	params = request.query
 	valid_keys = ('starred')
@@ -87,7 +90,7 @@ def items(id = None):
 	params['page'] = page - 1 if page > 1 else 1
 	out['prev'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page > 1 else None
 	
-	if (request.get_header('Accept') == 'application/json'):
+	if request_accept_json():
 		return out
 	else:
 		return template('index', out, is_active = is_active, channels = channels)
@@ -134,7 +137,7 @@ def delete_channel_confirm(id):
 	try: 
 		channel = Channel.get(Channel.id == id)
 	except Channel.DoesNotExist:
-		abort(404)
+		abort(404, 'Channel does not exist')
 
 	return template('delete', channel = channel)
 
@@ -158,9 +161,7 @@ def post_channel():
 	url = request.forms.get('url')		
 	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
-	# save favicon
-	icon_path = os.path.join('static', 'favicons', str(channel.id) + '.ico')
-	favicon.save_favicon(url, icon_path)
+	Channel.save_favicon(channel.id)
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
@@ -200,8 +201,7 @@ def update_channels():
 def update_channels():
 	for c in Channel.select():
 		try:
-			icon_path = os.path.join('static', 'favicons', str(c.id) + '.ico')
-			favicon.save_favicon(c.url, icon_path)
+			Channel.save_favicon(c.id)
 		except:
 			print('error updating favicon for:', c.url)
 
