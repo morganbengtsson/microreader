@@ -1,4 +1,4 @@
-import feedparser, listparser
+import feedparser, listparser, favicon, os
 from peewee import *
 from bs4 import BeautifulSoup as bs
 from datetime import datetime
@@ -66,6 +66,10 @@ class Channel(BaseModel):
 			
 			self.fetched = datetime.now()
 			self.save()
+	
+	def save_favicon(self):		
+		icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
+		favicon.save_favicon(self.url, icon_path)
 			
 	@classmethod
 	def create_from_url(cls, url):
@@ -80,11 +84,8 @@ class Channel(BaseModel):
 		for feed in opml.feeds:
 			cls.create(url = feed.url, title = feed.title)
 	
-	@classmethod
-	def save_favicon(cls, id):
-		icon_path = os.path.join('static', 'favicons', str(id) + '.ico')
-		favicon.save_favicon(url, icon_path)		
-				
+			
+	class SaveFavicon(Exception) : pass			
 	class FeedDoesNotExist(Exception) : pass
 	
 class Item(BaseModel):

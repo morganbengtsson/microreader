@@ -1,4 +1,3 @@
-import os
 import feedparser, json, urllib, math
 try: 
 	from urllib.parse import urlencode, urlunsplit
@@ -161,7 +160,7 @@ def post_channel():
 	url = request.forms.get('url')		
 	Channel.create_from_url(url)	
 	channel = Channel.get(Channel.url == url)
-	Channel.save_favicon(channel.id)
+	channel.save_favicon()
 	channel.update_feed()
 	redirect('/channels/' + str(channel.id) + "/items")
 
@@ -199,11 +198,11 @@ def update_channels():
 # possibly temporary route to update favicons for already established db's
 @route('/channels/update/favicons', method = 'GET')
 def update_channels():
-	for c in Channel.select():
+	for c in Channel.select():		
 		try:
-			Channel.save_favicon(c.id)
-		except:
-			print('error updating favicon for:', c.url)
+			c.save_favicon()
+		except Channel.SaveFavicon:
+			abort(500, 'Could not save favicon')
 
 	return redirect('/items')
 
@@ -226,13 +225,9 @@ def import_channels_post():
 	Channel.create_from_file(upload.file)
 	redirect('/items')	
 
-@route('/static/<filename>')
+@route('/static/<filename:path>')
 def server_static(filename):
 	return static_file(filename, root='static/')
-
-@route('/static/favicons/<filename>')
-def server_static(filename):
-	return static_file(filename, root='static/favicons/')
 
 @route('/favicon.ico')
 def get_favicon():
