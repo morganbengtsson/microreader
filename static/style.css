@@ -21,7 +21,11 @@ a {
 a:hover
 {
 	color: #0099FF;
-}		
+}
+
+img{
+	border-style: none;
+}
 
 form li{
 	margin-bottom: 1em;
@@ -125,8 +129,7 @@ label{
 
 .side {
 	float: right;
-	width: 60px; /*Width of right column in pixels*/	
-	background: #FDE95E;	
+	width: 60px;
 }
 .channel-title {
 	width: 100px;

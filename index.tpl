@@ -60,7 +60,13 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
-		<dt class = "{{"read" if item.read else ""}}">			
+		<dt class = "{{"read" if item.read else ""}}">	
+			<span class = "side">
+				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
+				<a class = "item-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					<img class = "icon-external" alt = "[link]" border="0"></img>
+				</a>
+			</span>			
 			<span class = "header">
 				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<img class = {{"icon-star" if item.starred else "icon-star-empty"}} alt="[star]"></img>				
@@ -82,12 +88,7 @@
 					</span>
 				</a>				
 			</span>
-			<span class = "side">
-				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
-				<a class = "item-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<img class = "icon-external" alt = "[link]"></img>
-				</a>
-			</span>	
+			
 		</dt>
 		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">
 		</dd>
