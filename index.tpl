@@ -61,6 +61,12 @@
 		%for item in items:
 		<div class = "item">			
 		<dt class = "{{"read" if item.read else ""}}">
+			<div class = "side">
+				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
+				<a class = "link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					<i class = "icon-external"></i>
+				</a>
+			</div>
 			<div class = "header">
 				<a class = "mark-star" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}></i>				
@@ -82,14 +88,7 @@
 							{{!item.description[:30]}}...
 					</span>
 				</a>				
-			</div>
-			<div class = "side">
-				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
-				<a class = "link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "icon-external"></i>
-				</a>
-			</div>
-						
+			</div>	
 		</dt>
 		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">			
 			<img src="/static/loading.gif"></img>
