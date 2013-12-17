@@ -15,11 +15,9 @@ dl, dt, dd, ul, ol, li {
 	margin: 0;
 	padding: 0;
 }    
-dt {
-	float: left;
-	width: 100%;			
-	cursor: hand; cursor: pointer;
-	/*
+dt {	
+	/*		
+	cursor: hand; cursor: pointer;	
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
@@ -130,12 +128,7 @@ label{
 .navigation a:hover .not-important, .active .not-important{
 	color: #fff;
 }
-.header a {
-	padding-top: 0.4em;
-	padding-bottom:0.5em;
-	padding-left: 0.5em;
-	padding-right: 0.5em
-}
+
 /*
 .header h2 {		
 	margin: 0;
@@ -168,25 +161,38 @@ label{
 	width: auto;           
 }
 */
-.side {
-	float: left;
-	width: 100px; /*Width of right column in pixels*/
-	margin-left: -100px; /*Set margin to -(RightColumnWidth)*/
-	background: #FDE95E;
+dt {
+	height: auto;
+	overflow: hidden;	
 }
 
-.side span {
-	float: left;
+.item  {		
+	border-bottom: 1px solid #e1e1e1;
+	border-left: 1px solid #e1e1e1;			 
+	border-right: 1px solid #e1e1e1;
+		
+}
+
+.side {
+	float: right;
+	width: 100px; /*Width of right column in pixels*/	
+	background: #FDE95E;
+	display: inline-block;
 }
 
 .header {
-	float: left;
-	display: inline-block;
-	margin-right: 100px;
+	float: none;	
+	width: auto;
 	overflow: hidden;			
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	
+	vertical-align: top;
+	display: inline-block;	
+}
+.header a{
+overflow: hidden;			
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .header h2{
 	font-size: 1em;
@@ -203,16 +209,9 @@ dt a {
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
-	float: left;	
+	display: inline-block;		
 }
 
-.item  {		
-	border-bottom: 1px solid #e1e1e1;
-	border-left: 1px solid #e1e1e1;			 
-	border-right: 1px solid #e1e1e1;	
-	float: left;
-	width: 100%;		 
-}
 
 .summary {			
 	color: grey;
