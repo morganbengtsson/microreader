@@ -6,8 +6,7 @@ html, body {
 	margin: 0;
 	padding: 0;																	
 }
-h1, h2
-{
+h1, h2 {
 	font-size: 1em;	
 }			
 dl, dt, dd, ul, ol, li {
@@ -15,14 +14,11 @@ dl, dt, dd, ul, ol, li {
 	margin: 0;
 	padding: 0;
 }    
-dt {	
-	/*		
-	cursor: hand; cursor: pointer;	
-	padding-top: 0.4em;
-	padding-bottom: 0.5em;
-	padding-left: 0.5em;
-	padding-right: 0.5em; 
-	* */
+
+dt{
+	height: auto;
+   overflow: hidden;
+   float: none;
 }
 
 a {
@@ -113,7 +109,6 @@ label{
 	margin-bottom: 0.5em;
 	padding-bottom: 0.5em;			
 	overflow: auto;
-
 }
 
 .active-modal{	
@@ -129,93 +124,46 @@ label{
 	color: #fff;
 }
 
-/*
-.header h2 {		
-	margin: 0;
-	padding: 0;
-	font-weight: bold;
-	display: inline;						
-}	
-
-.header .channel-title {
-	margin: 0;
-	padding: 0;
-	color: #444;
-	font-weight: normal;
-	width: 15%;
-	text-align: left;
-	overflow: hidden;	
-	display: inline-block;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	vertical-align: bottom;
-}
-
-.item .header {			
-	margin-top: 0;
-	margin-bottom: 0;	
-	float: none;
-	overflow: hidden;			
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	width: auto;           
-}
-*/
-dt {
-	height: auto;
-	overflow: hidden;	
-}
-
 .item  {		
 	border-bottom: 1px solid #e1e1e1;
 	border-left: 1px solid #e1e1e1;			 
-	border-right: 1px solid #e1e1e1;
-		
+	border-right: 1px solid #e1e1e1;		
 }
 
 .side {
 	float: right;
 	width: 100px; /*Width of right column in pixels*/	
-	background: #FDE95E;
-	display: inline-block;
+	background: #FDE95E;	
 }
 
 .header {
-	float: none;	
-	width: auto;
-	overflow: hidden;			
-	text-overflow: ellipsis;
+	float: none;
 	white-space: nowrap;
-	vertical-align: top;
-	display: inline-block;	
-}
-.header a{
-overflow: hidden;			
 	text-overflow: ellipsis;
-	white-space: nowrap;
+    overflow: hidden;
+    width: auto;
 }
-.header h2{
-	font-size: 1em;
+.header h2 {
 	display: inline;
 }
-
-.header a {
-	text-decoration: none;
-	color: black;			
+.header * {
+	width: auto;
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 dt a {
+	display: inline-block;
+	text-decoration: none;
+	color: black;
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
-	padding-right: 0.5em;
-	display: inline-block;		
+	padding-right: 0.5em;				
 }
 
-
 .summary {			
-	color: grey;
-	display: inline;
+	color: grey;	
 } 
 
 .description {			
@@ -255,16 +203,14 @@ hr {
 	display: none;
 }
 
-.page-link
-{
+.page-link {
 	float: right;
 	text-transform: uppercase;
 	font-size: 1em;
 	margin: 0.5em;
 }
 
-.has-new
-{
+.has-new {
 	font-weight: bold;
 }
 
