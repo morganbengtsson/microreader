@@ -15,13 +15,16 @@ dl, dt, dd, ul, ol, li {
 	margin: 0;
 	padding: 0;
 }    
-dt { 
-	overflow: hidden;					
+dt {
+	float: left;
+	width: 100%;			
 	cursor: hand; cursor: pointer;
+	/*
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em; 
+	* */
 }
 
 a {
@@ -127,7 +130,13 @@ label{
 .navigation a:hover .not-important, .active .not-important{
 	color: #fff;
 }
-	
+.header a {
+	padding-top: 0.4em;
+	padding-bottom:0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em
+}
+/*
 .header h2 {		
 	margin: 0;
 	padding: 0;
@@ -158,25 +167,51 @@ label{
 	white-space: nowrap;
 	width: auto;           
 }
+*/
+.side {
+	float: left;
+	width: 100px; /*Width of right column in pixels*/
+	margin-left: -100px; /*Set margin to -(RightColumnWidth)*/
+	background: #FDE95E;
+}
+
+.side span {
+	float: left;
+}
+
+.header {
+	float: left;
+	display: inline-block;
+	margin-right: 100px;
+	overflow: hidden;			
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	
+}
 .header h2{
+	font-size: 1em;
 	display: inline;
 }
 
-.item .side {	
-	float: right;	
-}
-
-
 .header a {
 	text-decoration: none;
-	color: black;	
+	color: black;			
+}
+
+dt a {
+	padding-top: 0.4em;
+	padding-bottom: 0.5em;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	float: left;	
 }
 
 .item  {		
 	border-bottom: 1px solid #e1e1e1;
 	border-left: 1px solid #e1e1e1;			 
 	border-right: 1px solid #e1e1e1;	
-	clear: both;		 
+	float: left;
+	width: 100%;		 
 }
 
 .summary {			
