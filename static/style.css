@@ -14,13 +14,6 @@ dl, dt, dd, ul, ol, li {
 	margin: 0;
 	padding: 0;
 }    
-
-dt{
-	height: auto;
-   overflow: hidden;
-   float: none;
-}
-
 a {
 	text-decoration: none;
 	color: #003C7D;
@@ -80,7 +73,7 @@ label{
 	display:block;
 	color: grey;
 }
-.navigation a:hover{
+.navigation a:hover, .item-link:hover{
 	color: #fff;
 	background-color: #66AACC;
 }	
@@ -132,8 +125,12 @@ label{
 
 .side {
 	float: right;
-	width: 100px; /*Width of right column in pixels*/	
+	width: 60px; /*Width of right column in pixels*/	
 	background: #FDE95E;	
+}
+.channel-title {
+	width: 100px;
+	display: inline-block;
 }
 
 .header {
@@ -141,25 +138,18 @@ label{
 	white-space: nowrap;
 	text-overflow: ellipsis;
     overflow: hidden;
-    width: auto;
+    width: auto; 
+    display: block; 
 }
 .header h2 {
 	display: inline;
 }
-.header * {
-	width: auto;
-	white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 dt a {
-	display: inline-block;
-	text-decoration: none;
-	color: black;
+    line-height: 2.1em;
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
-	padding-right: 0.5em;				
+	padding-right: 0.5em;
 }
 
 .summary {			
@@ -229,7 +219,7 @@ hr {
 	background-size: 1.33em 1.33em;
 	text-decoration: inherit;
 	display: inline-block;
-	vertical-align: -20%;
+	vertical-align: -10%;
 	speak: none;			
 }		
 .icon-star	{
@@ -275,11 +265,6 @@ hr {
 .icon-pen {
 	background-image: url('/static/pen.png');
 }
-
-/*.icon-fav {
-	margin-left: .5em;
-	margin-right: .3em;
-}*/
 
 @media all and (max-device-width: 40em),
 all and (max-width: 40em) {
