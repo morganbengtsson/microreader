@@ -4,7 +4,8 @@ try:
 	from urllib.request	 import urlparse, Request, urlopen, urlretrieve
 except ImportError:
 	from urlparse import urlparse
-	from urllib2 import Request, urlopen, urlretrieve
+	from urllib2 import Request, urlopen
+	from urllib import urlretrieve
 
 logging.basicConfig(level=logging.DEBUG)
 
