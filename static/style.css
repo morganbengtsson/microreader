@@ -6,11 +6,18 @@ html, body {
 	margin: 0;
 	padding: 0;																	
 }
-h1, h2 {
-	font-size: 1em;	
+h1{
+	font-size: 2em;	
 }			
+h2 {
+	font-size: 1.5em;
+}
+h3 {
+	font-size: 1.17em;
+}
 dl, dt, dd, ul, ol, li {
-  list-style: none;
+	font-size: 1em;
+	list-style: none;
 	margin: 0;
 	padding: 0;
 }    
@@ -22,6 +29,10 @@ a:hover
 {
 	color: #0099FF;
 }
+
+dt a {color: #000;}
+dt a:visited {color: #000;}
+dt a:hover { color: #222;}
 
 form li{
 	margin-bottom: 1em;
@@ -116,7 +127,11 @@ label{
 .navigation a:hover .not-important, .active .not-important{
 	color: #fff;
 }
-
+i img{
+	width: 0;
+	height: 0;
+	display: none;
+}
 .item  {		
 	border-bottom: 1px solid #e1e1e1;
 	border-left: 1px solid #e1e1e1;			 
@@ -167,8 +182,13 @@ hr {
 	background-color: #ccc;
 }
 
-.read {
-	font-weight: normal;
+.title {
+	font-weight: bold;
+}
+.read .title {
+	font-weight: normal !important;
+}
+.read {	
 	background-color: #F0F0F0;
 	color: grey;
 }
