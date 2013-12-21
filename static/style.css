@@ -23,10 +23,6 @@ a:hover
 	color: #0099FF;
 }
 
-img{
-	border-style: none;
-}
-
 form li{
 	margin-bottom: 1em;
 }
@@ -41,8 +37,8 @@ form li{
 }
 
 .horizontal {
-overflow: auto;
-padding-bottom: 0.5em;
+	overflow: auto;
+	padding-bottom: 0.5em;
 }
 .horizontal li {
 	margin-right: 1em;
@@ -129,8 +125,9 @@ label{
 
 .side {
 	float: right;
-	width: 60px;
+	width: auto;
 }
+
 .channel-title {
 	width: 100px;
 	display: inline-block;
@@ -144,9 +141,7 @@ label{
     width: auto; 
     display: block; 
 }
-.header h2 {
-	display: inline;
-}
+
 dt a {
     line-height: 2.1em;
 	padding-top: 0.4em;
