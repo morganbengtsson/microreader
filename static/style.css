@@ -173,16 +173,6 @@ hr {
 	color: grey;
 }
 
-.read h2 {
-	font-weight: normal;	
-	color: #000;		
-}
-	
-.link { 
-	position:relative;
-	margin-left: 0.5em;
-}		
-
 .nav-dropdown {
 	display: inline;
 }
@@ -198,7 +188,7 @@ hr {
 	margin: 0.5em;
 }
 
-.has-new {
+.has-new a{
 	font-weight: bold;
 }
 
@@ -207,6 +197,7 @@ hr {
 	content: ' *';
 	color: #C7A506;
 }
+
 
 [class^="icon"]
 {			
