@@ -133,6 +133,7 @@ label{
 .navigation a:hover .not-important, .active .not-important{
 	color: #fff;
 }
+
 i img{
 	width: 0;
 	height: 0;
@@ -167,9 +168,9 @@ i img{
     display: block; 
 }
 
-dt a {
+dt a {	
     line-height: 2.1em;
-	padding-top: 0.4em;
+	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
@@ -230,14 +231,13 @@ hr {
 
 [class^="icon"]
 {			
-	background-repeat: no-repeat;
-	*margin-right: 0.3em;			
+	background-repeat: no-repeat;			
 	width: 1.33em;
 	height: 1.33em;
 	background-size: 1.33em 1.33em;
 	text-decoration: inherit;
-	display: inline-block;
 	vertical-align: -10%;
+	display: inline-block;
 	speak: none;			
 }		
 .icon-star	{
