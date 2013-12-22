@@ -68,6 +68,11 @@ label{
 	color: grey;
 }		
 
+.item-link:hover{
+	filter: brightness(120%);
+	-webkit-filter: brightness(120%);
+} 
+
 .popup	{			
 	background-color: #fff;
 	border: 1px solid #e1e1e1;
@@ -84,7 +89,7 @@ label{
 	display:block;
 	color: grey;
 }
-.navigation a:hover, .item-link:hover{
+.navigation a:hover {
 	color: #fff;
 	background-color: #66AACC;
 }	
@@ -222,7 +227,6 @@ hr {
 	content: ' *';
 	color: #C7A506;
 }
-
 
 [class^="icon"]
 {			
