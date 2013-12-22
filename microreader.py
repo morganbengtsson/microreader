@@ -146,6 +146,7 @@ def delete_channel(id):
 	try:
 		c = Channel.get(Channel.id == id)
 		Item.delete().where(Item.channel == c).execute()	
+		c.delete_favicon()
 		Channel.delete().where(Channel.id == id).execute()			
 	except Channel.DoesNotExist:
 		abort(404, 'Channel does not exist')
