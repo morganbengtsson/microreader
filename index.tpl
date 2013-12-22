@@ -60,11 +60,25 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
+<<<<<<< HEAD
 		<dt class = "{{"read" if item.read else ""}}">	
 			<span class = "side">
 				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
 				<a class = "item-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
+=======
+		<dt class = "{{"read" if item.read else ""}}">		    			
+			<div class = "side">
+				<span class = "not-important">
+				%if item.updated:
+					{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
+				%else:
+					--:--
+				%end
+				</span>
+				<a class = "link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					<i class = "icon-external"></i>
+>>>>>>> develop
 				</a>
 			</span>			
 			<span class = "header">
