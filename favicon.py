@@ -30,8 +30,7 @@ def get_icon_url(url):
 					if icon_url.startswith('//'):
 						tmp_url = 'http:' + icon_url
 					elif icon_url.startswith('/'):
-						icon_url = icon_url[1:len(icon_url)]
-						tmp_url = url + '/' + icon_url
+						tmp_url = get_domain(url) + icon_url
 				else:
 					tmp_url = icon_url
 			# some sites actually have a dead link in header but a working direct link
@@ -65,7 +64,7 @@ def get_feedburner_link(url):
 			if not link:
 				link = soup.find('link', rel='alternate')['href']
 			logging.debug('link: %s' % link)
-			return link
+			return normalize_url(link)
 		except:
 			pass
 	return None
