@@ -81,6 +81,11 @@ class Channel(BaseModel):
 	def save_favicon(self):		
 		icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
 		favicon.save_favicon(self.url, icon_path)
+
+	def delete_favicon(self):
+		icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
+		if os.path.exists(icon_path):
+			os.remove(icon_path)
 			
 	@classmethod
 	def create_from_url(cls, url):
