@@ -14,9 +14,9 @@ def strip_tags(xml):
 		return ''.join(bs(xml).findAll(text=True)) 
 
 def get_updated(entity):
-	if entity.has_key('updated_parsed'):
-		if entity.get('updated_parsed'):
-			return datetime(*entity.updated_parsed[:6])
+	if entity.has_key('published_parsed'):
+		if entity.get('published_parsed'):
+			return datetime.fromtimestamp(mktime(entity.published_parsed))
 	return None
 
 class BaseModel(Model):
@@ -81,6 +81,11 @@ class Channel(BaseModel):
 	def save_favicon(self):		
 		icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
 		favicon.save_favicon(self.url, icon_path)
+
+	def delete_favicon(self):
+		icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
+		if os.path.exists(icon_path):
+			os.remove(icon_path)
 			
 	@classmethod
 	def create_from_url(cls, url):
