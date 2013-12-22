@@ -15,6 +15,7 @@ def get_icon_url(url):
 	page = open_url(url)
 	if page and (page.getcode() == 200):
 		try:
+			tmp_url = None
 			soup = bs(page)
 			# actually this will fetch both 'shortcut icon' and 'icon'
 			# icon_link = soup.find('link', rel='icon')
@@ -27,13 +28,19 @@ def get_icon_url(url):
 				page = open_url(icon_url)
 				if not page or (page.getcode() != 200):
 					if icon_url.startswith('//'):
-						return 'http:' + icon_url
+						tmp_url = 'http:' + icon_url
 					elif icon_url.startswith('/'):
 						icon_url = icon_url[1:len(icon_url)]
-						return url + '/' + icon_url
+						tmp_url = url + '/' + icon_url
 				else:
-					return icon_url
-			
+					tmp_url = icon_url
+			# some sites actually have a dead link in header but a working direct link
+			# return only if readable, if not fallback to direct link
+			page = open_url(tmp_url)
+			if page and (page.getcode() == 200):
+				return tmp_url
+			else:
+				logging.debug('dead header link found, trying direct')
 		except:
 			logging.debug('no header link found, trying direct')
 
