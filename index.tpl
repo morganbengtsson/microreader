@@ -62,7 +62,13 @@
 		<div class = "item">			
 		<dt class = "{{"read" if item.read else ""}}">		    			
 			<div class = "side">
-				<span class = "not-important">{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}</span>
+				<span class = "not-important">
+				%if item.updated:
+					{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
+				%else:
+					--:--
+				%end
+				</span>
 				<a class = "link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"></i>
 				</a>
