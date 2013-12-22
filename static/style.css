@@ -32,7 +32,7 @@ a:hover
 
 dt a {color: #000;}
 dt a:visited {color: #000;}
-dt a:hover { color: #222;}
+dt a:hover { color: #4D4D4D;}
 
 form li{
 	margin-bottom: 1em;
@@ -92,7 +92,8 @@ label{
 .navigation {
 	padding: 0.5em;
 	float: left;
-	max-width: 13em;
+	/*max-width: 13em;*/
+	width: auto;
 }
 
 .navigation li {
@@ -145,7 +146,11 @@ i img{
 
 .channel-title {
 	width: 100px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
 	display: inline-block;
+	vertical-align: bottom;
 }
 
 .header {
@@ -208,8 +213,8 @@ hr {
 	margin: 0.5em;
 }
 
-.has-new a{
-	font-weight: bold;
+.has-new{
+	font-weight: bold !important;
 }
 
 .new-item:after
