@@ -1,4 +1,4 @@
-import feedparser, json, urllib, math
+import feedparser, json, urllib, math, logging
 try: 
 	from urllib.parse import urlencode, urlunsplit
 except ImportError:

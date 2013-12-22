@@ -1,13 +1,13 @@
 import os, logging
-from bs4 import BeautifulSoup as bs
 try: 
 	from urllib.request	 import urlparse, Request, urlopen, urlretrieve
 except ImportError:
 	from urlparse import urlparse
 	from urllib2 import Request, urlopen
 	from urllib import urlretrieve
+from bs4 import BeautifulSoup as bs
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.ERROR)
 
 def get_icon_url(url):
 	''' looks for icon link directly at <url>/favicon.ico '''
@@ -17,7 +17,9 @@ def get_icon_url(url):
 		try:
 			soup = bs(page)
 			# actually this will fetch both 'shortcut icon' and 'icon'
-			icon_link = soup.find('link', rel='icon')
+			# icon_link = soup.find('link', rel='icon')
+			# the lambda is to fix a bug in bs4 regarding case sensitivity
+			icon_link = soup.find('link', rel=lambda x: x and x.lower()=='icon')
 			icon_url = icon_link['href']
 			if icon_url:
 				logging.debug('found header icon link: ' + icon_url)

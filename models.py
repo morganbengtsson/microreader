@@ -13,6 +13,12 @@ def strip_tags(xml):
 	else:
 		return ''.join(bs(xml).findAll(text=True)) 
 
+def get_updated(entity):
+	if entity.has_key('updated_parsed'):
+		if entity.get('updated_parsed'):
+			return datetime(*entity.updated_parsed[:6])
+	return None
+
 class BaseModel(Model):
 	class Meta:
 		database = db
@@ -33,7 +39,7 @@ class Channel(BaseModel):
 	def update_feed(self):
 			feed = feedparser.parse(self.url)
 			for entry in feed.entries:				
-				updated = datetime(*entry.updated_parsed[:6]) if entry.updated_parsed else None
+				updated = get_updated(entry)
 							
 				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
 				description_text = strip_tags(description)								
@@ -62,8 +68,13 @@ class Channel(BaseModel):
 				else:
 					Item.update(**parameters).where(Item.url == url_guid).execute()			
 			
-			self.updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None
-			
+			self.updated = get_updated(feed)
+			# use author as channel title if untitled
+			if self.title == 'Untitled':
+				if len(feed.entries):
+					title = feed.entries[0].get('author')
+					if title and title.strip():
+						self.title = title
 			self.fetched = datetime.now()
 			self.save()
 	
@@ -74,8 +85,11 @@ class Channel(BaseModel):
 	@classmethod
 	def create_from_url(cls, url):
 		feed = feedparser.parse(url).feed	
-		updated = datetime(*feed.updated_parsed[:6]) if 'updated_parsed' in feed else None	
-		cls.create(url = url, updated = updated, title = feed.get('title', 'No title')) 
+		updated = get_updated(feed)
+		title = feed.get('title', 'Untitled')
+		if not title.strip():
+			title = 'Untitled'
+		cls.create(url = url, updated = updated, title = title) 
 	
 	@classmethod
 	def create_from_file(cls, file):
@@ -103,6 +117,8 @@ class Item(BaseModel):
 
 	
 Channel.create_table(fail_silently = True)
-if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
-	Channel.create_from_url("http://rss.slashdot.org/Slashdot/slashdot")
 Item.create_table(fail_silently = True)
+
+if not Channel.select(Channel.url).count():
+	if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
+		Channel.create_from_url("http://rss.slashdot.org/Slashdot/slashdot")
