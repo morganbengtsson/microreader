@@ -7,19 +7,19 @@ html, body {
 	padding: 0;																	
 }
 h1{
-	font-size: 2em;
-	margin-top: 2em;
-	margin-bottom: 2em;		
+	font-size: 1.5em;
+	margin-top: 1em;
+	margin-bottom: 1em;		
 }			
 h2 {
-	font-size: 1.5em;
-	margin-top: 1.5em;
-	margin-bottom: 1.5em;
+	font-size: 1.2em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 h3 {
-	font-size: 1.17em;
-	margin-top: 1.17em;
-	margin-bottom: 1.17em;
+	font-size: 1em;
+	margin-top: 1em;
+	margin-bottom: 1em;
 }
 dl, dt, dd, ul, ol, li {
 	font-size: 1em;
@@ -94,6 +94,7 @@ label{
 	text-align: right;
 	display:block;
 	color: grey;
+	font-size: 0.8em;
 }
 .navigation a:hover {
 	color: #fff;
@@ -188,7 +189,7 @@ dt a {
 
 .description {			
 	line-height: 1.5;			
-	padding: 1em 1.5em 1em 1.5em;
+	padding: 0em 1.5em 0em 1.5em;
 	display: block;		
 	overflow: auto;
 }
