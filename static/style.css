@@ -7,13 +7,19 @@ html, body {
 	padding: 0;																	
 }
 h1{
-	font-size: 2em;	
+	font-size: 2em;
+	margin-top: 2em;
+	margin-bottom: 2em;		
 }			
 h2 {
 	font-size: 1.5em;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
 }
 h3 {
 	font-size: 1.17em;
+	margin-top: 1.17em;
+	margin-bottom: 1.17em;
 }
 dl, dt, dd, ul, ol, li {
 	font-size: 1em;
