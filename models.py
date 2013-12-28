@@ -4,8 +4,8 @@ from bs4 import BeautifulSoup as bs
 from datetime import datetime
 from time import mktime
 
-db = SqliteDatabase('database.db', threadlocals=True)
-#db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True)
+db = SqliteDatabase('database.db', threadlocals=True, timeout = 5000)
+#db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True, timeout = 5000)
 
 def strip_tags(xml):
 	if xml is None:
