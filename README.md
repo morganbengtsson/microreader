@@ -18,4 +18,5 @@ to the Accept header.
 
 [![githalytics.com alpha](https://cruel-carlota.pagodabox.com/75b5f7c4e3722ff84d2f46e14dba6590 "githalytics.com")](http://githalytics.com/morganbengtsson/Micro-reader)
 
-![Microreader](https://raw.github.com/morganbengtsson/Micro-reader/master/screenshots/microreader.png "Microreader")
+![Chrome](https://raw.github.com/morganbengtsson/Micro-reader/master/screenshots/chrome.png "Microreader in Chrome")
+![Lynx](https://raw.github.com/morganbengtsson/Micro-reader/master/screenshots/lynx.png "Microreader in Lynx")
