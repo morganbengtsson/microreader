@@ -69,7 +69,7 @@
 						--:--
 					%end
 				</span>
-				<a class = "item-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
 				</a>
 			</span>			
@@ -117,40 +117,6 @@
 <script>
 	$(document).ready(function()
 	{
-
-		// $('dd').hide();	
-		// if(window.location.hash) {
-		// 	$(window.location.hash).parent().parent().parent().next().show();
-						
-		// }
-		
-		// window.onhashchange = function(){
-		// 	$('dd').hide();	
-		// 	$(window.location.hash).parent().parent().parent().next().show();
-		// 	return true;
-		// }
-		
-		/*
-		$('.title').click(function(event){
-			event.preventDefault();
-			var title = $(this);
-			console.log('loading content: ' + title.attr('href'));
-			$.get(title.attr('href'), function(data){
-				$('*[data-description-id="' + title.data('title-id') + '"]').html(data);
-			});
-			
-			var id = $(this).attr('data-title-id');
-			var e = 'dd[data-description-id="' + id + '"]';
-			if ($(e).is(":hidden")) {
-				// only show this element
-				$('dd').hide();
-				$(e).show();
-			} else {
-				$(e).hide();
-			}
-			
-		});*/
-
 		$('.item .mark-read').click(function(event)
 		{
 			event.preventDefault();
@@ -262,7 +228,7 @@
 			}
 		});
 		
-		$('.link').mousedown(function(e) {			
+		$('.external-link').mousedown(function(e) {			
 			if (e.which <= 2) {
 			e.preventDefault();			
 			var item = $(this).parent().parent();
