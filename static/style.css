@@ -104,17 +104,16 @@ label{
 .navigation {
 	padding: 0.5em;
 	float: left;
-	/*max-width: 13em;*/
+	max-width: 13em;
 	width: auto;
 }
 
 .navigation li {
 	display: block;
-	clear: both;
-	/*margin-bottom: 0.5em*/;					
+	clear: both;				
 }
 .navigation a {
-	float: left;
+	line-height: 2em;	
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
