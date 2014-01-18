@@ -13,14 +13,15 @@ h1{
 }			
 h2 {
 	font-size: 1.2em;
-	margin-top: 1em;
-	margin-bottom: 1em;
+	margin-top: 0em;
+	margin-bottom: 0em;
 }
 h3 {
 	font-size: 1em;
 	margin-top: 1em;
 	margin-bottom: 1em;
 }
+
 dl, dt, dd, ul, ol, li {
 	font-size: 1em;
 	list-style: none;
@@ -186,8 +187,17 @@ dt a {
 	color: grey;	
 } 
 
+.info {
+	font-size: 1em;
+	margin-top: 0em;
+	margin-bottom: 1em;
+	color: #4D4D4D;
+	display: block;
+}
+
 .description {			
-	line-height: 1.5;			
+	line-height: 1.5;	
+	margin-top: 0;		
 	padding: 0em 1.5em 0em 1.5em;
 	display: block;		
 	overflow: auto;
