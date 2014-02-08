@@ -261,6 +261,9 @@ hr {
 	vertical-align: -10%;
 	display: inline-block;
 	speak: none;			
+}
+.icon-menu {
+	background-image: url('/static/menu.png');
 }		
 .icon-star	{
 	background-image: url('/static/star.png');
@@ -306,6 +309,10 @@ hr {
 	background-image: url('/static/pen.png');
 }
 
+#menu-toggle{
+	display:none;
+}
+
 @media all and (max-device-width: 40em),
 all and (max-width: 40em) {
 	.navigation {
@@ -319,6 +326,12 @@ all and (max-width: 40em) {
 		height: 0;
 		clear: both;
 		visibility: hidden;		
+	}
+	#menu-toggle{
+		display: inline;
+	}
+	#menu{
+		display:none;
 	}
 	
 }	
