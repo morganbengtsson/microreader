@@ -226,7 +226,8 @@ hr {
 }
 
 .nav-dropdown {
-	display: inline;
+	display: inline-block;
+	float: right;
 }
 
 .dropdown {
@@ -294,7 +295,7 @@ hr {
 }
 
 .icon-caret-down {
-	background-image: url('/static/caret-down.png');
+	background-image: url('/static/cog.png');
 }
 
 .icon-arrow-circle {
