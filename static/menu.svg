@@ -15,7 +15,10 @@
    id="svg6846"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   sodipodi:docname="caret-down.svg">
+   sodipodi:docname="menu.svg"
+   inkscape:export-filename="/home/morgan/Desktop/Micro-reader/static/menu.png"
+   inkscape:export-xdpi="360"
+   inkscape:export-ydpi="360">
   <defs
      id="defs6848">
     <marker
@@ -107,11 +110,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="22.627417"
+     inkscape:zoom="1"
      inkscape:cx="24.976737"
      inkscape:cy="2.5058617"
      inkscape:current-layer="g3001"
-     showgrid="true"
+     showgrid="false"
      inkscape:grid-bbox="true"
      inkscape:document-units="px"
      inkscape:snap-global="false"
@@ -132,7 +135,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>

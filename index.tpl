@@ -9,9 +9,17 @@
 </head>
 <body>	
 	<nav class="navigation">
-		<ul class = "nav-section">
+		<ul>
 			<li>
-				
+				<a href = "" id = "menu-toggle">
+				<i class ="icon-menu"></i>
+				Menu
+				</a>
+			</li>
+		
+		<ul id = "menu">		
+		<ul class = "nav-section">
+			<li>				
 				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">
 					<i class = "icon-plus"></i>
 					Subscribe
@@ -55,6 +63,8 @@
 				<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>									
 			</li>						
 		%end
+		</ul>
+		</ul>
 		</ul>	
 	</nav>
 	<dl class = "accordion" id = "content">
@@ -253,5 +263,26 @@
 				$('.dropdown', this).css('left', l.offset().left + l.width());
 				$('.dropdown',this).show();
 		});
+		
+		
+		
+			var menuToggle 		= $('#menu-toggle');
+			var	menu 		= $('#menu');
+			var	menuHeight	= menu.height();
+
+			$(menuToggle).on('click', function(e) {
+				e.preventDefault();
+				menu.slideToggle();
+			});
+
+			$(window).resize(function(){
+        		var w = $(window).width();
+        		if(w > 640 && menu.is(':hidden')) {
+        			menu.show();
+        		}
+    		});
+		
+	
+		
 	});
 </script>
