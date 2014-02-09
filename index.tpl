@@ -189,6 +189,7 @@
 			});			
 		});		
 		
+			
 		$('.nav-dropdown').click(function(event)
 		{
 			event.preventDefault();
@@ -209,6 +210,9 @@
 				$('#modal').html(data).show();			
 			});			
 		});
+		
+		
+			
 		
 		$('#subscribe-link').click(function(event){
 			event.preventDefault();
@@ -232,6 +236,8 @@
 				$('#modal').css('left', l.offset().left + l.width());
 			});
 		});			
+		
+		
 		
 		$(document).mouseup(function (e) {
 			var container = $(".popup");
