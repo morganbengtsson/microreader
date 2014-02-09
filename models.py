@@ -116,7 +116,7 @@ class Item(BaseModel):
 	read = BooleanField(default = False)
 	new = BooleanField(default = True)
 	starred = BooleanField(default = False)
-	channel = ForeignKeyField(Channel, cascade = True, related_name = 'items')
+	channel = ForeignKeyField(Channel, on_delete='cascade', related_name = 'items')
 	updated = DateTimeField(null = True)
 	fetched = DateTimeField(default = datetime.now())
 
