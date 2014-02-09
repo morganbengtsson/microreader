@@ -58,9 +58,12 @@
 					<i class = "icon-feed"></i>
 					%end
 					{{channel.title}}
-					<span class = "not-important">({{channel.unread_count()}})</span>					
+										
 				</a>
-				<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>									
+				<span class = "nav-side">
+					<span class = "not-important">({{channel.unread_count()}})</span>
+					<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>
+				</span>													
 			</li>						
 		%end
 		</ul>
@@ -273,12 +276,15 @@
 			$(menuToggle).on('click', function(e) {
 				e.preventDefault();
 				menu.slideToggle();
+				menuToggle.toggleClass('active');
+				
 			});
 
 			$(window).bind('orientationchange', function(){
         		var w = $(window).width();
         		if(w > 640 && menu.is(':hidden')) {
         			menu.show();
+        			
         		}
     		});
 		

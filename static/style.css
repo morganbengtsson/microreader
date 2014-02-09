@@ -104,9 +104,13 @@ label{
 	font-size: 0.8em;
 }
 
-.nav-dropdown{
-	float:right;
+.nav-side{
+	float: right;
 }
+.nav-link {
+	
+}
+
 
 .navigation a:hover {
 	color: #fff;
@@ -120,7 +124,7 @@ label{
 	width: auto;
 }
 .navigation a {
-	line-height: 2em;	
+	line-height: 2em;
 	padding-top: 0.4em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
