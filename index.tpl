@@ -275,7 +275,7 @@
 				menu.slideToggle();
 			});
 
-			$(window).resize(function(){
+			$(window).bind('orientationchange', function(){
         		var w = $(window).width();
         		if(w > 640 && menu.is(':hidden')) {
         			menu.show();

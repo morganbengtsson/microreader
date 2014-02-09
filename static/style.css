@@ -2,6 +2,7 @@
 * {
   margin: 0;
   padding: 0;
+  max-height: 99999px; /*Android chrome font-size fix*/
 }
 html, body {
 	font-family: 'Droid Sans',arial, sans-serif;
@@ -102,6 +103,11 @@ label{
 	color: grey;
 	font-size: 0.8em;
 }
+
+.nav-dropdown{
+	float:right;
+}
+
 .navigation a:hover {
 	color: #fff;
 	background-color: #66AACC;
@@ -112,11 +118,6 @@ label{
 	float: left;
 	max-width: 13em;
 	width: auto;
-}
-
-.navigation li {
-	display: block;
-	clear: both;				
 }
 .navigation a {
 	line-height: 2em;	
@@ -223,11 +224,6 @@ hr {
 .read {	
 	background-color: #F0F0F0;
 	color: grey;
-}
-
-.nav-dropdown {
-	display: inline-block;
-	float: right;
 }
 
 .dropdown {
