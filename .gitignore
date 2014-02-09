@@ -3,3 +3,4 @@
 *.sh
 *.ico
 /session
+.idea
