@@ -1,5 +1,5 @@
-feedparser>=5
-bottle>=0
-peewee>=2
-beautifulsoup4
-listparser
+feedparser==5.1.3
+bottle==0.12.3
+peewee==2.2.0
+beautifulsoup4==4.3.2
+listparser==0.17
