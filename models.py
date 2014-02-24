@@ -41,7 +41,7 @@ class Channel(BaseModel):
 			for entry in feed.entries:				
 				updated = get_updated(entry)
 							
-				description = entry.content[0].value if hasattr(entry, 'content') else entry.description		
+				description = entry.content[0].value if hasattr(entry, 'content') else getattr(entry, 'description', '')		
 				description_text = strip_tags(description)								
 				description_html = bs(description).prettify()
 
