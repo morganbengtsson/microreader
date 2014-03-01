@@ -99,13 +99,6 @@ label{
 	box-shadow: 2px 2px 10px #e1e1e1;											
 }
 
-.author {			
-	text-align: right;
-	display:block;
-	color: grey;
-	font-size: 0.8em;
-}
-
 .nav-side{
 	float: right;
 }
