@@ -63,7 +63,11 @@
 				</a>
 				<span class = "nav-side">
 					<span class = "not-important">({{channel.unread_count()}})</span>
-					<a href = "/channels/{{channel.id}}/edit" class = "nav-dropdown"><i class = "icon-caret-down"></i></a>
+					<a href = "/channels/{{channel.id}}/edit" class = "item-link nav-dropdown">
+					<i class = "icon-caret-down">
+					    <img alt = "[settings]" src="/static/pixel.png"></img>
+					</i>
+					</a>
 				</span>													
 			</li>						
 		%end
@@ -98,7 +102,7 @@
 					%else:
 					<i class = "icon-feed"></i>
 					%end
-					<span class="channel-title">{{item.channel.title}}</span>	    
+					    
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>
