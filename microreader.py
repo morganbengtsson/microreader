@@ -228,10 +228,8 @@ def edit_channel_post(id):
 def update_channels():
     for channel in Channel.select():
         try:
-            print('Updating channel: "%s" [%s]' % (channel.title, channel.url))
             channel.update_feed()
         except:
-            print('Unable to update channel: "%s" [%s]' % (channel.title, channel.url))
             continue
 
     return redirect('/items')
