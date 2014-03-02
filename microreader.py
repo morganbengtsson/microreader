@@ -125,7 +125,7 @@ def items(id=None):
     if request_accept_json():
         return out
     else:
-        return template('index', out, is_active=is_active, favicon=favicon, date_str=date_str, channels=channels)
+        return template('index', out, is_active=is_active, favicon=favicon, date_format=date_format, channels=channels)
 
 
 @route('/items/<id:int>', method='GET')
