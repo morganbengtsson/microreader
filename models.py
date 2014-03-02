@@ -75,7 +75,8 @@ class Channel(BaseModel):
             if not Item.select().where(Item.url == url_guid).exists():
                 Item.create(**parameters)
             else:
-                Item.update(**parameters).where(Item.url == url_guid).execute()
+                break
+                #Item.update(**parameters).where(Item.url == url_guid).execute()
 
         self.updated = get_updated(feed)
         # use author as channel title if untitled
