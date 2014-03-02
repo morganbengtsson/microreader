@@ -1,12 +1,12 @@
-import feedparser, json, urllib, math, logging
+import json
+import math
 
 try:
     from urllib.parse import urlencode, urlunsplit
 except ImportError:
     from urlparse import urlunsplit
     from urllib import urlencode
-from functools import partial
-from bottle import Bottle, Request, Response, HTTPResponse, error, route, run, view, template, install, redirect, hook, \
+from bottle import Response, error, route, run, template, install, redirect, hook, \
     request, response, abort, static_file, JSONPlugin
 from models import *
 import favicon
@@ -17,7 +17,7 @@ import favicon
 @error(403)
 @error(510)
 def custom_error(error):
-    if (request.get_header('Accept') == 'application/json'):
+    if request.get_header('Accept') == 'application/json':
         return Response(json.dumps({'message': error.body}), status=error.status_code)
     else:
         return Response(error.status + ", " + error.body, status=error.status_code)
@@ -36,15 +36,15 @@ install(JSONPlugin(json_dumps=lambda s: json.dumps(s, cls=CustomJsonEncoder)))
 
 
 def request_accept_json():
-    return (request.get_header('Accept') == 'application/json')
+    return request.get_header('Accept') == 'application/json'
 
 
 def is_active(url):
     params = request.query
-    valid_keys = ('starred')
+    valid_keys = 'starred'
     valid_params = dict((k, v) for k, v in params.items() if k in valid_keys)
-    fullpath = urlunsplit(('', '', request.path, urlencode(valid_params), ''))
-    return 'active' if fullpath == url else ''
+    full_path = urlunsplit(('', '', request.path, urlencode(valid_params), ''))
+    return 'active' if full_path == url else ''
 
 
 def favicon(id):
@@ -134,7 +134,7 @@ def item(id):
         item = Item.get(Item.id == id)
     except Item.DoesNotExist:
         abort(404, 'Item does not exist')
-    if (request.get_header('Accept') == 'application/json'):
+    if request.get_header('Accept') == 'application/json':
         return {'item': item}
     else:
         return template('item', {'item': item})
@@ -164,7 +164,7 @@ def channels():
 def channel(id):
     try:
         channel = Channel.get(Channel.id == id)
-    except:
+    except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
     return {'channel': channel}
 
@@ -183,9 +183,9 @@ def delete_channel_confirm(id):
 @route('/channels/<id:int>/delete', method='POST')
 def delete_channel(id):
     try:
-        c = Channel.get(Channel.id == id)
-        Item.delete().where(Item.channel == c).execute()
-        c.delete_favicon()
+        channel = Channel.get(Channel.id == id)
+        Item.delete().where(Item.channel == channel).execute()
+        channel.delete_favicon()
         Channel.delete().where(Channel.id == id).execute()
     except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
@@ -226,12 +226,12 @@ def edit_channel_post(id):
 
 @route('/channels/update', method='GET')
 def update_channels():
-    for c in Channel.select():
+    for channel in Channel.select():
         try:
-            print('Updating channel: "%s" [%s]' % (c.title, c.url))
-            c.update_feed()
+            print('Updating channel: "%s" [%s]' % (channel.title, channel.url))
+            channel.update_feed()
         except:
-            print('Unable to update channel: "%s" [%s]' % (c.title, c.url))
+            print('Unable to update channel: "%s" [%s]' % (channel.title, channel.url))
             continue
 
     return redirect('/items')
@@ -252,11 +252,11 @@ def update_channels():
 @route('/channels/<id:int>/update', method='GET')
 def update_channel(id):
     try:
-        c = Channel.get(Channel.id == id)
-        c.update_feed()
+        channel = Channel.get(Channel.id == id)
+        channel.update_feed()
     except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
-    return redirect('/channels/' + str(c.id) + '/items')
+    return redirect('/channels/' + str(channel.id) + '/items')
 
 
 @route('/channels/import', method='GET')
