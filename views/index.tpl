@@ -51,15 +51,8 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
-					%favicon = str(channel.id) + '.ico'
-					%if os.path.exists(os.path.join('static', 'favicons', favicon)):
-					<i class = "icon-fav" style="background-image: url('/static/favicons/{{favicon}}');"></i>
-					%else:
-					<i class = "icon-feed"></i>
-					%end
+				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">					<i class = "icon-feed" style="favicon(channel.id)">
 					{{channel.title}}
-										
 				</a>
 				<span class = "nav-side">
 					<span class = "not-important">({{channel.unread_count()}})</span>
