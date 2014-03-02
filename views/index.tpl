@@ -75,7 +75,7 @@
 		<dt class = "{{"read" if item.read else ""}}">	
 			<span class = "side">
 				<span class = "not-important">
-					{{date_str(item.updated)}}
+					{{date_format(item.updated)}}
 				</span>
 				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
