@@ -51,7 +51,8 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">					<i class = "icon-feed" style="favicon(channel.id)">
+				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
+				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
 				</a>
 				<span class = "nav-side">
@@ -74,11 +75,7 @@
 		<dt class = "{{"read" if item.read else ""}}">	
 			<span class = "side">
 				<span class = "not-important">
-					%if item.updated:
-						{{item.updated.strftime('%H:%M') if (item.updated.date() == datetime.today().date()) else item.updated.strftime('%y-%m-%d')}}
-					%else:
-						--:--
-					%end
+					{{date_str(item.updated)}}
 				</span>
 				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
@@ -89,13 +86,7 @@
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="/static/pixel.png"></img></i>				
 				</a>
 				<a href = '/items/{{item.id}}' class = "mark-read" data-id="{{item.id}}">
-					%favicon = str(item.channel.id) + '.ico'
-					%if os.path.exists(os.path.join('static', 'favicons', favicon)):
-					<i class = "icon-fav" style="background-image: url('/static/favicons/{{favicon}}');"></i>
-					%else:
-					<i class = "icon-feed"></i>
-					%end
-
+					<i class = "icon-feed" style="background-image: url('{{favicon(item.channel.id)}}');"></i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>

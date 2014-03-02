@@ -51,8 +51,15 @@ def favicon(id):
     file = str(id) + '.ico'
     path = '/static/feed.png'
     if os.path.exists(os.path.join('static', 'favicons', file)):
-        path = 'background-image: url("/static/favicons/' + file + '")'
+        path = '/static/favicons/' + file
     return path
+
+
+def date_format(date):
+    formatted = '--:--'
+    if date:
+        formatted = date.strftime('%H:%M') if (date.date() == datetime.today().date()) else date.strftime('%y-%m-%d')
+    return formatted
 
 
 @hook('before_request')
@@ -85,11 +92,17 @@ def items(id=None):
     page = int(request.query.page) if request.query.page else 1
 
     query = Item.select()
-    if channel: query = query.where(Item.channel == channel)
-    if starred: query = query.where(Item.starred == starred)
-    if read: query = query.where(Item.read == read)
-    if since_id: query = query.where(Item.id >= since_id)
-    if max_id: query = query.where(Item.id <= max_id)
+    if channel:
+        query = query.where(Item.channel == channel)
+    if starred:
+        query = query.where(Item.starred == starred)
+    if read:
+        query = query.where(Item.read == read)
+    if since_id:
+        query = query.where(Item.id >= since_id)
+    if max_id:
+        query = query.where(Item.id <= max_id)
+
     total_count = query.count()
     if page and count: query = query.paginate(page, count)
 
@@ -112,7 +125,7 @@ def items(id=None):
     if request_accept_json():
         return out
     else:
-        return template('index', out, is_active=is_active,favicon=favicon, channels=channels)
+        return template('index', out, is_active=is_active, favicon=favicon, date_str=date_str, channels=channels)
 
 
 @route('/items/<id:int>', method='GET')
