@@ -85,6 +85,7 @@ label{
 
 .item-link:hover, .active-modal{
 	filter: brightness(120%);
+	-moz-filter: brightness(120%);
 	-webkit-filter: brightness(120%);
 } 
 
