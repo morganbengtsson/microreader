@@ -275,6 +275,7 @@ hr {
 
 .icon-feed	{
 	background-image: url('/static/feed.png');
+    background-size: 15px 15px;
 }
 
 .icon-external {
