@@ -22,8 +22,11 @@ def strip_tags(xml):
 
 def get_updated(entity):
     if entity.has_key('published_parsed'):
-        if entity.get('published_parsed'):
+        if entity.get('published_parsed'):            
             return datetime.fromtimestamp(mktime(entity.published_parsed))
+    elif entity.has_key('updated_parsed'):
+         if entity.get('updated_parsed'):            
+              return datetime.fromtimestamp(mktime(entity.updated_parsed))
     return None
 
 
