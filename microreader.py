@@ -90,7 +90,8 @@ def items(id=None):
     max_id = request.query.max_id
     count = int(request.query.count) if request.query.count else 25
     page = int(request.query.page) if request.query.page else 1
-
+    search = request.query.q
+    print search
     query = Item.select()
     if channel:
         query = query.where(Item.channel == channel)
@@ -102,14 +103,17 @@ def items(id=None):
         query = query.where(Item.id >= since_id)
     if max_id:
         query = query.where(Item.id <= max_id)
+    if search:
+        query = query.where(Item.title ** ('*' + search + '*'))
 
     total_count = query.count()
     if page and count: query = query.paginate(page, count)
 
     out = {'items': list(query.order_by(Item.updated.desc()).limit(count))}
 
-    channels = Channel.select()
+    channels = Channel.select().order_by(Channel.title)
     for c in channels:
+        print c.title
         c.new = c.has_new()
 
     if channel:
