@@ -104,7 +104,8 @@ def items(id=None):
     if max_id:
         query = query.where(Item.id <= max_id)
     if search:
-        query = query.where(Item.title ** ('*' + search + '*'))
+        search = '%' + search + '%'
+        query = query.where(Item.title ** search | Item.description ** search | Item.author ** search)
 
     total_count = query.count()
     if page and count: query = query.paginate(page, count)
