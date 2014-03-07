@@ -91,7 +91,7 @@ def items(id=None):
     count = int(request.query.count) if request.query.count else 25
     page = int(request.query.page) if request.query.page else 1
     search = request.query.q
-    print search
+    
     query = Item.select()
     if channel:
         query = query.where(Item.channel == channel)
@@ -114,7 +114,6 @@ def items(id=None):
 
     channels = Channel.select().order_by(Channel.title)
     for c in channels:
-        print c.title
         c.new = c.has_new()
 
     if channel:
