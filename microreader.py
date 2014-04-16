@@ -1,5 +1,6 @@
 import json
 import math
+import typing
 
 try:
     from urllib.parse import urlencode, urlunsplit
@@ -16,7 +17,7 @@ import favicon
 @error(404)
 @error(403)
 @error(510)
-def custom_error(error):
+def custom_error(error) -> Response:
     if request.get_header('Accept') == 'application/json':
         return Response(json.dumps({'message': error.body}), status=error.status_code)
     else:
@@ -39,7 +40,7 @@ def request_accept_json():
     return request.get_header('Accept') == 'application/json'
 
 
-def is_active(url):
+def is_active(url: str) -> str:
     params = request.query
     valid_keys = 'starred'
     valid_params = dict((k, v) for k, v in params.items() if k in valid_keys)
@@ -47,7 +48,7 @@ def is_active(url):
     return 'active' if full_path == url else ''
 
 
-def favicon(id):
+def favicon(id: str) -> str:
     file = str(id) + '.ico'
     path = '/static/feed.png'
     if os.path.exists(os.path.join('static', 'favicons', file)):
@@ -55,7 +56,7 @@ def favicon(id):
     return path
 
 
-def date_format(date):
+def date_format(date: DateField) -> str:
     formatted = '--:--'
     if date:
         formatted = date.strftime('%H:%M') if (date.date() == datetime.today().date()) else date.strftime('%y-%m-%d')
@@ -80,7 +81,7 @@ def index():
 
 @route('/channels/<id:int>/items', method='GET')
 @route('/items', method='GET')
-def items(id=None):
+def items(id:int=None) -> str:
     valid_params = {'1': True, '0': False}
     starred = valid_params.get(request.query.getone('starred'))
     read = valid_params.get(request.query.getone('read'))
@@ -133,7 +134,7 @@ def items(id=None):
 
 
 @route('/items/<id:int>', method='GET')
-def item(id):
+def item(id:int) -> str:
     try:
         item = Item.get(Item.id == id)
     except Item.DoesNotExist:
@@ -145,7 +146,7 @@ def item(id):
 
 
 @route('/items/<id:int>', method='PATCH')
-def patch_item(id):
+def patch_item(id:int) -> str:
     try:
         item = Item.get(Item.id == id)
     except Item.DoesNotExist:
@@ -160,12 +161,12 @@ def patch_item(id):
 
 
 @route("/channels", method='GET')
-def channels():
+def channels() -> str:
     return {'channels': Channel.select()}
 
 
 @route("/channels/<id:int>", method='GET')
-def channel(id):
+def channel(id:int) -> str:
     try:
         channel = Channel.get(Channel.id == id)
     except Channel.DoesNotExist:
@@ -174,7 +175,7 @@ def channel(id):
 
 
 @route('/channels/<id:int>/delete', method='GET')
-def delete_channel_confirm(id):
+def delete_channel_confirm(id:int) -> str:
     try:
         channel = Channel.get(Channel.id == id)
     except Channel.DoesNotExist:
@@ -185,7 +186,7 @@ def delete_channel_confirm(id):
 
 @route('/channels/<id:int>', method='DELETE')
 @route('/channels/<id:int>/delete', method='POST')
-def delete_channel(id):
+def delete_channel(id:int):
     try:
         channel = Channel.get(Channel.id == id)
         Item.delete().where(Item.channel == channel).execute()
@@ -197,7 +198,7 @@ def delete_channel(id):
 
 
 @route('/channels/create', method='GET')
-def create_channel():
+def create_channel() -> str:
     return template('create')
 
 
@@ -212,13 +213,13 @@ def post_channel():
 
 
 @route('/channels/<id:int>/edit', method='GET')
-def edit_channel(id):
+def edit_channel(id:int) -> str:
     channel = Channel.get(Channel.id == id)
     return template('edit', channel=channel)
 
 
 @route('/channels/<id:int>/edit', method='POST')
-def edit_channel_post(id):
+def edit_channel_post(id:int):
     title = request.forms.get('title')
     url = request.forms.get('url')
     channel = Channel.get(Channel.id == id)
@@ -252,7 +253,7 @@ def update_channels():
 
 
 @route('/channels/<id:int>/update', method='GET')
-def update_channel(id):
+def update_channel(id: int):
     try:
         channel = Channel.get(Channel.id == id)
         channel.update_feed()
@@ -274,12 +275,12 @@ def import_channels_post():
 
 
 @route('/static/<filename:path>')
-def server_static(filename):
+def server_static(filename: str) -> Response:
     return static_file(filename, root='static/')
 
 
 @route('/favicon.ico')
-def get_favicon():
+def get_favicon() -> Response:
     return server_static('favicon.ico')
 
 
