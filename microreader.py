@@ -1,6 +1,5 @@
 import json
 import math
-import typing
 
 try:
     from urllib.parse import urlencode, urlunsplit
