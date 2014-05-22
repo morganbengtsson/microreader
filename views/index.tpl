@@ -92,7 +92,7 @@
 					</span>
 					-
 					<span class="summary">
-							{{!item.description[:50]}}...
+							{{item.description[:50]}}...
 					</span>
 				</a>				
 			</span>

@@ -6,6 +6,7 @@ import feedparser
 import listparser
 from peewee import *
 from bs4 import BeautifulSoup as bs
+import re
 
 import favicon
 
@@ -16,6 +17,8 @@ db = SqliteDatabase('database.db', threadlocals=True, timeout=5000)
 def strip_tags(xml):
     if xml is None:
         return None
+    #else:
+    #    return re.sub('<[^<]+?>', '', xml)
     else:
         return ''.join(bs(xml).findAll(text=True))
 
@@ -42,10 +45,10 @@ class Channel(BaseModel):
     url = TextField()
     icon = TextField(default='/static/feed.png')
 
-    def has_new(self):
+    def has_new(self) -> bool:
         return True if (self.items.where(Item.new == True).count() > 0) else False
 
-    def unread_count(self):
+    def unread_count(self) -> int:
         return self.items.where(Item.read == False).count()
 
     def update_feed(self):
@@ -55,6 +58,7 @@ class Channel(BaseModel):
 
             description = entry.content[0].value if hasattr(entry, 'content') else getattr(entry, 'description', '')
             description_text = strip_tags(description)
+            print(description_text)
             description_html = bs(description).prettify()
 
             # temp fix for enclosures
