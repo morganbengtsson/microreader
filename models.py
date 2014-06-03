@@ -6,7 +6,6 @@ import feedparser
 import listparser
 from peewee import *
 from bs4 import BeautifulSoup as bs
-import re
 
 import favicon
 
@@ -17,8 +16,6 @@ db = SqliteDatabase('database.db', threadlocals=True, timeout=5000)
 def strip_tags(xml):
     if xml is None:
         return None
-    #else:
-    #    return re.sub('<[^<]+?>', '', xml)
     else:
         return ''.join(bs(xml).findAll(text=True))
 
