@@ -57,12 +57,16 @@
 				</a>
 				<span class = "nav-side">
 					<span class = "not-important">({{channel.unread_count()}})</span>
+					
+				</span>
+				<div class = "actions">
 					<a href = "/channels/{{channel.id}}/edit" class = "item-link nav-dropdown">
-					<i class = "icon-caret-down">
-					    <img alt = "[settings]" src="/static/pixel.png"></img>
-					</i>
+						<i class = "icon-caret-down">
+							<img alt = "[settings]" src="/static/pixel.png"></img>
+						</i>
+						Settings
 					</a>
-				</span>													
+				</div>
 			</li>						
 		%end
 		</ul>
@@ -76,15 +80,10 @@
 			<span class = "side">
 				<span class = "not-important">
 					{{date_format(item.updated)}}
-				</span>
-				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
-				</a>
+				</span>				
 			</span>			
 			<span class = "header">
-				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
-					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="/static/pixel.png"></img></i>				
-				</a>
+				
 				<a href = '/items/{{item.id}}' class = "mark-read" data-id="{{item.id}}">
 					<i class = "icon-feed" style="background-image: url('{{favicon(item.channel.id)}}');"></i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
@@ -96,7 +95,16 @@
 					</span>
 				</a>				
 			</span>
-			
+			<div class="actions">
+				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
+					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="/static/pixel.png"></img></i>
+					Star
+				</a>
+				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
+					External link
+				</a>
+			</div>
 		</dt>
 		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">
 		</dd>

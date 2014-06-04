@@ -168,13 +168,18 @@ i img{
 	text-overflow: ellipsis;
     overflow: hidden;
     width: auto; 
-    display: block; 
+    display: block;
+	margin-top: 0.5em;
+}
+.actions{
+	font-size: 0.85em !important;
+	margin-top: 0.2em;
+	margin-bottom: 0.5em;
 }
 
-dt a {	
-    line-height: 2.1em;
-	padding-top: 0.5em;
-	padding-bottom: 0.5em;
+dt a {
+	padding-top: 0em;
+	padding-bottom: 0em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;
 }
