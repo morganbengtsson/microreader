@@ -1,12 +1,12 @@
 %from datetime import datetime
-%from bottle import request
+%from bottle import request, url
 %import os
 <!DOCTYPE html>
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="/static/style.css" />
-	<link rel="icon" type="image/vnd.microsoft.icon" href="/static/favicon.ico" />	
+	<link rel="stylesheet" type="text/css" href="{{url('/static/<filename:path>', filename='style.css')}}" />
+	<link rel="icon" type="image/vnd.microsoft.icon" href="{{url('/static/<filename:path>', filename='favicon.ico')}}" />
 </head>
 <body>	
 	<nav class="navigation">
@@ -21,14 +21,14 @@
 		<ul id = "menu">		
 		<ul class = "nav-section">
 			<li>				
-				<a href ="/channels/create" class = "nav-link" id ="subscribe-link">
+				<a href ="{{url('/channels/create')}}" class = "nav-link" id ="subscribe-link">
 					<i class = "icon-plus"></i>
 					Subscribe
 				</a>				
 			</li>
 			<li>
 				
-				<a href ="/channels/import" class = "nav-link" id ="import-link">
+				<a href ="{{url('/channels/import')}}" class = "nav-link" id ="import-link">
 					<i class = "icon-import"></i>
 					Import
 				</a>				
@@ -36,13 +36,13 @@
 		</ul>
 		<ul class = "nav-section">			
 			<li>
-				<a href = "/items" id ="all" class = "nav-link {{is_active('/items')}}">
+				<a href = "{{url('/items')}}" id ="all" class = "nav-link {{is_active('/items')}}">
 					<i class = "icon-folder"></i>
 					All
 				</a>				
 			</li>
 			<li>
-				<a href = "/items?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">
+				<a href = "{{url('/items')}}?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">
 					<i class = "icon-star"></i>
 					Starred
 				</a>
@@ -51,7 +51,7 @@
 		<ul class = "channels">			
 		%for channel in channels:		
 			<li>			
-				<a href = "/channels/{{channel.id}}/items" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
+				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
 				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
 				</a>
@@ -60,9 +60,9 @@
 					
 				</span>
 				<div class = "actions">
-					<a href = "/channels/{{channel.id}}/edit" class = "item-link nav-dropdown">
+					<a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
 						<i class = "icon-caret-down">
-							<img alt = "[settings]" src="/static/pixel.png"></img>
+                           <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
 						</i>
 						Settings
 					</a>
@@ -84,7 +84,7 @@
 			</span>			
 			<span class = "header">
 				
-				<a href = '/items/{{item.id}}' class = "mark-read" data-id="{{item.id}}">
+				<a href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
 					<i class = "icon-feed" style="background-image: url('{{favicon(item.channel.id)}}');"></i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
@@ -96,12 +96,12 @@
 				</a>				
 			</span>
 			<div class="actions">
-				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="/items/{{item.id}}">
-					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="/static/pixel.png"></img></i>
+				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="{{url('/items/<id:int>', id=item.id)}}">
+					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
 					Star
 				</a>
 				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "icon-external"border="0"><img alt = "[link]" src="/static/pixel.png"></img></i>
+					<i class = "icon-external"border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
 					External link
 				</a>
 			</div>
@@ -151,7 +151,7 @@
 			item.addClass('read');
 			//event.preventDefault();			
 			$.ajax({
-				url: '/items/' + $(this).attr('data-id'),				
+				url: '{{request.script_name}}items/' + $(this).attr('data-id'),
 				data: '{"read" : ' + true + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
@@ -170,7 +170,7 @@
 			element.find('i').toggleClass('icon-star');
 			element.find('i').toggleClass('icon-star-empty');					
 			$.ajax({
-				url: '/items/' + element.data('id'),				
+				url: '{{request.script_name}}items/' + element.data('id'),
 				data: '{"starred" : ' + !element.data('checked') + '}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
@@ -250,7 +250,7 @@
 			var item = $(this).parent().parent();
 			item.addClass('read');					
 			$.ajax({
-				url: '/items/' + $(this).data('id'),				
+				url: '{{request.script_name}}items/' + $(this).data('id'),
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',

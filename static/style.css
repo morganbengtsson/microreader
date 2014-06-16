@@ -256,51 +256,51 @@ hr {
 }
 
 .icon-menu {
-	background-image: url('/static/menu.png');
+	background-image: url('menu.png');
 }		
 .icon-star	{
-	background-image: url('/static/star.png');
+	background-image: url('star.png');
 }
 
 .icon-import	{
-	background-image: url('/static/import.png');
+	background-image: url('import.png');
 }
 
 .icon-star-empty {
-	background-image: url('/static/star-empty.png');
+	background-image: url('star-empty.png');
 }
 
 .icon-plus {
-	background-image: url('/static/plus.png');
+	background-image: url('plus.png');
 }
 
 .icon-folder {
-	background-image: url('/static/folder.png');
+	background-image: url('folder.png');
 }
 
 .icon-feed	{
-	background-image: url('/static/feed.png');
+	background-image: url('feed.png');
     background-size: 15px 15px;
 }
 
 .icon-external {
-	background-image: url('/static/external.png');
+	background-image: url('external.png');
 }
 
 .icon-cross		{
-	background-image: url('/static/cross.png');
+	background-image: url('cross.png');
 }
 
 .icon-caret-down {
-	background-image: url('/static/cog.png');
+	background-image: url('cog.png');
 }
 
 .icon-arrow-circle {
-	background-image: url('/static/arrow-circle.png');
+	background-image: url('arrow-circle.png');
 }
 
 .icon-pen {
-	background-image: url('/static/pen.png');
+	background-image: url('pen.png');
 }
 
 #menu-toggle{
