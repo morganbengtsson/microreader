@@ -1,17 +1,18 @@
-<link rel="stylesheet" type="text/css" href="/static/style.css">
+%from bottle import url
+<link rel="stylesheet" type="text/css" href="{{url('/static/<filename:path>', filename='style.css')}}">
 
-<form action="/channels/{{channel.id}}/edit" method="POST">
+<form action="{{url('/channels/<id:int>/edit', id=channel.id)}}" method="POST">
 			
 
 <ol class = "horizontal nav-section">
 	<li>
-		<a href = "/channels/{{channel.id}}/update" class= "update">
+		<a href = "{{url('/channels/<id:int>/update', id=channel.id)}}" class= "update">
 		<i class = "icon-arrow-circle"></i>
 		Update
 		</a>
 	</li>	
 	<li>
-		<a href = "/channels/{{channel.id}}/delete" class = "delete">
+		<a href = "{{url('/channels/<id:int>/delete', id=channel.id)}}" class = "delete">
 			<i class = "icon-cross"></i>
 			Delete
 		</a>
