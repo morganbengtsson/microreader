@@ -7,7 +7,7 @@ except ImportError:
     from urlparse import urlunsplit
     from urllib import urlencode
 from bottle import Response, error, route, run, template, install, redirect, hook, \
-    request, response, abort, static_file, JSONPlugin
+    request, response, abort, static_file, JSONPlugin, url
 from models import *
 import favicon
 
@@ -49,10 +49,10 @@ def is_active(url: str) -> str:
 
 def favicon(id: str) -> str:
     file = str(id) + '.ico'
-    path = '/static/feed.png'
+    path = 'feed.png'
     if os.path.exists(os.path.join('static', 'favicons', file)):
-        path = '/static/favicons/' + file
-    return path
+        path = 'favicons/' + file
+    return url('/static/<filename:path>', filename=path)
 
 
 def date_format(date: DateField) -> str:
@@ -75,7 +75,7 @@ def disconnect():
 
 @route('/')
 def index():
-    redirect('/items')
+    redirect(url('/items'))
 
 
 @route('/channels/<id:int>/items', method='GET')
@@ -121,10 +121,10 @@ def items(id:int=None) -> str:
 
     params = request.query
     params['page'] = page + 1
-    out['next'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page <= math.ceil(
+    out['next'] = urlunsplit(('', '', request.fullpath, urlencode(params), '')) if page <= math.ceil(
         total_count / count) else None
     params['page'] = page - 1 if page > 1 else 1
-    out['prev'] = urlunsplit(('', '', request.path, urlencode(params), '')) if page > 1 else None
+    out['prev'] = urlunsplit(('', '', request.fullpath, urlencode(params), '')) if page > 1 else None
 
     if request_accept_json():
         return out
@@ -193,7 +193,7 @@ def delete_channel(id:int):
         Channel.delete().where(Channel.id == id).execute()
     except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
-    redirect('/')
+    redirect(url('/'))
 
 
 @route('/channels/create', method='GET')
@@ -208,7 +208,7 @@ def post_channel():
     channel = Channel.get(Channel.url == url)
     channel.save_favicon()
     channel.update_feed()
-    redirect('/channels/' + str(channel.id) + "/items")
+    redirect(url('/channels/<id:int>/items', id=channel.id))
 
 
 @route('/channels/<id:int>/edit', method='GET')
@@ -225,7 +225,7 @@ def edit_channel_post(id:int):
     channel.title = title
     channel.url = url
     channel.save()
-    redirect('/channels/' + str(channel.id) + "/items")
+    redirect(url('/channels/<id:int>/items', id=channel.id))
 
 
 @route('/channels/update', method='GET')
@@ -236,7 +236,7 @@ def update_channels():
         except:
             continue
 
-    return redirect('/items')
+    return redirect(url('/items'))
 
 
 # possibly temporary route to update favicons for already established db's
@@ -248,7 +248,7 @@ def update_channels():
         except Channel.SaveFavicon:
             abort(500, 'Could not save favicon')
 
-    return redirect('/items')
+    return redirect(url('/items'))
 
 
 @route('/channels/<id:int>/update', method='GET')
@@ -258,7 +258,7 @@ def update_channel(id: int):
         channel.update_feed()
     except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
-    return redirect('/channels/' + str(channel.id) + '/items')
+    return redirect(url('/channels/<id:int>/items', id=channel.id))
 
 
 @route('/channels/import', method='GET')
@@ -270,7 +270,7 @@ def import_channels():
 def import_channels_post():
     upload = request.files.get('file')
     Channel.create_from_file(upload.file)
-    redirect('/items')
+    redirect(url('/items'))
 
 
 @route('/static/<filename:path>')

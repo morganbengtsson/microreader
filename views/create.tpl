@@ -1,4 +1,5 @@
-<form action="/channels" method="POST">
+%from bottle import url
+<form action="{{url('/channels')}}" method="POST">
 <ul>
 <li>
 	<label for = "title">Url</label> 
