@@ -45,9 +45,9 @@ a:hover
 	color: #0099FF;
 }
 
-dt a {color: #000;}
-dt a:visited {color: #000;}
-dt a:hover { color: #4D4D4D;}
+.header a {color: #000;}
+.header a:visited {color: #000;}
+.header a:hover { color: #4D4D4D;}
 
 form li{
 	margin-bottom: 1em;
@@ -78,8 +78,7 @@ label{
 }
 		
 .not-important
-{
-	font-size: 0.8em;
+{	
 	color: grey;
 }		
 
@@ -101,6 +100,7 @@ label{
 }
 
 .nav-side{
+	margin: 0.5em;
 	float: right;
 }
 
@@ -116,7 +116,7 @@ nav li > a:hover {
 }
 .navigation a {
 	line-height: 2em;
-	padding-top: 0.4em;
+	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
 	padding-right: 0.5em;	
@@ -137,6 +137,10 @@ nav li > a:hover {
 	color: #fff;
 }
 
+.actions {
+	margin-top: 0.5em;
+}
+
 i img{
 	width: 0;
 	height: 0;
@@ -151,6 +155,7 @@ i img{
 .side {
 	float: right;
 	width: auto;
+/*margin: 0.5em;*/
 }
 
 .channel-title {
@@ -170,11 +175,6 @@ i img{
     width: auto; 
     display: block;
 	margin-top: 0.5em;
-}
-.actions{
-	font-size: 0.85em !important;
-	margin-top: 0.2em;
-	margin-bottom: 0.5em;
 }
 
 dt a {

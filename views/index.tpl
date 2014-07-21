@@ -54,17 +54,13 @@
 				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
 				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
-				</a>
-				<span class = "nav-side">
+				</a>				
+				<span class = "side">
 					<span class = "not-important">({{channel.unread_count()}})</span>
-					
-				</span>
-				<div class = "actions">
 					<a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
 						<i class = "icon-caret-down">
                            <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
 						</i>
-						Settings
 					</a>
 				</div>
 			</li>						
