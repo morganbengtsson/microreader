@@ -95,7 +95,7 @@
 					</span>
 					-
 					<span class="summary">
-							{{item.description[:50]}}...
+							{{item.description[:(100-len(item.title))]}}...
 					</span>
 				</a>				
 			</span>

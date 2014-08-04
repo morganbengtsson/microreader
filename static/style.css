@@ -146,11 +146,7 @@ i img{
 	height: 0;
 	display: none;
 }
-.item  {		
-	border-bottom: 1px solid #e1e1e1;
-	border-left: 1px solid #e1e1e1;			 
-	border-right: 1px solid #e1e1e1;		
-}
+
 
 .side {
 	float: right;
