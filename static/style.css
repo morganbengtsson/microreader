@@ -279,8 +279,13 @@ hr {
 }
 
 .icon-feed	{
-	background-image: url('feed.png');
     background-size: 15px 15px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 15px;
+    font-style: normal;
+    font-weight: bold;
+    text-transform: uppercase;
 }
 
 .icon-external {
