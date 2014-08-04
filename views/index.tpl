@@ -80,7 +80,14 @@
 				</span>				
 			</span>			
 			<span class = "header">
-				
+				<span class="actions">
+				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="{{url('/items/<id:int>', id=item.id)}}">
+					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
+				</a>
+				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					<i class = "icon-external"border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
+				</a>
+			    </span>
 				<a href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
 					<i class = "icon-feed" style="background-color : {{channel.color()}};color: #fff;">{{channel.title[:1]}}</i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
@@ -92,16 +99,7 @@
 					</span>
 				</a>				
 			</span>
-			<div class="actions">
-				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="{{url('/items/<id:int>', id=item.id)}}">
-					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
-					Star
-				</a>
-				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "icon-external"border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
-					External link
-				</a>
-			</div>
+
 		</dt>
 		<dd class = "description" data-id = "{{item.id}}" style = "display:none;">
 		</dd>
