@@ -4,6 +4,8 @@ from time import mktime
 
 import feedparser
 import listparser
+import encodings
+import codecs
 from peewee import *
 from bs4 import BeautifulSoup as bs
 
@@ -29,6 +31,19 @@ def get_updated(entity):
               return datetime.fromtimestamp(mktime(entity.updated_parsed))
     return None
 
+
+class Color(object):
+   def __init__(self, r, g, b):
+       self._color = (r,g,b)
+
+   def get_tuple(self):
+       return self._color
+
+   def get_str(self):
+       return "#%02X%02X%02X" % self._color
+
+   def __str__(self):
+       return self.get_str()
 
 class BaseModel(Model):
     class Meta:
@@ -100,6 +115,14 @@ class Channel(BaseModel):
         icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
         if os.path.exists(icon_path):
             os.remove(icon_path)
+
+    def color(self):
+        color = Color((ord(self.title[0])) * 2, (ord(self.title[1])) * 2, (ord(self.title[2])) * 2)
+        print(ord(self.title[0]))
+        print(ord(self.title[1]))
+        print(ord(self.title[2]))
+        print('---')
+        return str(color)
 
     @classmethod
     def create_from_url(cls, url):
