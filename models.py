@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup as bs
 
 import favicon
 
-
 db = SqliteDatabase('database.db', threadlocals=True, timeout=5000)
 #db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True)
 

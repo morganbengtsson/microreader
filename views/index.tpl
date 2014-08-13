@@ -53,7 +53,7 @@
 			<li>			
 				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
 
-				<i class = "icon-feed" style="background-color : {{channel.color()}} !important; color: #fff;">{{channel.title[:1]}}</i>
+				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
 				</a>				
 				<span class = "side">
@@ -89,7 +89,7 @@
 				</a>
 			    </span>
 				<a href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
-					<i class = "icon-feed" style="background-color : {{channel.color()}};color: #fff;">{{channel.title[:1]}}</i>
+					<i class = "icon-feed" style="background-image: url('{{favicon(item.channel.id)}}');"></i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>

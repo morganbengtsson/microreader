@@ -9,7 +9,7 @@ except ImportError:
 from bottle import Response, error, route, run, template, install, redirect, hook, \
     request, response, abort, static_file, JSONPlugin, url
 from models import *
-import favicon
+import pyfav
 
 
 @error(500)
@@ -240,13 +240,13 @@ def update_channels():
 
 
 # possibly temporary route to update favicons for already established db's
-@route('/channels/update/favicons', method='GET')
+@route('/channels/update-favicons', method='GET')
 def update_channels():
     for c in Channel.select():
         try:
             c.save_favicon()
-        except Channel.SaveFavicon:
-            abort(500, 'Could not save favicon')
+        except :
+            continue
 
     return redirect(url('/items'))
 
