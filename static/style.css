@@ -62,6 +62,13 @@ form li{
 	overflow: hidden;	
 }
 
+.left{
+    float:left;
+}
+.right{
+    float:right;
+}
+
 .horizontal {
 	overflow: auto;
 	padding-bottom: 0.5em;
@@ -176,8 +183,6 @@ i img{
 dt a {
 	padding-top: 0em;
 	padding-bottom: 0em;
-	padding-left: 0.5em;
-	padding-right: 0.5em;
 }
 
 .summary {			
@@ -222,7 +227,6 @@ hr {
 }
 
 .page-link {
-	float: right;
 	text-transform: uppercase;
 	font-size: 1em;
 	margin: 0.5em;
@@ -236,6 +240,10 @@ hr {
 {
 	content: ' *';
 	color: #C7A506;
+}
+
+.item {
+    border-bottom: 1px solid #e1e1e1;
 }
 
 [class^="icon"]
