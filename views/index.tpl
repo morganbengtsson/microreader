@@ -10,6 +10,7 @@
 </head>
 <body>	
 	<nav class="navigation">
+		<form action="{{url('/items')}}" method="get">
 		<ul>
 			<li>
 				<a href = "" id = "menu-toggle">
@@ -17,10 +18,10 @@
 				Menu
 				</a>
 			</li>
-		
 		<ul id = "menu">		
 		<ul class = "nav-section">
-			<li>				
+			<li>
+
 				<a href ="{{url('/channels/create')}}" class = "nav-link" id ="subscribe-link">
 					<i class = "icon-plus"></i>
 					Subscribe
@@ -50,7 +51,8 @@
 		</ul>
 		<ul class = "channels">			
 		%for channel in channels:		
-			<li>			
+			<li>
+                <input type="checkbox" name=channel value="{{channel.id}}">
 				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
 
 				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
@@ -68,7 +70,10 @@
 		%end
 		</ul>
 		</ul>
-		</ul>	
+		</ul>
+		<button type="submit">Filtrera</button>
+
+		</form>
 	</nav>
 	<dl class = "accordion" id = "content">
 		%for item in items:
