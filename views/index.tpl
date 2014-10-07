@@ -69,8 +69,8 @@
 			</li>						
 		%end
 		</ul>
-		</ul>
 		<button type="submit">Filter</button>
+		</ul>
 		</ul>
 		</form>
 	</nav>
