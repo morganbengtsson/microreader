@@ -9,8 +9,6 @@ except ImportError:
 from bottle import Response, error, route, run, template, install, redirect, hook, \
     request, response, abort, static_file, JSONPlugin, url
 from models import *
-import pyfav
-
 
 @error(500)
 @error(404)
