@@ -59,7 +59,8 @@ form li{
 	min-width: 300px;
 }
 #content {
-	overflow: hidden;	
+	overflow: hidden;
+    border-left: 1px dashed #e1e1e1;
 }
 
 .left{
@@ -158,7 +159,6 @@ i img{
 .side {
 	float: right;
 	width: auto;
-/*margin: 0.5em;*/
 }
 
 .channel-title {
@@ -177,7 +177,6 @@ i img{
     overflow: hidden;
     width: auto; 
     display: block;
-	margin-top: 0.5em;
 }
 
 dt a {
@@ -200,7 +199,7 @@ dt a {
 .description {			
 	line-height: 1.5;	
 	margin-top: 0;		
-	padding: 0em 1.5em 0em 1.5em;
+	padding: 0em 1.5em 1.5em 1.5em;
 	display: block;		
 	overflow: auto;
 }
@@ -242,7 +241,11 @@ hr {
 	color: #C7A506;
 }
 
+.item dt {
+    padding: 0.4em;
+}
 .item {
+
     border-bottom: 1px solid #e1e1e1;
 }
 
