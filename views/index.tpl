@@ -70,9 +70,8 @@
 		%end
 		</ul>
 		</ul>
-		</ul>
 		<button type="submit">Filter</button>
-
+		</ul>
 		</form>
 	</nav>
 	<dl class = "accordion" id = "content">
