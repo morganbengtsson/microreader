@@ -49,11 +49,11 @@
 				</a>
 			</li>
 		</ul>
-		<ul class = "channels">			
+		<ul class = "channels nav-section">
 		%for channel in channels:		
 			<li>
-                <input type="checkbox" name=channel value="{{channel.id}}">
-				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
+                <input type="checkbox" name=channel value="{{channel.id}}" {{'checked' if channel.filter else ''}}>
+				<a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} ">
 
 				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
@@ -71,7 +71,7 @@
 		</ul>
 		</ul>
 		</ul>
-		<button type="submit">Filtrera</button>
+		<button type="submit">Filter</button>
 
 		</form>
 	</nav>
