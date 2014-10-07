@@ -93,7 +93,9 @@ def items(id:int=None) -> str:
     
     query = Item.select()
     #for channel_id in channel_ids:
-    query = query.where(Item.channel << channel_ids)
+
+    if channel_ids:
+        query = query.where(Item.channel << channel_ids)
     if starred:
         query = query.where(Item.starred == starred)
     if read:
