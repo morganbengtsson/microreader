@@ -83,7 +83,8 @@ def items(id:int=None) -> str:
     starred = valid_params.get(request.query.getone('starred'))
     read = valid_params.get(request.query.getone('read'))
 
-    channel = request.query.channel or id
+    channel_ids = [int(i) for i in request.query.getlist('channel')]
+    channel_ids += [id] if id is not None else []
     since_id = request.query.since_id
     max_id = request.query.max_id
     count = int(request.query.count) if request.query.count else 25
@@ -91,8 +92,8 @@ def items(id:int=None) -> str:
     search = request.query.q
     
     query = Item.select()
-    if channel:
-        query = query.where(Item.channel == channel)
+    #for channel_id in channel_ids:
+    query = query.where(Item.channel << channel_ids)
     if starred:
         query = query.where(Item.starred == starred)
     if read:
@@ -113,9 +114,10 @@ def items(id:int=None) -> str:
     channels = Channel.select().order_by(Channel.title)
     for c in channels:
         c.new = c.has_new()
+        c.filter = True if c.id in channel_ids else False
 
-    if channel:
-        Item.update(new=False).where(Item.channel == channel).execute()
+    #if channel:
+        #Item.update(new=False).where(Item.channel == channel).execute()
 
     params = request.query
     params['page'] = page + 1
