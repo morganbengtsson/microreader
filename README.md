@@ -4,7 +4,7 @@ and the orm [Peewee](https://github.com/coleifer/peewee). Microreader requires a
 
 Try it out by installing requirements `pip install -r requirements.txt` and 
 run `python microreader.py` . Then access http://localhost:3000. In some environments
-pip for Python 3 may have another alias, such as `pip3` or `pip-3.X` os similar.
+pip for Python 3 may have another alias, such as `pip3` or `pip-3.X` or similar.
 
 Runs on [Apache with mod_wsgi](http://bottlepy.org/docs/dev/deployment.html#apache-mod-wsgi).
 An example app.wsgi is included in the repository.
