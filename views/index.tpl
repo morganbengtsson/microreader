@@ -112,10 +112,10 @@
 
 		<div class="left">
 		%if prev:
-		  <a class = "page-link" href = {{prev}} > &laquo; Prev </a>	
+		  <a class = "page-link" href = {{prev}} > &larr; Prev </a>
 		%end
 		%if next:
-			<a class = "page-link" href = {{next}} > Next &raquo; </a>
+			<a class = "page-link" href = {{next}} > Next &rarr; </a>
 		%end
 		</div>
 	</dl>

@@ -231,8 +231,9 @@ hr {
 }
 
 .page-link {
+    float: left;
 	text-transform: uppercase;
-	font-size: 1em;
+	font-size: 1.5em;
 	margin: 0.5em;
 }
 

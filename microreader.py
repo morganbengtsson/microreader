@@ -121,12 +121,15 @@ def items(id:int=None) -> str:
     #if channel:
         #Item.update(new=False).where(Item.channel == channel).execute()
 
-    params = request.query
+    params = {}
+    for p in request.query.keys():
+        params[p] = request.query.getall(p)
+
     params['page'] = page + 1
-    out['next'] = urlunsplit(('', '', request.fullpath, urlencode(params), '')) if page <= math.ceil(
+    out['next'] = urlunsplit(('', '', request.fullpath, urlencode(params, doseq=True), '')) if page <= math.ceil(
         total_count / count) else None
     params['page'] = page - 1 if page > 1 else 1
-    out['prev'] = urlunsplit(('', '', request.fullpath, urlencode(params), '')) if page > 1 else None
+    out['prev'] = urlunsplit(('', '', request.fullpath, urlencode(params, doseq=True), '')) if page > 1 else None
 
     if request_accept_json():
         return out
