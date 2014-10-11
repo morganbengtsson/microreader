@@ -31,24 +31,16 @@ def get_updated(entity):
     return None
 
 
-class Color(object):
-   def __init__(self, r, g, b):
-       self._color = (r,g,b)
-
-   def get_tuple(self):
-       return self._color
-
-   def get_str(self):
-       return "#%02X%02X%02X" % self._color
-
-   def __str__(self):
-       return self.get_str()
-
 class BaseModel(Model):
     class Meta:
         database = db
-
-
+'''
+class User(BaseModel):
+    last_visit = DateTimeField(default=datetime.now())
+    def update_visited(self):
+        self.last_visit = datetime.now()
+        self.save()
+'''
 class Channel(BaseModel):
     title = TextField()
     updated = DateTimeField(null=True)
@@ -57,7 +49,7 @@ class Channel(BaseModel):
     icon = TextField(default='/static/feed.png')
 
     def has_new(self) -> bool:
-        return True if (self.items.where(Item.new == True).count() > 0) else False
+        return False
 
     def unread_count(self) -> int:
         return self.items.where(Item.read == False).count()
@@ -115,14 +107,6 @@ class Channel(BaseModel):
         if os.path.exists(icon_path):
             os.remove(icon_path)
 
-    def color(self):
-        color = Color((ord(self.title[0])) * 2, (ord(self.title[1])) * 2, (ord(self.title[2])) * 2)
-        print(ord(self.title[0]))
-        print(ord(self.title[1]))
-        print(ord(self.title[2]))
-        print('---')
-        return str(color)
-
     @classmethod
     def create_from_url(cls, url):
         feed = feedparser.parse(url).feed
@@ -163,6 +147,10 @@ class Item(BaseModel):
 
 Channel.create_table(fail_silently=True)
 Item.create_table(fail_silently=True)
+#User.create_table(fail_silently=True)
+
+#if not User.select().count():
+#    User.create()
 
 if not Channel.select(Channel.url).count():
     if not Channel.select().where(Channel.url == "http://rss.slashdot.org/Slashdot/slashdot").exists():
