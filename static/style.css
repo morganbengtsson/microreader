@@ -9,13 +9,13 @@ html, body {
 	font-size: 12px;
 	line-height: 1.2em;
 	margin: 0;
-	padding: 0;																	
+	padding: 0;
 }
 h1{
 	font-size: 1.5em;
 	margin-top: 1em;
-	margin-bottom: 1em;		
-}			
+	margin-bottom: 1em;
+}
 h2 {
 	font-size: 1.2em;
 	margin-top: 1em;
@@ -35,7 +35,7 @@ dl, dt, dd, ul, ol, li {
 	padding: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
-}    
+}
 a {
 	text-decoration: none;
 	color: #003C7D;
@@ -59,7 +59,7 @@ form{
 }
 
 [type=text] {
-	border: 1px solid #e1e1e1;
+	border: 0.1em solid #e1e1e1;
 	padding: 0.2em;
 	min-width: 300px;
 }
@@ -82,34 +82,34 @@ form{
 .horizontal li {
 	margin-right: 1em;
 	display: inline;
-	margin-bottom: 0.5em;				
+	margin-bottom: 0.5em;
 }
 label{
 	display: block;
 	font-size: 1em;
-	color: grey;	
-}
-		
-.not-important
-{	
 	color: grey;
-}		
+}
+
+.not-important
+{
+	color: grey;
+}
 
 .item-link:hover, .active-modal{
 	filter: brightness(120%);
 	-moz-filter: brightness(120%);
 	-webkit-filter: brightness(120%);
-} 
+}
 
-.popup	{			
+.popup	{
 	background-color: #fff;
-	border: 1px solid #e1e1e1;
+	border: 0.1em solid #e1e1e1;
 	padding: 1em;
 	padding-right: 1em;
-	padding-bottom: 0.5em;		
+	padding-bottom: 0.5em;
 	position: absolute;
 	z-index:10;
-	box-shadow: 2px 2px 10px #e1e1e1;											
+	box-shadow: 2px 2px 10px #e1e1e1;
 }
 
 .nav-side{
@@ -120,8 +120,8 @@ label{
 nav li > a:hover {
 	color: #fff;
 	background-color: #66AACC;
-}	
-	
+}
+
 .navigation {
 	padding: 0.5em;
 	float: left;
@@ -132,17 +132,17 @@ nav li > a:hover {
 	padding-top: 0.5em;
 	padding-bottom: 0.5em;
 	padding-left: 0.5em;
-	padding-right: 0.5em;	
-}			
+	padding-right: 0.5em;
+}
 
 .nav-section {
-	border-bottom: 1px solid #e1e1e1;
+	border-bottom: 0.1em solid #e1e1e1;
 	margin-bottom: 0.5em;
-	padding-bottom: 0.5em;			
+	padding-bottom: 0.5em;
 	overflow: auto;
 }
 
-.active {			
+.active {
 	color: #fff;
 	background-color: #66AACC;
 }
@@ -180,7 +180,7 @@ i img{
 	white-space: nowrap;
 	text-overflow: ellipsis;
     overflow: hidden;
-    width: auto; 
+    width: auto;
     display: block;
 }
 
@@ -189,9 +189,9 @@ dt a {
 	padding-bottom: 0em;
 }
 
-.summary {			
-	color: grey;	
-} 
+.summary {
+	color: grey;
+}
 
 .info {
 	font-size: 1em;
@@ -201,11 +201,11 @@ dt a {
 	display: block;
 }
 
-.description {			
-	line-height: 1.5;	
-	margin-top: 0;		
+.description {
+	line-height: 1.5;
+	margin-top: 0;
 	padding: 0em 1.5em 1.5em 1.5em;
-	display: block;		
+	display: block;
 	overflow: auto;
 }
 
@@ -221,7 +221,7 @@ hr {
 .read .title {
 	font-weight: normal !important;
 }
-.read {	
+.read {
 	background-color: #F0F0F0;
 	color: grey;
 }
@@ -252,12 +252,12 @@ hr {
 }
 .item {
 
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 0.1em solid #e1e1e1;
 }
 
 [class^="icon"]
-{			
-	background-repeat: no-repeat;			
+{
+	background-repeat: no-repeat;
 	width: 1.33em;
 	height: 1.33em;
 	background-size: 1.33em 1.33em;
@@ -270,7 +270,7 @@ hr {
 
 .icon-menu {
 	background-image: url('menu.png');
-}		
+}
 .icon-star	{
 	background-image: url('star.png');
 }
@@ -329,15 +329,15 @@ hr {
 all and (max-width: 40em) {
 	.navigation {
 		float: none;
-		border-bottom: 1px solid #e1e1e1;
-		max-width: none;											
+		border-bottom: 0.1em solid #e1e1e1;
+		max-width: none;
 	}
 	.navigation:after{
 		content: ".";
 		display: block;
 		height: 0;
 		clear: both;
-		visibility: hidden;		
+		visibility: hidden;
 	}
 	#menu-toggle{
 		display: inline;
@@ -345,33 +345,33 @@ all and (max-width: 40em) {
 	#menu{
 		display:none;
 	}
-	
-}	
-						
+
+}
+
 @media all and (-webkit-min-device-pixel-ratio: 1.3),
 screen and (min-resolution: 1.3dppx) {
 	html, body {
-		font-size: 130%;				
+		font-size: 130%;
 	}
 }
 
-@media all and (-webkit-min-device-pixel-ratio: 1.5), 
-screen and (min-resolution: 1.5dppx) {			
+@media all and (-webkit-min-device-pixel-ratio: 1.5),
+screen and (min-resolution: 1.5dppx) {
 	html, body {
-		font-size: 150%;				
-	}	
+		font-size: 150%;
+	}
 }
 
-@media all and (-webkit-min-device-pixel-ratio: 2), 
+@media all and (-webkit-min-device-pixel-ratio: 2),
 screen and (min-resolution: 2.0dppx) {
 	html, body  {
-		font-size: 200%;								
+		font-size: 200%;
 	}
 }
 
-@media all and (-webkit-min-device-pixel-ratio: 3), 
+@media all and (-webkit-min-device-pixel-ratio: 3),
 screen and (min-resolution: 3.0dppx) {
 	html, body  {
-		font-size: 300%;								
+		font-size: 300%;
 	}
-}		
+}
