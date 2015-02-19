@@ -40,8 +40,8 @@ class Channel(BaseModel):
     fetched = DateTimeField(default=datetime.now())
     url = TextField()
     icon = TextField(default='/static/feed.png')
-    unread_count = IntegerField()
-    new_count = IntegerField()
+    unread_count = IntegerField(default=0)
+    new_count = IntegerField(default=0)
 
     #To slow method?
     def has_new(self) -> bool:

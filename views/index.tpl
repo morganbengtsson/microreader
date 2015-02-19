@@ -59,7 +59,7 @@
 					{{channel.title}}
 				</a>				
 				<span class = "side">
-					<span class = "not-important">({{channel.unread_count()}})</span>
+					<span class = "not-important">({{channel.unread_count}})</span>
 					<a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
 						<i class = "icon-caret-down">
                            <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
