@@ -53,7 +53,7 @@
 		%for channel in channels:		
 			<li>
                 <input type="checkbox" name=channel value="{{channel.id}}" {{'checked' if channel.filter else ''}}>
-                <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.new else ''}}">
+                <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.has_new() else ''}}">
 
 				<i class = "icon-feed" style="background-image: url('{{favicon(channel.id)}}');"></i>
 					{{channel.title}}
