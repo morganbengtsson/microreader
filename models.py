@@ -48,11 +48,12 @@ class Channel(BaseModel):
     url = TextField()
     icon = TextField(default='/static/feed.png')
 
+    #To slow method?
     def has_new(self) -> bool:
-        return False
+        return self.items.where(Item.new is True).count() > 0
 
     def unread_count(self) -> int:
-        return self.items.where(Item.read == False).count()
+        return self.items.where(Item.read is False).count()
 
     def update_feed(self):
         feed = feedparser.parse(self.url)
