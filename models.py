@@ -4,8 +4,6 @@ from time import mktime
 
 import feedparser
 import listparser
-import encodings
-import codecs
 from peewee import *
 from bs4 import BeautifulSoup as bs
 
@@ -13,6 +11,7 @@ import favicon
 
 db = SqliteDatabase('database.db', threadlocals=True, timeout=5000)
 #db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True)
+
 
 def strip_tags(xml):
     if xml is None:
@@ -22,25 +21,19 @@ def strip_tags(xml):
 
 
 def get_updated(entity):
-    if entity.has_key('published_parsed'):
-        if entity.get('published_parsed'):            
+    if 'published_parsed' in entity:
+        if entity.get('published_parsed'):
             return datetime.fromtimestamp(mktime(entity.published_parsed))
-    elif entity.has_key('updated_parsed'):
-         if entity.get('updated_parsed'):            
-              return datetime.fromtimestamp(mktime(entity.updated_parsed))
+    elif 'updated_parsed' in entity:
+        if entity.get('updated_parsed'):
+            return datetime.fromtimestamp(mktime(entity.updated_parsed))
     return None
 
 
 class BaseModel(Model):
     class Meta:
         database = db
-'''
-class User(BaseModel):
-    last_visit = DateTimeField(default=datetime.now())
-    def update_visited(self):
-        self.last_visit = datetime.now()
-        self.save()
-'''
+
 class Channel(BaseModel):
     title = TextField()
     updated = DateTimeField(null=True)
@@ -50,10 +43,10 @@ class Channel(BaseModel):
 
     #To slow method?
     def has_new(self) -> bool:
-        return self.items.where(Item.new is True).count() > 0
+        return self.items.where(Item.new == True).count() > 0
 
     def unread_count(self) -> int:
-        return self.items.where(Item.read is False).count()
+        return self.items.where(Item.read == False).count()
 
     def update_feed(self):
         feed = feedparser.parse(self.url)
@@ -123,7 +116,6 @@ class Channel(BaseModel):
         print('found %s feeds' % (len(opml.feeds)))
         for feed in opml.feeds:
             cls.create(url=feed.url, title=feed.title)
-
 
     class SaveFavicon(Exception):
         pass
