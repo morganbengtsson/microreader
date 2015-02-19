@@ -57,10 +57,10 @@ class Channel(BaseModel):
     icon = TextField(default='/static/feed.png')
 
     def has_new(self) -> bool:
-        return True if (self.items.where(Item.new == True).count() > 0) else False
+        return self.items.where(Item.new is True).count() > 0
 
     def unread_count(self) -> int:
-        return self.items.where(Item.read == False).count()
+        return self.items.where(Item.read is False).count()
 
     def update_feed(self):
         feed = feedparser.parse(self.url)
