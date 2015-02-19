@@ -40,13 +40,12 @@ class Channel(BaseModel):
     fetched = DateTimeField(default=datetime.now())
     url = TextField()
     icon = TextField(default='/static/feed.png')
+    unread_count = IntegerField()
+    new_count = IntegerField()
 
     #To slow method?
     def has_new(self) -> bool:
-        return self.items.where(Item.new == True).count() > 0
-
-    def unread_count(self) -> int:
-        return self.items.where(Item.read == False).count()
+        return self.unread_count > 0
 
     def update_feed(self):
         feed = feedparser.parse(self.url)
@@ -90,6 +89,10 @@ class Channel(BaseModel):
                 if title and title.strip():
                     self.title = title
         self.fetched = datetime.now()
+
+        self.unread_count = self.items.where(Item.read == False).count()
+        self.new_count = self.items.where(Item.read == True).count()
+
         self.save()
 
     def save_favicon(self):
