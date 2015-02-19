@@ -208,8 +208,6 @@
 				$('#modal').html(data).show();			
 			});			
 		});
-		
-		
 			
 		
 		$('#subscribe-link').click(function(event){
