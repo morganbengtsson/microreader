@@ -11,9 +11,9 @@ from bottle import Response, error, route, run, template, install, redirect, hoo
 from models import *
 
 import logging
-logger = logging.getLogger("peewee")
-logger.setLevel(logging.DEBUG)
-logger.addHandler(logging.StreamHandler())
+#logger = logging.getLogger("peewee")
+#logger.setLevel(logging.DEBUG)
+#logger.addHandler(logging.StreamHandler())
 
 @error(500)
 @error(404)
@@ -116,11 +116,14 @@ def items(id:int=None) -> str:
     #total_count = query.count()
     if page and count: query = query.paginate(page, count)
 
+    for it in query:
+        it.new = False
+        it.save()
+    
     out = {'items': list(query.order_by(Item.updated.desc()).limit(count))}
 
     channels = Channel.select().order_by(Channel.title)
     for c in channels:
-        c.new = c.has_new()
         c.filter = True if c.id in channel_ids else False
 
     #if channel:
