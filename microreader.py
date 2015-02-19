@@ -10,6 +10,11 @@ from bottle import Response, error, route, run, template, install, redirect, hoo
     request, response, abort, static_file, JSONPlugin, url
 from models import *
 
+import logging
+logger = logging.getLogger("peewee")
+logger.setLevel(logging.DEBUG)
+logger.addHandler(logging.StreamHandler())
+
 @error(500)
 @error(404)
 @error(403)
@@ -108,7 +113,7 @@ def items(id:int=None) -> str:
         search = '%' + search + '%'
         query = query.where(Item.title ** search | Item.description ** search | Item.author ** search)
 
-    total_count = query.count()
+    #total_count = query.count()
     if page and count: query = query.paginate(page, count)
 
     out = {'items': list(query.order_by(Item.updated.desc()).limit(count))}
@@ -126,8 +131,7 @@ def items(id:int=None) -> str:
         params[p] = request.query.getall(p)
 
     params['page'] = page + 1
-    out['next'] = urlunsplit(('', '', request.fullpath, urlencode(params, doseq=True), '')) if page <= math.ceil(
-        total_count / count) else None
+    out['next'] = urlunsplit(('', '', request.fullpath, urlencode(params, doseq=True), ''))
     params['page'] = page - 1 if page > 1 else 1
     out['prev'] = urlunsplit(('', '', request.fullpath, urlencode(params, doseq=True), '')) if page > 1 else None
 
