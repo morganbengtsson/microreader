@@ -45,7 +45,7 @@ class Channel(BaseModel):
 
     #To slow method?
     def has_new(self) -> bool:
-        return self.unread_count > 0
+        return self.new_count > 0
 
     def update_feed(self):
         feed = feedparser.parse(self.url)
