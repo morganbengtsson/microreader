@@ -1,6 +1,8 @@
 import os
+import string
 from datetime import datetime
 from time import mktime
+from colour import Color
 
 import feedparser
 import listparser
@@ -94,6 +96,17 @@ class Channel(BaseModel):
         self.new_count = self.items.where(Item.read == True).count()
 
         self.save()
+        
+    def color(self) -> str:	
+        text = ("".join(filter(str.islower, self.title)))
+        hue = 0.0
+        for c in text:
+            hue += ((ord(c) - 97) / 25.0)
+
+        hue /= len(text)
+        color = Color(hsl=(hue, 1, 0.5))
+
+        return color.hex
 
     def save_favicon(self):
         icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
