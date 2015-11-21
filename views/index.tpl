@@ -23,28 +23,24 @@
 			<li>
 
 				<a href ="{{url('/channels/create')}}" class = "nav-link" id ="subscribe-link">
-					<i class = "icon-plus"></i>
 					Subscribe
 				</a>				
 			</li>
 			<li>
 				
 				<a href ="{{url('/channels/import')}}" class = "nav-link" id ="import-link">
-					<i class = "icon-import"></i>
 					Import
 				</a>				
 			</li>		
 		</ul>
 		<ul class = "nav-section">			
 			<li>
-				<a href = "{{url('/items')}}" id ="all" class = "nav-link {{is_active('/items')}}">
-					<i class = "icon-folder"></i>
+				<a href = "{{url('/items')}}" id ="all-link" class = "nav-link {{is_active('/items')}}">
 					All
 				</a>				
 			</li>
 			<li>
-				<a href = "{{url('/items')}}?starred=1" id = "starred" class = "nav-link {{is_active('/items?starred=1')}}">
-					<i class = "icon-star"></i>
+				<a href = "{{url('/items')}}?starred=1" id = "link-starred" class = "nav-link {{is_active('/items?starred=1')}}">
 					Starred
 				</a>
 			</li>
@@ -53,6 +49,11 @@
 		%for channel in channels:		
 			<li>
                 <input type="checkbox" name=channel value="{{channel.id}}" {{'checked' if channel.filter else ''}}>
+                <a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
+						<i class = "icon-settings">
+                           <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
+						</i>
+				</a>
                 <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.has_new() else ''}}">
 
 				<i class = "icon-channel");">{{channel.title[:1]}}</i>
@@ -60,11 +61,7 @@
 				</a>				
 				<span class = "side">
 					<span class = "not-important">({{channel.unread_count}})</span>
-					<a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
-						<i class = "icon-caret-down">
-                           <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
-						</i>
-					</a>
+
 				</div>
 			</li>						
 		%end
@@ -77,23 +74,18 @@
 	<dl class = "accordion" id = "content">
 		%for item in items:
 		<div class = "item">			
-		<dt class = "{{"read" if item.read else ""}}">	
-			<span class = "side">
-				<span class = "not-important">
-					{{date_format(item.updated)}}
-				</span>				
-			</span>			
+		<dt class = "{{"read" if item.read else ""}}">
 			<span class = "header">
 				<span class="actions">
 				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="{{url('/items/<id:int>', id=item.id)}}">
 					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
 				</a>
 				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "icon-external"border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
+					<i class = "link-button" border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
 				</a>
 			    </span>
-				<a href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
-					<i class = "icon-channel" style="background-color: {{channel.color()}}" );">{{channel.title[:1]}}</i>
+				<a class = "title" href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
+					<i class = "icon-channel" style="background-color: {{item.channel.color()}}" );">{{item.channel.title[:1]}}</i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>
@@ -101,7 +93,10 @@
 					<span class="summary">
 							{{item.description[:(100-len(item.title))]}}...
 					</span>
-				</a>				
+				</a>
+				<span class = "not-important">
+					{{date_format(item.updated)}}
+				</span>
 			</span>
 
 		</dt>
