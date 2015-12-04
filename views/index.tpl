@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="{{url('/static/pure/<filename:path>', filename='pure-min.css')}}" />
+	<script src="{{url("/static/<filename:path>", filename = "js/jquery-1.11.3.min.js")}}"></script>
+	<link rel="stylesheet" type="text/css" href="{{url('/static/<filename:path>', filename='style.css')}}" />
 	<link rel="icon" type="image/vnd.microsoft.icon" href="{{url('/static/<filename:path>', filename='favicon.ico')}}" />
 </head>
 <body>	
@@ -56,7 +56,7 @@
 				</a>
                 <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.has_new() else ''}}">
 
-				<i class = "icon-channel");">{{channel.title[:1]}}</i>
+				<i class = "icon-channel" style="background-color: {{channel.color()}}">{{channel.title[:1]}}</i>
 					{{channel.title}}
 				</a>				
 				<span class = "side">
