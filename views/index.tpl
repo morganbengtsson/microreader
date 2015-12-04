@@ -5,7 +5,7 @@
 <html>
 <head>
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="{{url('/static/<filename:path>', filename='style.css')}}" />
+	<link rel="stylesheet" type="text/css" href="{{url('/static/pure/<filename:path>', filename='pure-min.css')}}" />
 	<link rel="icon" type="image/vnd.microsoft.icon" href="{{url('/static/<filename:path>', filename='favicon.ico')}}" />
 </head>
 <body>	
