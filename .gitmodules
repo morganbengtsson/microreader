@@ -1,0 +1,3 @@
+[submodule "static/pure"]
+	path = static/pure
+	url = https://github.com/yahoo/pure.git
