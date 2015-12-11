@@ -103,7 +103,7 @@ class Channel(BaseModel):
             hue += ((ord(c) - 97) / 25.0)
 
         hue /= len(text)
-        color = Color(hsl=(hue, 1, 0.5))
+        color = Color(hsl=(hue, 1, 0.7))
 
         return color.hex
 

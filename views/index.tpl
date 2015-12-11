@@ -69,7 +69,7 @@
                     </a>:
 			    </span>
 				<a class = "title" href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
-					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
+					<span {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>
 					-
@@ -104,12 +104,12 @@
 <script>
 	$(document).ready(function()
 	{
-		$('a .title').click(function(event)
+		$('.title').click(function(event)
 		{
 			event.preventDefault();
 			var title = $(this);
 			console.log('loading content: ' + title.attr('href'));
-			$.get(title.attr('href'), function(data){
+			$.get(title.attr('href'), function(data) {
 				$('dd[data-id="' + title.data('id') + '"]').html(data);
 			});
 			
