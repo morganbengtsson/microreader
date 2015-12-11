@@ -15,6 +15,7 @@ import logging
 #logger.setLevel(logging.DEBUG)
 #logger.addHandler(logging.StreamHandler())
 
+
 @error(500)
 @error(404)
 @error(403)
@@ -48,14 +49,6 @@ def is_active(url: str) -> str:
     valid_params = dict((k, v) for k, v in params.items() if k in valid_keys)
     full_path = urlunsplit(('', '', request.path, urlencode(valid_params), ''))
     return 'active' if full_path == url else ''
-
-
-def favicon(id: str) -> str:
-    file = str(id) + '.ico'
-    path = 'feed.png'
-    if os.path.exists(os.path.join('static', 'favicons', file)):
-        path = 'favicons/' + file
-    return url('/static/<filename:path>', filename=path)
 
 
 def date_format(date: DateField) -> str:
@@ -97,7 +90,6 @@ def items(id:int=None) -> str:
     search = request.query.q
     
     query = Item.select()
-    #for channel_id in channel_ids:
 
     if channel_ids:
         query = query.where(Item.channel << channel_ids)
@@ -113,8 +105,8 @@ def items(id:int=None) -> str:
         search = '%' + search + '%'
         query = query.where(Item.title ** search | Item.description ** search | Item.author ** search)
 
-    #total_count = query.count()
-    if page and count: query = query.paginate(page, count)
+    if page and count:
+        query = query.paginate(page, count)
 
     for it in query:
         it.new = False
@@ -125,9 +117,6 @@ def items(id:int=None) -> str:
     channels = Channel.select().order_by(Channel.title)
     for c in channels:
         c.filter = True if c.id in channel_ids else False
-
-    #if channel:
-        #Item.update(new=False).where(Item.channel == channel).execute()
 
     params = {}
     for p in request.query.keys():
@@ -141,7 +130,7 @@ def items(id:int=None) -> str:
     if request_accept_json():
         return out
     else:
-        return template('index', out, is_active=is_active, favicon=favicon, date_format=date_format, channels=channels)
+        return template('index', out, is_active=is_active, date_format=date_format, channels=channels)
 
 
 @route('/items/<id:int>', method='GET')
@@ -201,7 +190,6 @@ def delete_channel(id:int):
     try:
         channel = Channel.get(Channel.id == id)
         Item.delete().where(Item.channel == channel).execute()
-        channel.delete_favicon()
         Channel.delete().where(Channel.id == id).execute()
     except Channel.DoesNotExist:
         abort(404, 'Channel does not exist')
@@ -218,7 +206,6 @@ def post_channel():
     url = request.forms.get('url')
     Channel.create_from_url(url)
     channel = Channel.get(Channel.url == url)
-    channel.save_favicon()
     channel.update_feed()
     redirect(url('/channels/<id:int>/items', id=channel.id))
 
@@ -251,18 +238,6 @@ def update_channels():
     return redirect(url('/items'))
 
 
-# possibly temporary route to update favicons for already established db's
-@route('/channels/update-favicons', method='GET')
-def update_channels():
-    for c in Channel.select():
-        try:
-            c.save_favicon()
-        except :
-            continue
-
-    return redirect(url('/items'))
-
-
 @route('/channels/<id:int>/update', method='GET')
 def update_channel(id: int):
     try:
@@ -285,14 +260,9 @@ def import_channels_post():
     redirect(url('/items'))
 
 
-@route('/static/<filename:path>')
+@route("/static/<filename:path>")
 def server_static(filename: str) -> Response:
-    return static_file(filename, root='static/')
-
-
-@route('/favicon.ico')
-def get_favicon() -> Response:
-    return server_static('favicon.ico')
+    return static_file(filename, root="static")
 
 
 if __name__ == '__main__':

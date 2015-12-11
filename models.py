@@ -9,8 +9,6 @@ import listparser
 from peewee import *
 from bs4 import BeautifulSoup as bs
 
-import favicon
-
 db = SqliteDatabase('database.db', threadlocals=True, timeout=5000)
 #db = MySQLDatabase('microreader', user = 'microreader', passwd='...', threadlocals=True)
 
@@ -35,6 +33,7 @@ def get_updated(entity):
 class BaseModel(Model):
     class Meta:
         database = db
+
 
 class Channel(BaseModel):
     title = TextField()
@@ -108,15 +107,6 @@ class Channel(BaseModel):
 
         return color.hex
 
-    def save_favicon(self):
-        icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
-        favicon.save_favicon(self.url, icon_path)
-
-    def delete_favicon(self):
-        icon_path = os.path.join('static', 'favicons', str(self.id) + '.ico')
-        if os.path.exists(icon_path):
-            os.remove(icon_path)
-
     @classmethod
     def create_from_url(cls, url):
         feed = feedparser.parse(url).feed
@@ -132,9 +122,6 @@ class Channel(BaseModel):
         print('found %s feeds' % (len(opml.feeds)))
         for feed in opml.feeds:
             cls.create(url=feed.url, title=feed.title)
-
-    class SaveFavicon(Exception):
-        pass
 
     class FeedDoesNotExist(Exception):
         pass

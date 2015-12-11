@@ -11,57 +11,39 @@
 <body>	
 	<nav class="navigation">
 		<form action="{{url('/items')}}" method="get">
-		<ul>
-			<li>
-				<a href = "" id = "menu-toggle">
-				<i class ="icon-menu"></i>
-				Menu
-				</a>
-			</li>
-		<ul id = "menu">		
 		<ul class = "nav-section">
 			<li>
-
-				<a href ="{{url('/channels/create')}}" class = "nav-link" id ="subscribe-link">
-					Subscribe
+				<a href ="{{url('/channels/create')}}" class="link" id ="subscribe">
+					<button>Subscribe</button>
 				</a>				
 			</li>
 			<li>
-				
-				<a href ="{{url('/channels/import')}}" class = "nav-link" id ="import-link">
-					Import
+				<a href ="{{url('/channels/import')}}" class="link" id ="import">
+					<button>Import</button>
 				</a>				
 			</li>		
 		</ul>
 		<ul class = "nav-section">			
 			<li>
-				<a href = "{{url('/items')}}" id ="all-link" class = "nav-link {{is_active('/items')}}">
+				<a class="link" href = "{{url('/items')}}" class = "{{is_active('/items')}}">
 					All
 				</a>				
-			</li>
-			<li>
-				<a href = "{{url('/items')}}?starred=1" id = "link-starred" class = "nav-link {{is_active('/items?starred=1')}}">
-					Starred
-				</a>
 			</li>
 		</ul>
 		<ul class = "channels nav-section">
 		%for channel in channels:		
 			<li>
                 <input type="checkbox" name=channel value="{{channel.id}}" {{'checked' if channel.filter else ''}}>
-                <a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "item-link nav-dropdown">
-						<i class = "icon-settings">
-                           <img alt = "[settings]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img>
-						</i>
+                <a href = "{{url('/channels/<id:int>/edit', id=channel.id)}}" class = "link item-link nav-dropdown">
+						<button>Settings</button>
 				</a>
-                <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}" class = "nav-link {{is_active("/channels/" + str(channel.id) + "/items")}} {{'has-new' if channel.has_new() else ''}}">
-
-				<i class = "icon-channel" style="background-color: {{channel.color()}}">{{channel.title[:1]}}</i>
+                <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}"
+                class = "background link {{is_active("/channels/" + str(channel.id) + "/items")}}
+                {{'has-new' if channel.has_new() else ''}}" style="background-color: {{channel.color()}}">
 					{{channel.title}}
-				</a>				
+				</a>
 				<span class = "side">
 					<span class = "not-important">({{channel.unread_count}})</span>
-
 				</div>
 			</li>						
 		%end
@@ -77,15 +59,16 @@
 		<dt class = "{{"read" if item.read else ""}}">
 			<span class = "header">
 				<span class="actions">
-				<a class = "mark-star item-link" data-id = "{{item.id}}" data-checked = "{{"true" if item.starred else "false"}}"  href ="{{url('/items/<id:int>', id=item.id)}}">
-					<i class = {{"icon-star" if item.starred else "icon-star-empty"}}><img alt="[star]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
-				</a>
-				<a class = "item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
-					<i class = "link-button" border="0"><img alt = "[link]" src="{{url('/static/<filename:path>', filename='pixel.png')}}"></img></i>
-				</a>
+				    <a class = "link item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
+					    Link
+				    </a>,
+				    <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}"
+                    class = "background link nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}
+                    {{'has-new' if channel.has_new() else ''}}" style="background-color: {{channel.color()}}">
+                        {{channel.title[:3]}}
+                    </a>:
 			    </span>
 				<a class = "title" href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
-					<i class = "icon-channel" style="background-color: {{item.channel.color()}}" );">{{item.channel.title[:1]}}</i>
 					<span class="title {{'new-item' if item.new else ''}}" id = {{item.id}}>
 						{{item.title}}
 					</span>
@@ -107,23 +90,21 @@
 
 		<div class="left">
 		%if prev:
-		  <a class = "page-link" href = {{prev}} > &larr; Prev </a>
+		  <a href = {{prev}} > Prev </a>
 		%end
 		%if next:
-			<a class = "page-link" href = {{next}} > Next &rarr; </a>
+			<a href = {{next}} > Next </a>
 		%end
 		</div>
 	</dl>
-	
-	
-	<div style="display:none" id = "modal" class ="popup"></div>		
+	<div style="display:none" id = "modal" class ="popup"></div>
 
 </body>
 </html>
 <script>
 	$(document).ready(function()
 	{
-		$('.item .mark-read').click(function(event)
+		$('a .title').click(function(event)
 		{
 			event.preventDefault();
 			var title = $(this);
@@ -158,31 +139,7 @@
 			});
 			return true;
 		});
-	
-		$('.mark-star').click(function(event)
-		{
-			event.preventDefault();
-			var element = $(this);
-			element.find('i').toggleClass('icon-star');
-			element.find('i').toggleClass('icon-star-empty');					
-			$.ajax({
-				url: '{{request.script_name}}items/' + element.data('id'),
-				data: '{"starred" : ' + !element.data('checked') + '}',				
-				contentType: "application/json; charset=utf-8",
-				type: 'PATCH',
-				success: function()
-				{					
-					element.data('checked', !element.data('checked'));					
-				},
-				error: function()
-				{
-					element.find('i').toggleClass('icon-star');
-					element.find('i').toggleClass('icon-star-empty');					
-				}							
-			});			
-		});		
-		
-			
+
 		$('.nav-dropdown').click(function(event)
 		{
 			event.preventDefault();
@@ -205,7 +162,7 @@
 		});
 			
 		
-		$('#subscribe-link').click(function(event){
+		$('#subscribe').click(function(event){
 			event.preventDefault();
 			var l = $(this);
 			l.addClass("active-modal");			
@@ -217,7 +174,7 @@
 			});
 		});
 		
-		$('#import-link').click(function(event){
+		$('#import').click(function(event){
 			event.preventDefault();
 			var l = $(this);
 			l.addClass("active-modal");			
@@ -226,9 +183,7 @@
 				$('#modal').css('top', l.offset().top + l.height());
 				$('#modal').css('left', l.offset().left + l.width());
 			});
-		});			
-		
-		
+		});
 		
 		$(document).mouseup(function (e) {
 			var container = $(".popup");
@@ -248,8 +203,7 @@
 				data: '{"read" : true}',				
 				contentType: "application/json; charset=utf-8",
 				type: 'PATCH',
-				error: function()
-				{					
+				error: function() {
 					item.removeClass('read');
 				}							
 			});
@@ -263,29 +217,7 @@
 				$('.dropdown', this).css('left', l.offset().left + l.width());
 				$('.dropdown',this).show();
 		});
-		
-		
-		
-			var menuToggle 		= $('#menu-toggle');
-			var	menu 		= $('#menu');
-			var	menuHeight	= menu.height();
 
-			$(menuToggle).on('click', function(e) {
-				e.preventDefault();
-				menu.slideToggle();
-				menuToggle.toggleClass('active');
-				
-			});
-
-			$(window).bind('orientationchange', function(){
-        		var w = $(window).width();
-        		if(w > 640 && menu.is(':hidden')) {
-        			menu.show();
-        			
-        		}
-    		});
-		
-	
 		
 	});
 </script>
