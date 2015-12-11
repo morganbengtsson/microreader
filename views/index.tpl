@@ -62,10 +62,10 @@
 				    <a class = "link item-link external-link" href = "{{item.url}}" target="_blank" data-id = "{{item.id}}">
 					    Link
 				    </a>,
-				    <a href = "{{url('/channels/<id:int>/items', id=channel.id)}}"
-                    class = "background link nav-link {{is_active("/channels/" + str(channel.id) + "/items")}}
-                    {{'has-new' if channel.has_new() else ''}}" style="background-color: {{channel.color()}}">
-                        {{channel.title[:3]}}
+				    <a href = "{{url('/channels/<id:int>/items', id=item.channel.id)}}"
+                    class = "background link nav-link {{is_active("/channels/" + str(item.channel.id) + "/items")}}
+                    {{'has-new' if channel.has_new() else ''}}" style="background-color: {{item.channel.color()}}">
+                        {{item.channel.title[:3]}}
                     </a>:
 			    </span>
 				<a class = "title" href = '{{url('/items/<id:int>', id=item.id)}}' class = "mark-read" data-id="{{item.id}}">
